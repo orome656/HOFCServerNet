@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ namespace HOFCServerNet.Models
 {
     public class Actu
     {
+        [JsonIgnore]
         public int Id { get; set; }
         public int PostId { get; set; }
         public string Titre { get; set; }
