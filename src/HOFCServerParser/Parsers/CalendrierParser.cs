@@ -64,7 +64,29 @@ namespace HOFCServerParser.Parsers
                 CultureInfo infos = new CultureInfo("fr-CA");
                 var date = childs.ElementAt(0).InnerText.Trim().ToLower();
                 var datetime = parseDate(date);
+                var matchLine = childs.ElementAt(4)
+                                      .Descendants("tbody")
+                                      .ElementAt(0)
+                                      .Descendants("tr")
+                                      .ElementAt(0);
+                var equipe1 = matchLine.Descendants("td")
+                                       .Where(n => n.GetAttributeValue("class", "")
+                                       .Equals("team t2"))
+                                       .First()
+                                       .FirstChild
+                                       .FirstChild
+                                       .InnerText
+                                       .Trim();
                 
+                var equipe2 = matchLine.Descendants("td")
+                                       .Where(n => n.GetAttributeValue("class", "")
+                                       .Equals("team ar tv2"))
+                                       .First()
+                                       .FirstChild
+                                       .FirstChild
+                                       .InnerText
+                                       .Trim();
+
                 calendrier.Date = datetime;
             }
             return calendrier;
@@ -82,7 +104,6 @@ namespace HOFCServerParser.Parsers
             var time = dateArray.ElementAt(5);
 
             var completeDate = annee + "/" + mois + "/" + jour + " " + time;
-            Console.WriteLine(completeDate);
             CultureInfo infos = new CultureInfo("fr-FR");
             return DateTime.ParseExact(completeDate, "yyyy/MM/dd HH'h'mm", infos);
         }
