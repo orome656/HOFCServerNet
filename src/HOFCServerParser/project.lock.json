@@ -5903,7 +5903,7 @@
     "System.ComponentModel.Annotations/4.0.11-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "VAt5IT69A0lBwY9j8FvyyiB0FLPAwxq/qQ+VZNcXS+MBroSDg/gc/4/nrJKdFGW+6HnAlm9II7TbJ7Es5UlBPw==",
+      "sha512": "RUe6z5n4ewCvAuvHaE9zd+FRF/rQsX/xsAn9AxYpmPOtZeitmDWQPOTjg8DZcbHmK4lFxMM0pggoz5IoIZII0g==",
       "files": [
         "lib/dotnet5.4/System.ComponentModel.Annotations.dll",
         "lib/MonoAndroid10/_._",
@@ -6056,7 +6056,7 @@
     "System.Console/4.0.0-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "tzF4Dbbv+5bcbQ7GHuuKafkaDZThiUiwxqCc1ngewnMWZ5YmIgjQZjs+E1DNhoMVAvkH0tSmLJvsDlx9dFg+Aw==",
+      "sha512": "0YTzoNamTU+6qfZEYtMuGjtkJHB1MEDyFsZ5L/x97GkZO3Bw91uwdPh0DkFwQ6E8KaQTgZAecSXoboUHAcdSLA==",
       "files": [
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
@@ -6212,7 +6212,7 @@
     "System.Diagnostics.DiagnosticSource/4.0.0-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "0uDR/UOmFCNPDCyHEPHhCrk6c1iRnDp00YqwSZ8Qf5aaaJjm4WXnf4Q9xZw4OoApsSiODSypDMdpQU24IxR16A==",
+      "sha512": "WHVhr5/p8UDjqNV7l9PCxZgOufE2tO4XOWva9pau9c7PzJJTdB1By6scO5dgHLpmlB/u4y27Y9AzT8AqtG8sxw==",
       "files": [
         "lib/dotnet5.2/System.Diagnostics.DiagnosticSource.dll",
         "lib/dotnet5.2/System.Diagnostics.DiagnosticSource.xml",
