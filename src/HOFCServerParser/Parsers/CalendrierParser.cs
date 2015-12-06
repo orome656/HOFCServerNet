@@ -13,6 +13,7 @@ namespace HOFCServerParser.Parsers
     public class CalendrierParser
     {
 
+        
         private static string CalendrierURL = "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_calendrier_resultat.php?cp_no=319539&ph_no=1&gp_no=&sa_no=2015&typ_rech=equipe&cl_no=177005&eq_no=1&type_match=deux&lieu_match=deux";
         private static Dictionary<string, string> moisTransform = new Dictionary<string, string>
         {
@@ -44,7 +45,8 @@ namespace HOFCServerParser.Parsers
                 .Where(n => (n.GetAttributeValue("class", "").Equals("resultatmatch bgbleu rm")));
             foreach(var line in lines)
             {
-                ParseLine(line);
+                var calendrier = ParseLine(line);
+                calendrier.Categorie = "equipe1";
             }
             Console.WriteLine("Load End");
         }
@@ -70,8 +72,7 @@ namespace HOFCServerParser.Parsers
                                       .Descendants("tr")
                                       .ElementAt(0);
                 var equipe1 = matchLine.Descendants("td")
-                                       .Where(n => n.GetAttributeValue("class", "")
-                                       .Equals("team t2"))
+                                       .Where(n => n.GetAttributeValue("class", "").Equals("team t2"))
                                        .First()
                                        .FirstChild
                                        .FirstChild
@@ -79,14 +80,27 @@ namespace HOFCServerParser.Parsers
                                        .Trim();
                 
                 var equipe2 = matchLine.Descendants("td")
-                                       .Where(n => n.GetAttributeValue("class", "")
-                                       .Equals("team ar tv2"))
+                                       .Where(n => n.GetAttributeValue("class", "").Equals("team ar tv2"))
                                        .First()
                                        .FirstChild
                                        .FirstChild
                                        .InnerText
                                        .Trim();
 
+                var score = matchLine.Descendants("td")
+                                       .Where(n => n.GetAttributeValue("class", "").Equals("score s2"))
+                                       .First()
+                                       .FirstChild
+                                       .FirstChild
+                                       .InnerText
+                                       .Trim();
+                if (score != null && score.Length > 0)
+                {
+                    calendrier.Score1 = int.Parse(score.Split('-').ElementAt(0));
+                    calendrier.Score2 = int.Parse(score.Split('-').ElementAt(1));
+                }
+                calendrier.Equipe1 = equipe1;
+                calendrier.Equipe2 = equipe2;
                 calendrier.Date = datetime;
             }
             return calendrier;
