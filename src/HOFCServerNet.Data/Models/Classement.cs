@@ -29,5 +29,13 @@ namespace HOFCServerNet.Models
         public int Bc { get; set; }
         [JsonProperty(PropertyName = "diff")]
         public int Difference { get; set; }
+        [JsonIgnore]
+        public string Categorie { get; set; }
+        
+        
+        public override string ToString()
+        {
+            return "|" + Equipe + "|" + Joue + "|" + Points + "|" + Victoire + "|" + Nul + "|" + Defaite + "|" + Bp + "|" + Bc + "|" + Difference + "|";
+        }
     }
 }

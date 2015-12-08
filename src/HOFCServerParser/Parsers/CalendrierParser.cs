@@ -12,9 +12,10 @@ namespace HOFCServerParser.Parsers
 {
     public class CalendrierParser
     {
-
-        
-        private static string CalendrierURL = "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_calendrier_resultat.php?cp_no=319539&ph_no=1&gp_no=&sa_no=2015&typ_rech=equipe&cl_no=177005&eq_no=1&type_match=deux&lieu_match=deux";
+        private static Dictionary<string, string> URL =  new Dictionary<string, string>
+        {
+            {"equipe1", "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_calendrier_resultat.php?cp_no=319539&ph_no=1&gp_no=&sa_no=2015&typ_rech=equipe&cl_no=177005&eq_no=1&type_match=deux&lieu_match=deux"}
+        };
         private static Dictionary<string, string> moisTransform = new Dictionary<string, string>
         {
             {"janvier", "01" },
@@ -31,11 +32,11 @@ namespace HOFCServerParser.Parsers
             {"decembre", "12" }
         };
 
-        public static void Parse()
+        public static void Parse(string category)
         {
             Console.WriteLine("Load Start");
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(CalendrierURL).Result;
+            string html = httpClient.GetStringAsync(URL[category]).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;
@@ -46,7 +47,7 @@ namespace HOFCServerParser.Parsers
             foreach(var line in lines)
             {
                 var calendrier = ParseLine(line);
-                calendrier.Categorie = "equipe1";
+                calendrier.Categorie = category;
             }
             Console.WriteLine("Load End");
         }

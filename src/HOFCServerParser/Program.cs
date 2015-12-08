@@ -12,7 +12,8 @@ namespace HOFCServerParser
         public static void Main(string[] args)
         {   using(var bddContext = new BddContext())
             {
-                CalendrierParser.Parse();
+                //CalendrierParser.Parse("equipe1");
+                ClassementParser.Parse("equipe1");
             }
         }
     }
