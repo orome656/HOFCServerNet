@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HOFCServerNet.Models
 {
-    public class Actu
+    public class Actu: IModel
     {
         [JsonIgnore]
         public int Id { get; set; }

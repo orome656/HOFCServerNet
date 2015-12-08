@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HOFCServerNet.Models
 {
-    public class Calendrier
+    public class Calendrier: IModel
     {
         [JsonIgnore]
         public int Id { get; set; }

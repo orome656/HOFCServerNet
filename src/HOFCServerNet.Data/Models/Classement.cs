@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace HOFCServerNet.Models
 {
     
-    public class Classement
+    public class Classement: IModel
     {
         [JsonIgnore]
         public int Id { get; set; }
