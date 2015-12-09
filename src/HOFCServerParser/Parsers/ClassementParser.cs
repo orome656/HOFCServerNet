@@ -10,30 +10,30 @@ using System.Text.RegularExpressions;
 
 namespace HOFCServerParser.Parsers
 {
-    public class ClassementParser
+    public class ClassementParser: Parser
     {
 		private static Dictionary<string, string> URL =  new Dictionary<string, string>
         {
             {"equipe1", "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_classement.php?sa_no=2015&cp_no=319539&ph_no=1&gp_no="}
         };
-        public static void Parse(string category)
+        public string category;
+
+        public ClassementParser(string category) 
         {
-            Console.WriteLine("Load Start");
+            this.category = category;
+        }
+        protected override IEnumerable<HtmlNode> GetLines()
+        {
             var httpClient = new HttpClient();
             string html = httpClient.GetStringAsync(URL[category]).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;
             var lines = root.SelectSingleNode("//table[@class='tablo bordure ac']").Descendants().Where(n => n.Name == "tr" && n.ParentNode.Name == "table");
-            foreach(var line in lines)
-            {
-                var classement = ParseLine(line);
-                classement.Categorie = category;
-            }
-            Console.WriteLine("Load End");
+            return lines;
         }
-        
-        private static Classement ParseLine(HtmlNode node)
+
+        protected override IModel ParseLine(HtmlNode node)
         {
             var classement = new Classement();
             var classementAttributes = node.Descendants("td");
@@ -56,9 +56,14 @@ namespace HOFCServerParser.Parsers
             classement.Bp = bp;
             classement.Bc = bc;
             classement.Difference = diff;
-            
+            classement.Categorie = this.category;
+            Console.WriteLine(classement.ToString());
             return classement;
         }
-		
-	}
+
+        protected override void SaveToBDD()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

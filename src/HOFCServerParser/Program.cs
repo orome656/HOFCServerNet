@@ -1,9 +1,5 @@
 ﻿using HOFCServerNet.Models;
 using HOFCServerParser.Parsers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HOFCServerParser
 {
@@ -12,8 +8,10 @@ namespace HOFCServerParser
         public static void Main(string[] args)
         {   using(var bddContext = new BddContext())
             {
-                //CalendrierParser.Parse("equipe1");
-                ClassementParser.Parse("equipe1");
+                var calendrierParser = new CalendrierParser("equipe1");
+                calendrierParser.Parse();
+                /*var classementParser = new ClassementParser("equipe1");
+                classementParser.Parse();*/
             }
         }
     }

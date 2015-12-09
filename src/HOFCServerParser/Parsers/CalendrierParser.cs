@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace HOFCServerParser.Parsers
 {
-    public class CalendrierParser
+    public class CalendrierParser: Parser
     {
         private static Dictionary<string, string> URL =  new Dictionary<string, string>
         {
@@ -31,10 +31,16 @@ namespace HOFCServerParser.Parsers
             {"novembre", "11" },
             {"decembre", "12" }
         };
+        
+        public string category;
 
-        public static void Parse(string category)
+        public CalendrierParser(string category) 
         {
-            Console.WriteLine("Load Start");
+            this.category = category;
+        }
+
+        protected override IEnumerable<HtmlNode> GetLines()
+        {
             var httpClient = new HttpClient();
             string html = httpClient.GetStringAsync(URL[category]).Result;
             HtmlDocument document = new HtmlDocument();
@@ -44,15 +50,10 @@ namespace HOFCServerParser.Parsers
                 .SelectSingleNode("//div[@id='refpop']")
                 .Descendants("div")
                 .Where(n => (n.GetAttributeValue("class", "").Equals("resultatmatch bgbleu rm")));
-            foreach(var line in lines)
-            {
-                var calendrier = ParseLine(line);
-                calendrier.Categorie = category;
-            }
-            Console.WriteLine("Load End");
+            return lines;
         }
 
-        private static Calendrier ParseLine(HtmlNode node)
+        protected override IModel ParseLine(HtmlNode node)
         {
             Calendrier calendrier = null;
             var childs = node.ChildNodes;
@@ -103,6 +104,8 @@ namespace HOFCServerParser.Parsers
                 calendrier.Equipe1 = equipe1;
                 calendrier.Equipe2 = equipe2;
                 calendrier.Date = datetime;
+                calendrier.Categorie = this.category;
+                Console.WriteLine(calendrier.ToString());
             }
             return calendrier;
 
@@ -121,6 +124,11 @@ namespace HOFCServerParser.Parsers
             var completeDate = annee + "/" + mois + "/" + jour + " " + time;
             CultureInfo infos = new CultureInfo("fr-FR");
             return DateTime.ParseExact(completeDate, "yyyy/MM/dd HH'h'mm", infos);
+        }
+
+        protected override void SaveToBDD()
+        {
+            throw new NotImplementedException();
         }
     }
 }
