@@ -15,9 +15,9 @@ namespace HOFCServerNet.Models
         [JsonProperty(PropertyName = "equipe2")]
         public string Equipe2 { get; set; }
         [JsonProperty(PropertyName = "score1")]
-        public int Score1 { get; set; }
+        public int? Score1 { get; set; }
         [JsonProperty(PropertyName = "score2")]
-        public int Score2 { get; set; }
+        public int? Score2 { get; set; }
         [JsonProperty(PropertyName = "date")]
         public DateTime Date { get; set; }
         [JsonIgnore]
