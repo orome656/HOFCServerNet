@@ -92,8 +92,6 @@ namespace HOFCServerParser.Parsers
                 var score = matchLine.Descendants("td")
                                        .Where(n => n.GetAttributeValue("class", "").Equals("score s2"))
                                        .First()
-                                       .FirstChild
-                                       .FirstChild
                                        .InnerText
                                        .Trim();
                 if (score != null && score.Length > 0)
@@ -105,7 +103,6 @@ namespace HOFCServerParser.Parsers
                 calendrier.Equipe2 = equipe2;
                 calendrier.Date = datetime;
                 calendrier.Categorie = this.category;
-                Console.WriteLine(calendrier.ToString());
             }
             return calendrier;
 

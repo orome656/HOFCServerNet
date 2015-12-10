@@ -22,5 +22,10 @@ namespace HOFCServerNet.Models
         public DateTime Date { get; set; }
         [JsonIgnore]
         public string Categorie { get; set; }
+
+        public override string ToString()
+        {
+            return "|" + Equipe1 + "|" + Score1 + "|" + Score2 + "|" + Equipe2 + "|" + Date + "|" + Categorie + "|";
+        }
     }
 }
