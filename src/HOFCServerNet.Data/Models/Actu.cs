@@ -22,5 +22,10 @@ namespace HOFCServerNet.Models
         public string ImageURL { get; set; }
         [JsonProperty(PropertyName = "date")]
         public DateTime Date { get; set; }
+        
+        public override string ToString()
+        {
+            return "|" + PostId + "|" + Titre + "|" + Texte + "|" + URL + "|" + ImageURL + "|" + Date + "|";
+        }
     }
 }
