@@ -2,15 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using HtmlAgilityPack;
 using HOFCServerNet.Models;
-using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace HOFCServerParser.Parsers
 {
-    public class ClassementParser: Parser
+    public class ClassementParser: Parser<Classement>
     {
 		private static Dictionary<string, string> URL =  new Dictionary<string, string>
         {
@@ -33,7 +30,7 @@ namespace HOFCServerParser.Parsers
             return lines;
         }
 
-        protected override IModel ParseLine(HtmlNode node)
+        protected override Classement ParseLine(HtmlNode node)
         {
             var classement = new Classement();
             var classementAttributes = node.Descendants("td");
@@ -61,9 +58,12 @@ namespace HOFCServerParser.Parsers
             return classement;
         }
 
-        protected override void SaveToBDD()
+        protected override void SaveToBDD(List<Classement> list)
         {
-            throw new NotImplementedException();
+            using(var bddContext = new BddContext()) {
+                bddContext.Classements.AddRange(list);
+                bddContext.SaveChanges();
+            }
         }
     }
 }

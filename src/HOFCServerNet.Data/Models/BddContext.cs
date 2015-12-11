@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Data.Entity;
+﻿using Microsoft.Data.Entity;
 
 namespace HOFCServerNet.Models
 {
@@ -12,5 +8,11 @@ namespace HOFCServerNet.Models
         public DbSet<Classement> Classements { get; set; }
         public DbSet<Actu> Actus { get; set; }
         public DbSet<NotificationClient> NotificationClients { get; set; }
+        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // TODO a récupérer d'un fichier de conf
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\\MSSQLLocalDB;Database=MyDB;Trusted_Connection=True;");
+        }
     }
 }

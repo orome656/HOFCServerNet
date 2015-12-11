@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace HOFCServerParser.Parsers
 {
-    public class CalendrierParser: Parser
+    public class CalendrierParser: Parser<Calendrier>
     {
         private static Dictionary<string, string> URL =  new Dictionary<string, string>
         {
@@ -53,7 +53,7 @@ namespace HOFCServerParser.Parsers
             return lines;
         }
 
-        protected override IModel ParseLine(HtmlNode node)
+        protected override Calendrier ParseLine(HtmlNode node)
         {
             Calendrier calendrier = null;
             var childs = node.ChildNodes;
@@ -123,9 +123,12 @@ namespace HOFCServerParser.Parsers
             return DateTime.ParseExact(completeDate, "yyyy/MM/dd HH'h'mm", infos);
         }
 
-        protected override void SaveToBDD()
+        protected override void SaveToBDD(List<Calendrier> list)
         {
-            throw new NotImplementedException();
+            using(var bddContext = new BddContext()) {
+                bddContext.Calendriers.AddRange(list);
+                bddContext.SaveChanges();
+            }
         }
     }
 }

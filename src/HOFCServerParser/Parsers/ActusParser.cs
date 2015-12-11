@@ -7,7 +7,7 @@ using HtmlAgilityPack;
 
 namespace HOFCServerParser.Parsers
 {
-    public class ActusParser : Parser
+    public class ActusParser : Parser<Actu>
     {
         private string URL = "http://www.hofc.fr/category/seniors/";
 
@@ -26,7 +26,7 @@ namespace HOFCServerParser.Parsers
             return lines;
         }
 
-        protected override IModel ParseLine(HtmlNode line)
+        protected override Actu ParseLine(HtmlNode line)
         {
             var actu = new Actu();
             var headerNode = line.Descendants("div").Where(n => n.GetAttributeValue("class", "").Equals("title")).First().Descendants("a").First();
@@ -48,9 +48,12 @@ namespace HOFCServerParser.Parsers
             return DateTime.Parse(dateString);
         }
 
-        protected override void SaveToBDD()
+        protected override void SaveToBDD(List<Actu> list)
         {
-            throw new NotImplementedException();
+            using(var bddContext = new BddContext()) {
+                bddContext.Actus.AddRange(list);
+                bddContext.SaveChanges();
+            }
         }
     }
 }
