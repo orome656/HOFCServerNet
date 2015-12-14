@@ -12,7 +12,7 @@ namespace HOFCServerNet.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // TODO a récupérer d'un fichier de conf
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\\MSSQLLocalDB;Database=MyDB;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=MyDB;Trusted_Connection=True;");
         }
     }
 }

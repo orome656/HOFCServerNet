@@ -30,10 +30,7 @@ namespace HOFCServerNet
         {
             services.AddEntityFramework()
                     .AddSqlServer()
-                    .AddDbContext<BddContext>(options =>
-                    {
-                        options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]);
-                    });
+                    .AddDbContext<BddContext>();
 
             // Add framework services.
             services.AddMvc();
