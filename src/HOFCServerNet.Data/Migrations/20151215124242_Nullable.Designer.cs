@@ -8,9 +8,10 @@ using HOFCServerNet.Models;
 namespace HOFCServerNet.Migrations
 {
     [DbContext(typeof(BddContext))]
-    partial class BddContextModelSnapshot : ModelSnapshot
+    [Migration("20151215124242_Nullable")]
+    partial class Nullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")

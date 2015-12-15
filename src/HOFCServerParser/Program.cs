@@ -6,13 +6,20 @@ namespace HOFCServerParser
     public class Program
     {
         public static void Main(string[] args)
-        {   using(var bddContext = new BddContext())
+        { 
+            string[] equipe = new string[] { "equipe1"/*, "equipe2", "equipe3"*/};
+            foreach(string name in equipe)
             {
-                var calendrierParser = new CalendrierParser("equipe1");
+                var calendrierParser = new CalendrierParser(name);
                 calendrierParser.Parse();
-                /*var classementParser = new ClassementParser("equipe1");
-                classementParser.Parse();*/
             }
+            foreach (string name in equipe)
+            {
+                var classementParser = new ClassementParser(name);
+                classementParser.Parse();
+            }
+            var actusParser = new ActusParser();
+            actusParser.Parse();
         }
     }
 }
