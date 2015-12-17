@@ -19,7 +19,7 @@ namespace HOFCServerNet.Controllers
         [HttpGet]
         public IEnumerable<Calendrier> Get()
         {
-            return BddContext.Calendriers.ToList();
+            return BddContext.Calendriers.OrderBy(item => item.Date).ToList();
         }
     }
 }

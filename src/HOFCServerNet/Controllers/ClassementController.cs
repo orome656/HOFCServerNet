@@ -19,7 +19,10 @@ namespace HOFCServerNet.Controllers
         [HttpGet]
         public IEnumerable<Classement> Get()
         {
-            return BddContext.Classements.ToList();
+            return BddContext.Classements
+                             .OrderByDescending(item => item.Points)
+                             .ThenByDescending(item => item.Difference)
+                             .ToList();
         }
     }
 }

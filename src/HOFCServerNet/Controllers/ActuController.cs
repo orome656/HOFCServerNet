@@ -18,7 +18,7 @@ namespace HOFCServerNet.Controllers
         [HttpGet]
         public IEnumerable<Actu> Get()
         {
-            return BddContext.Actus.ToList();
+            return BddContext.Actus.OrderByDescending(item => item.Date).ToList();
         }
     }
 }
