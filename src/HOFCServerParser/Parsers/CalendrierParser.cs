@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using HOFCServerNet.Models;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using HOFCServerParser.Utils;
 
 namespace HOFCServerParser.Parsers
 {
@@ -125,8 +126,35 @@ namespace HOFCServerParser.Parsers
 
         protected override void SaveToBDD(List<Calendrier> list)
         {
+            AndroidGCMNotificationSender sender = new AndroidGCMNotificationSender();
             using(var bddContext = new BddContext()) {
-                bddContext.Calendriers.AddRange(list);
+                foreach (Calendrier calendrier in list)
+                {
+                    if (bddContext.Calendriers.Any(item => calendrier.Equipe1.Equals(item.Equipe1) 
+                                                            && calendrier.Equipe2.Equals(item.Equipe2)
+                                                            && this.category.Equals(item.Categorie)))
+                    {
+                        Calendrier bddCalendrier = bddContext.Calendriers.First(item => calendrier.Equipe1.Equals(item.Equipe1)
+                                                                                        && calendrier.Equipe2.Equals(item.Equipe2)
+                                                                                        && this.category.Equals(item.Categorie));
+
+                        if(bddCalendrier.Score1 == null && bddCalendrier.Score2 == null)
+                        {
+                            // Faire le test de Score1 > Score2 ou Score1 < Score2 ou Score1 = Score2
+                            //sender.SendNotification("Nouveau Résultat","");
+                        }
+                        bddCalendrier.Date = calendrier.Date;
+                        bddCalendrier.Score1 = calendrier.Score1;
+                        bddCalendrier.Score2 = calendrier.Score2;
+                        
+                        bddContext.Entry(bddCalendrier).State = Microsoft.Data.Entity.EntityState.Modified;
+                    }
+                    else
+                    {
+                        // New Element insert it and send notification
+                        bddContext.Calendriers.Add(calendrier);
+                    }
+                }
                 bddContext.SaveChanges();
             }
         }

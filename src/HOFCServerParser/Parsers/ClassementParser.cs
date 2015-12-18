@@ -61,7 +61,29 @@ namespace HOFCServerParser.Parsers
         protected override void SaveToBDD(List<Classement> list)
         {
             using(var bddContext = new BddContext()) {
-                bddContext.Classements.AddRange(list);
+                foreach(Classement classement in list)
+                {
+                    if (bddContext.Classements.Any(item => classement.Equipe.Equals(item.Equipe) && this.category.Equals(item.Categorie)))
+                    {
+                        Classement bddClassement = bddContext.Classements.First(item => classement.Equipe.Equals(item.Equipe) && this.category.Equals(item.Categorie));
+
+                        bddClassement.Joue = classement.Joue;
+                        bddClassement.Points = classement.Points;
+                        bddClassement.Victoire = classement.Victoire;
+                        bddClassement.Nul = classement.Nul;
+                        bddClassement.Defaite = classement.Defaite;
+                        bddClassement.Bp = classement.Bp;
+                        bddClassement.Bc = classement.Bc;
+                        bddClassement.Difference = classement.Difference;
+                        
+                        bddContext.Entry(bddClassement).State = Microsoft.Data.Entity.EntityState.Modified;
+                    }
+                    else
+                    {
+                        // New Element insert it
+                        bddContext.Classements.Add(classement);
+                    }
+                }
                 bddContext.SaveChanges();
             }
         }
