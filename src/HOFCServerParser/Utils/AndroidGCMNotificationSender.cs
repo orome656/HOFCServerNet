@@ -24,7 +24,7 @@ namespace HOFCServerParser.Utils
                 client.BaseAddress = new Uri(URL);
                 client.DefaultRequestHeaders
                       .Accept
-                      .Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded;charset=UTF-8"));
+                      .Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
                 client.DefaultRequestHeaders.Add("Authorization", string.Format("key={0}", SERVER_API_KEY));
                 client.DefaultRequestHeaders.Add("Sender", string.Format("id={0}", SENDER_ID));
                 foreach(NotificationClient nClient in bddContext.NotificationClients.ToList())

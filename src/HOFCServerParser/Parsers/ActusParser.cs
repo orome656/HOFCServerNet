@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using HOFCServerNet.Models;
 using HtmlAgilityPack;
+using HOFCServerParser.Utils;
 
 namespace HOFCServerParser.Parsers
 {
@@ -29,6 +30,7 @@ namespace HOFCServerParser.Parsers
         protected override Actu ParseLine(HtmlNode line)
         {
             var actu = new Actu();
+            actu.PostId = int.Parse(line.GetAttributeValue("id", "0-0").Split('-').ElementAt(1));
             var headerNode = line.Descendants("div").Where(n => n.GetAttributeValue("class", "").Equals("title")).First().Descendants("a").First();
             actu.Titre = headerNode.InnerText.Trim();
             actu.URL = headerNode.GetAttributeValue("href", null);
@@ -50,8 +52,29 @@ namespace HOFCServerParser.Parsers
 
         protected override void SaveToBDD(List<Actu> list)
         {
+            AndroidGCMNotificationSender sender = new AndroidGCMNotificationSender();
             using(var bddContext = new BddContext()) {
-                bddContext.Actus.AddRange(list);
+                foreach(Actu actu in list)
+                {
+                    if(bddContext.Actus.Any(item => item.PostId == actu.PostId))
+                    {
+                        // Element already exist update it
+                        Actu bddActu = bddContext.Actus.First(item => item.PostId == actu.PostId);
+                        bddActu.ImageURL = actu.ImageURL;
+                        bddActu.Texte = actu.Texte;
+                        bddActu.Titre = actu.Titre;
+                        bddActu.URL = actu.URL;
+                        bddActu.Date = actu.Date;
+
+                        bddContext.Entry(bddActu).State = Microsoft.Data.Entity.EntityState.Modified;
+                    }
+                    else
+                    {
+                        // New Element insert it and send notification
+                        bddContext.Actus.Add(actu);
+                        //sender.SendNotification("Nouvelle Actualité", actu.Titre);
+                    }
+                }
                 bddContext.SaveChanges();
             }
         }
