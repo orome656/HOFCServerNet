@@ -64,6 +64,7 @@ namespace HOFCServerParser.Parsers
             else
             {
                 agenda = new Agenda();
+                agenda.Titre = line.ParentNode.PreviousSibling.InnerText;
                 CultureInfo infos = new CultureInfo("fr-CA");
                 var date = childs.ElementAt(0).InnerText.Trim().ToLower();
                 var datetime = parseDate(date);
@@ -102,6 +103,8 @@ namespace HOFCServerParser.Parsers
                 agenda.Equipe2 = equipe2;
                 agenda.Date = datetime;
                 agenda.Semaine = this.semaine;
+                Regex regex = new Regex(@"det_match\(this,'([0-9]+)");
+                agenda.InfosId = regex.Match(childs.Last().InnerHtml).Groups[1].Value;
             }
             return agenda;
         }
