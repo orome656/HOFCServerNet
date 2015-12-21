@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HOFCServerNet.Data.Models
+namespace HOFCServerNet.Models
 {
     public class Agenda
     {
@@ -13,7 +13,7 @@ namespace HOFCServerNet.Data.Models
         public string Equipe2 { get; set; }
         public int? Score1 { get; set; }
         public int? Score2 { get; set; }
-        public string Categorie { get; set; }
+        public DateTime Date { get; set; }
         public string Semaine { get; set; }
         public string InfosId { get; set; }
     }

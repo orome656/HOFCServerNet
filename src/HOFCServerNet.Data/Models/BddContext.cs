@@ -7,6 +7,7 @@ namespace HOFCServerNet.Models
         public DbSet<Calendrier> Calendriers { get; set; }
         public DbSet<Classement> Classements { get; set; }
         public DbSet<Actu> Actus { get; set; }
+        public DbSet<Agenda> Agendas { get; set; }
         public DbSet<NotificationClient> NotificationClients { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

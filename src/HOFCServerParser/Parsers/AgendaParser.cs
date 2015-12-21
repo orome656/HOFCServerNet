@@ -1,0 +1,155 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using HtmlAgilityPack;
+using System.Net.Http;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using HOFCServerNet.Models;
+
+namespace HOFCServerParser.Parsers
+{
+    public class AgendaParser : Parser<Agenda>
+    {
+        private static string URL = "http://district-foot-65.fff.fr/competitions/php/club/club_agenda.php?cl_no=177005&deb_semaine=";
+
+        private static Dictionary<string, string> moisTransform = new Dictionary<string, string>
+        {
+            {"janvier", "01" },
+            {"fevrier", "02" },
+            {"mars", "03" },
+            {"avril", "04" },
+            {"mai", "05" },
+            {"juin", "06" },
+            {"juillet", "07" },
+            {"aout", "08" },
+            {"septembre", "09" },
+            {"octobre", "10" },
+            {"novembre", "11" },
+            {"decembre", "12" }
+        };
+
+        // Date du début de la semaine au format DDMMYYYY : 04012016
+        private string semaine = null;
+
+        public AgendaParser(string semaine)
+        {
+            this.semaine = semaine;
+        }
+
+        protected override IEnumerable<HtmlNode> GetLines()
+        {
+            var httpClient = new HttpClient();
+            string html = httpClient.GetStringAsync(URL + semaine).Result;
+            HtmlDocument document = new HtmlDocument();
+            document.LoadHtml(html);
+            var root = document.DocumentNode;
+            var lines = root
+                .SelectSingleNode("//div[@id='refpop']")
+                .Descendants("div")
+                .Where(n => (n.GetAttributeValue("class", "").Equals("resultatmatch bgbleu rm")));
+            return lines;
+        }
+
+        protected override Agenda ParseLine(HtmlNode line)
+        {
+            Agenda agenda = null;
+            var childs = line.ChildNodes;
+            var now = DateTime.Now;
+            if (childs.Count() != 6)
+            {
+                Console.WriteLine("Something changed ...");
+            }
+            else
+            {
+                agenda = new Agenda();
+                CultureInfo infos = new CultureInfo("fr-CA");
+                var date = childs.ElementAt(0).InnerText.Trim().ToLower();
+                var datetime = parseDate(date);
+                var matchLine = childs.ElementAt(4)
+                                      .Descendants("tbody")
+                                      .ElementAt(0)
+                                      .Descendants("tr")
+                                      .ElementAt(0);
+                var equipe1 = matchLine.Descendants("td")
+                                       .Where(n => n.GetAttributeValue("class", "").Equals("team t2"))
+                                       .First()
+                                       .FirstChild
+                                       .FirstChild
+                                       .InnerText
+                                       .Trim();
+
+                var equipe2 = matchLine.Descendants("td")
+                                       .Where(n => n.GetAttributeValue("class", "").Equals("team ar tv2"))
+                                       .First()
+                                       .FirstChild
+                                       .FirstChild
+                                       .InnerText
+                                       .Trim();
+
+                var score = matchLine.Descendants("td")
+                                       .Where(n => n.GetAttributeValue("class", "").Equals("score s2"))
+                                       .First()
+                                       .InnerText
+                                       .Trim();
+                if (score != null && score.Length > 0)
+                {
+                    agenda.Score1 = int.Parse(score.Split('-').ElementAt(0));
+                    agenda.Score2 = int.Parse(score.Split('-').ElementAt(1));
+                }
+                agenda.Equipe1 = equipe1;
+                agenda.Equipe2 = equipe2;
+                agenda.Date = datetime;
+                agenda.Semaine = this.semaine;
+            }
+            return agenda;
+        }
+
+        private static DateTime parseDate(string dateString)
+        {
+            dateString = Regex.Replace(dateString, @"\s+", " ");
+            var dateArray = dateString.Split(' ');
+            var jour = dateArray.ElementAt(1);
+            var mois = moisTransform[dateArray.ElementAt(2)];
+            var annee = dateArray.ElementAt(3);
+
+            var time = dateArray.ElementAt(5);
+
+            var completeDate = annee + "/" + mois + "/" + jour + " " + time;
+            CultureInfo infos = new CultureInfo("fr-FR");
+            return DateTime.ParseExact(completeDate, "yyyy/MM/dd HH'h'mm", infos);
+        }
+
+        protected override void SaveToBDD(List<Agenda> list)
+        {
+            using (var bddContext = new BddContext())
+            {
+                foreach (Agenda calendrier in list)
+                {
+                    if (bddContext.Agendas.Any(item => calendrier.Equipe1.Equals(item.Equipe1)
+                                                            && calendrier.Equipe2.Equals(item.Equipe2)
+                                                            && this.semaine.Equals(item.Semaine)))
+                    {
+                        Agenda bddCalendrier = bddContext.Agendas.First(item => calendrier.Equipe1.Equals(item.Equipe1)
+                                                                                        && calendrier.Equipe2.Equals(item.Equipe2)
+                                                                                        && this.semaine.Equals(item.Semaine));
+
+                        
+                        bddCalendrier.Date = calendrier.Date;
+                        bddCalendrier.Score1 = calendrier.Score1;
+                        bddCalendrier.Score2 = calendrier.Score2;
+
+                        bddContext.Entry(bddCalendrier).State = Microsoft.Data.Entity.EntityState.Modified;
+                    }
+                    else
+                    {
+                        // New Element insert it and send notification
+                        bddContext.Agendas.Add(calendrier);
+                    }
+                }
+                bddContext.SaveChanges();
+            }
+        }
+    }
+}
