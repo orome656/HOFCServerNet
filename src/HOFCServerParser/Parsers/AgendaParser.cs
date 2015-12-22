@@ -96,8 +96,21 @@ namespace HOFCServerParser.Parsers
                                        .Trim();
                 if (score != null && score.Length > 0)
                 {
-                    agenda.Score1 = int.Parse(score.Split('-').ElementAt(0));
-                    agenda.Score2 = int.Parse(score.Split('-').ElementAt(1));
+                    if (score.IndexOf("Prolongation") != -1)
+                        score = score.Substring(0, score.IndexOf("Prolongation")); // Il faudrait ajouter un champ message pour gérer ce cas
+
+                    if (score.IndexOf("Non jou") != -1)
+                        score = score.Substring(0, score.IndexOf("Non jou"));
+
+                    if (score.IndexOf("Report") != -1)
+                        score = score.Substring(0, score.IndexOf("Report"));
+
+
+                    if(score.Length > 0) // On refait le check après la supression
+                    {
+                        agenda.Score1 = int.Parse(score.Split('-').ElementAt(0));
+                        agenda.Score2 = int.Parse(score.Split('-').ElementAt(1));
+                    }
                 }
                 agenda.Equipe1 = equipe1;
                 agenda.Equipe2 = equipe2;
@@ -116,12 +129,21 @@ namespace HOFCServerParser.Parsers
             var jour = dateArray.ElementAt(1);
             var mois = moisTransform[dateArray.ElementAt(2)];
             var annee = dateArray.ElementAt(3);
+            string time = null;
+            if(dateArray.Length >= 5)
+                time = dateArray.ElementAt(5);
 
-            var time = dateArray.ElementAt(5);
+            string completeDate = annee + "/" + mois + "/" + jour;
+            string parseFormat = "yyyy/MM/dd";
 
-            var completeDate = annee + "/" + mois + "/" + jour + " " + time;
+            if (time != null)
+            {
+                completeDate += " " + time;
+                parseFormat += " HH'h'mm";
+            }
+
             CultureInfo infos = new CultureInfo("fr-FR");
-            return DateTime.ParseExact(completeDate, "yyyy/MM/dd HH'h'mm", infos);
+            return DateTime.ParseExact(completeDate, parseFormat, infos);
         }
 
         protected override void SaveToBDD(List<Agenda> list)
