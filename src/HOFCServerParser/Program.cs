@@ -40,6 +40,25 @@ namespace HOFCServerParser
                 agendaParser.Parse();
                 date = date.AddDays(7);
             }
+
+            int nbJourneesEquipe1 = 22;
+            int nbJourneesEquipe2 = 22;
+            int nbJourneesEquipe3 = 26;
+            for(var i=1;i<=nbJourneesEquipe1;i++)
+            {
+                JourneeParser parser = new JourneeParser("equipe1", i);
+                parser.Parse();
+            }
+            for (var i = 1; i <= nbJourneesEquipe2; i++)
+            {
+                JourneeParser parser = new JourneeParser("equipe2", i);
+                parser.Parse();
+            }
+            for (var i = 1; i <= nbJourneesEquipe3; i++)
+            {
+                JourneeParser parser = new JourneeParser("equipe3", i);
+                parser.Parse();
+            }
         }
     }
 }

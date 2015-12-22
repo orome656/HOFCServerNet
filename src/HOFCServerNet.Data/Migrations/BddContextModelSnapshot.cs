@@ -108,6 +108,32 @@ namespace HOFCServerNet.Migrations
                     b.HasKey("Id");
                 });
 
+            modelBuilder.Entity("HOFCServerNet.Models.Journee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Categorie");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Equipe1");
+
+                    b.Property<string>("Equipe2");
+
+                    b.Property<int>("IdJournee");
+
+                    b.Property<string>("InfosId");
+
+                    b.Property<int?>("Score1");
+
+                    b.Property<int?>("Score2");
+
+                    b.Property<string>("Titre");
+
+                    b.HasKey("Id");
+                });
+
             modelBuilder.Entity("HOFCServerNet.Models.NotificationClient", b =>
                 {
                     b.Property<int>("ID")
