@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using HOFCServerNet.Models;
+using HOFCServerParser.Constants;
 
 namespace HOFCServerParser.Parsers
 {
@@ -36,15 +37,11 @@ namespace HOFCServerParser.Parsers
             {"novembre", "11" },
             {"decembre", "12" }
         };
-
-        private static Dictionary<string, string> URL = new Dictionary<string, string>
-        {
-            {"equipe1", "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_calendrier_resultat.php?typ_rech=journee&cp_no=319539&ph_no=1&gp_no=&sa_no=2015&pj_no="}
-        };
+        
         protected override IEnumerable<HtmlNode> GetLines()
         {
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(URL[Categorie] + IdJournee).Result;
+            string html = httpClient.GetStringAsync(URLMiseAJour.Journee[Categorie] + IdJournee).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;

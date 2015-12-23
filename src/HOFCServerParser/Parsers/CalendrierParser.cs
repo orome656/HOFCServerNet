@@ -8,15 +8,12 @@ using HOFCServerNet.Models;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using HOFCServerParser.Utils;
+using HOFCServerParser.Constants;
 
 namespace HOFCServerParser.Parsers
 {
     public class CalendrierParser: Parser<Calendrier>
     {
-        private static Dictionary<string, string> URL =  new Dictionary<string, string>
-        {
-            {"equipe1", "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_calendrier_resultat.php?cp_no=319539&ph_no=1&gp_no=&sa_no=2015&typ_rech=equipe&cl_no=177005&eq_no=1&type_match=deux&lieu_match=deux"}
-        };
         private static Dictionary<string, string> moisTransform = new Dictionary<string, string>
         {
             {"janvier", "01" },
@@ -43,7 +40,7 @@ namespace HOFCServerParser.Parsers
         protected override IEnumerable<HtmlNode> GetLines()
         {
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(URL[category]).Result;
+            string html = httpClient.GetStringAsync(URLMiseAJour.Calendrier[category]).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;

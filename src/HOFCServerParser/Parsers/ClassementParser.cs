@@ -4,16 +4,13 @@ using System.Linq;
 using System.Net.Http;
 using HtmlAgilityPack;
 using HOFCServerNet.Models;
+using HOFCServerParser.Constants;
 
 namespace HOFCServerParser.Parsers
 {
     public class ClassementParser: Parser<Classement>
     {
-		private static Dictionary<string, string> URL =  new Dictionary<string, string>
-        {
-            {"equipe1", "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_classement.php?sa_no=2015&cp_no=319539&ph_no=1&gp_no="}
-        };
-        public string category;
+		public string category;
 
         public ClassementParser(string category) 
         {
@@ -22,7 +19,7 @@ namespace HOFCServerParser.Parsers
         protected override IEnumerable<HtmlNode> GetLines()
         {
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(URL[category]).Result;
+            string html = httpClient.GetStringAsync(URLMiseAJour.Classement[category]).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;

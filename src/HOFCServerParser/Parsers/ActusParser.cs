@@ -5,17 +5,16 @@ using System.Net.Http;
 using HOFCServerNet.Models;
 using HtmlAgilityPack;
 using HOFCServerParser.Utils;
+using HOFCServerParser.Constants;
 
 namespace HOFCServerParser.Parsers
 {
     public class ActusParser : Parser<Actu>
     {
-        private string URL = "http://www.hofc.fr/category/seniors/";
-
         protected override IEnumerable<HtmlNode> GetLines()
         {
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(URL).Result;
+            string html = httpClient.GetStringAsync(URLMiseAJour.Actus).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;

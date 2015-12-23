@@ -7,13 +7,12 @@ using System.Net.Http;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using HOFCServerNet.Models;
+using HOFCServerParser.Constants;
 
 namespace HOFCServerParser.Parsers
 {
     public class AgendaParser : Parser<Agenda>
     {
-        private static string URL = "http://district-foot-65.fff.fr/competitions/php/club/club_agenda.php?cl_no=177005&deb_semaine=";
-
         private static Dictionary<string, string> moisTransform = new Dictionary<string, string>
         {
             {"janvier", "01" },
@@ -41,7 +40,7 @@ namespace HOFCServerParser.Parsers
         protected override IEnumerable<HtmlNode> GetLines()
         {
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(URL + semaine).Result;
+            string html = httpClient.GetStringAsync(URLMiseAJour.Agenda + semaine).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;
