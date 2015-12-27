@@ -34,6 +34,9 @@ namespace HOFCServerParser
                 date = new DateTime(now.Year, 8, 1);
                 maxDate = new DateTime(now.Year + 1, 7, 1);
             }
+            if (date.DayOfWeek != DayOfWeek.Monday)
+                date = date.Subtract(new TimeSpan((int)date.DayOfWeek - 1, 0, 0, 0));
+
             while(date < maxDate)
             {
                 var agendaParser = new AgendaParser(date.ToString("ddMMyyyy"));
