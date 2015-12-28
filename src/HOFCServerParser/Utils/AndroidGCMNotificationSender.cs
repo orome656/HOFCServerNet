@@ -16,8 +16,8 @@ namespace HOFCServerParser.Utils
             string URL = "https://android.googleapis.com/gcm/send";
             using (var bddContext = new BddContext())
             {
-                string SERVER_API_KEY = "server api key";
-                var SENDER_ID = "application number";
+                string SERVER_API_KEY = System.Environment.GetEnvironmentVariable("SERVER_API_KEY");
+                var SENDER_ID = System.Environment.GetEnvironmentVariable("SENDER_ID");
                 var value = message;
                 HttpClient client = new HttpClient();
 
