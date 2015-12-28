@@ -8,7 +8,7 @@ namespace HOFCServerParser
     {
         public static void Main(string[] args)
         { 
-            string[] equipe = new string[] { "equipe1"/*, "equipe2", "equipe3"*/};
+            string[] equipe = new string[] { "equipe1", "equipe2", "equipe3"};
             foreach(string name in equipe)
             {
                 var calendrierParser = new CalendrierParser(name);
