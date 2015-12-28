@@ -15,11 +15,18 @@ namespace HOFCServerNet.Controllers
         [FromServices]
         public BddContext BddContext { get; set; }
 
-        // GET: api/values
+        // GET: api/Calendrier
         [HttpGet]
         public IEnumerable<Calendrier> Get()
         {
             return BddContext.Calendriers.OrderBy(item => item.Date).ToList();
+        }
+
+        // GET: api/Calendrier/equipe1
+        [HttpGet]
+        public IEnumerable<Calendrier> Get(string categorie)
+        {
+            return BddContext.Calendriers.Where(item => item.Categorie.Equals(categorie)).OrderBy(item => item.Date).ToList();
         }
     }
 }

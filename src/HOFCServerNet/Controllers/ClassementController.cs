@@ -15,11 +15,22 @@ namespace HOFCServerNet.Controllers
         [FromServices]
         public BddContext BddContext { get; set; }
 
-        // GET: api/values
+        // GET: api/Classement
         [HttpGet]
         public IEnumerable<Classement> Get()
         {
             return BddContext.Classements
+                             .OrderByDescending(item => item.Points)
+                             .ThenByDescending(item => item.Difference)
+                             .ToList();
+        }
+        
+        // GET: api/values
+        [HttpGet]
+        public IEnumerable<Classement> Get(string categorie)
+        {
+            return BddContext.Classements
+                             .Where(item => item.Categorie.Equals(categorie))
                              .OrderByDescending(item => item.Points)
                              .ThenByDescending(item => item.Difference)
                              .ToList();
