@@ -1,4 +1,5 @@
-﻿using HOFCServerNet.Models;
+﻿using HOFCServerNet.Data.Constants;
+using HOFCServerNet.Models;
 using HOFCServerParser.Parsers;
 using System;
 
@@ -44,9 +45,9 @@ namespace HOFCServerParser
                 date = date.AddDays(7);
             }
 
-            int nbJourneesEquipe1 = 22;
-            int nbJourneesEquipe2 = 22;
-            int nbJourneesEquipe3 = 26;
+            int nbJourneesEquipe1 = AppConstants.NbMatchEquipe1;
+            int nbJourneesEquipe2 = AppConstants.NbMatchEquipe2;
+            int nbJourneesEquipe3 = AppConstants.NbMatchEquipe3;
             for(var i=1;i<=nbJourneesEquipe1;i++)
             {
                 JourneeParser parser = new JourneeParser("equipe1", i);
