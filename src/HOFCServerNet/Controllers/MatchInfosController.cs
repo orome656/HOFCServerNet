@@ -22,7 +22,7 @@ namespace HOFCServerNet.Controllers
             MatchInfos infos = MatchInfosParser.Parse(id);
             if(infos == null)
             {
-                // Il faut trouver comment retourner un code erreur ...
+                this.Response.StatusCode = 404;
                 return null;
             } 
             else
