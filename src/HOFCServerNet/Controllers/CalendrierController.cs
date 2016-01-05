@@ -23,7 +23,7 @@ namespace HOFCServerNet.Controllers
         }
 
         // GET: api/Calendrier/equipe1
-        [HttpGet]
+        [HttpGet("{categorie}")]
         public IEnumerable<Calendrier> Get(string categorie)
         {
             return BddContext.Calendriers.Where(item => item.Categorie.Equals(categorie)).OrderBy(item => item.Date).ToList();

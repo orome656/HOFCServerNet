@@ -26,7 +26,7 @@ namespace HOFCServerNet.Controllers
         }
         
         // GET: api/values
-        [HttpGet]
+        [HttpGet("{categorie}")]
         public IEnumerable<Classement> Get(string categorie)
         {
             return BddContext.Classements

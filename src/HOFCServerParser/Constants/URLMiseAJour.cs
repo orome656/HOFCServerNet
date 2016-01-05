@@ -17,8 +17,8 @@ namespace HOFCServerParser.Constants
         public static Dictionary<string, string> Classement = new Dictionary<string, string>
         {
             {"equipe1", "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_classement.php?sa_no=2015&cp_no=319539&ph_no=1&gp_no="},
-            {"equipe1", "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_classement.php?sa_no=2015&cp_no=317727&ph_no=1&gp_no="},
-            {"equipe1", "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_classement.php?sa_no=2015&cp_no=317728&ph_no=1&gp_no="}
+            {"equipe2", "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_classement.php?sa_no=2015&cp_no=317727&ph_no=1&gp_no="},
+            {"equipe3", "http://district-foot-65.fff.fr/competitions/php/championnat/championnat_classement.php?sa_no=2015&cp_no=317728&ph_no=1&gp_no="}
         };
 
         public static string Agenda = "http://district-foot-65.fff.fr/competitions/php/club/club_agenda.php?cl_no=177005&deb_semaine=";
