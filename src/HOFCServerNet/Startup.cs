@@ -41,12 +41,28 @@ namespace HOFCServerNet
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            if (env.IsDevelopment())
+            {
 
+            }
+            else
+            {
+                try
+                {
+                    using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+                        .CreateScope())
+                    {
+                        serviceScope.ServiceProvider.GetService<BddContext>()
+                             .Database.Migrate();
+                    }
+                }
+                catch { }
+            }
             app.UseIISPlatformHandler();
 
             app.UseStaticFiles();
 
-            app.UseMvc();
+            app.UseMvc();            
         }
 
         // Entry point for the application.
