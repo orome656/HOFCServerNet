@@ -8,6 +8,9 @@ namespace HOFCServerNet.Data.Models
 {
     public class Params
     {
+        // Conservé pour rétro compatibilité. A supprimer dès que possible
+        [JsonProperty(PropertyName = "SEASON_MATCHS_COUNT")]
+        public int NbMatchEquipe { get; set; }
         [JsonProperty(PropertyName = "SEASON_MATCHS_COUNT_EQUIPE1")]
         public int NbMatchEquipe1 { get; set; }
         [JsonProperty(PropertyName = "SEASON_MATCHS_COUNT_EQUIPE2")]

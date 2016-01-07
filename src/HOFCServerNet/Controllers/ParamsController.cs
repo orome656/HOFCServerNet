@@ -19,6 +19,7 @@ namespace HOFCServerNet.Controllers
         {
             return new Params()
             {
+                NbMatchEquipe = AppConstants.NbMatchEquipe1,
                 NbMatchEquipe1 = AppConstants.NbMatchEquipe1,
                 NbMatchEquipe2 = AppConstants.NbMatchEquipe2,
                 NbMatchEquipe3 = AppConstants.NbMatchEquipe3

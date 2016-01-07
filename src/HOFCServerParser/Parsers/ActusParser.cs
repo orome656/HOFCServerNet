@@ -6,6 +6,7 @@ using HOFCServerNet.Models;
 using HtmlAgilityPack;
 using HOFCServerParser.Utils;
 using HOFCServerParser.Constants;
+using System.Globalization;
 
 namespace HOFCServerParser.Parsers
 {
@@ -46,7 +47,8 @@ namespace HOFCServerParser.Parsers
         }
 
         private DateTime ParseDate(string dateString) {
-            return DateTime.Parse(dateString);
+            CultureInfo infos = new CultureInfo("fr-FR");
+            return DateTime.Parse(dateString, infos);
         }
 
         protected override void SaveToBDD(List<Actu> list)
