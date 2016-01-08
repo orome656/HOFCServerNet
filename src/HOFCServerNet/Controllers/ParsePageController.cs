@@ -14,8 +14,8 @@ namespace HOFCServerNet.Controllers
     public class ParsePageController : Controller
     {
         // GET api/values/{url}
-        [HttpGet("{url}")]
-        public string Get(string url)
+        [HttpPost]
+        public string Post(string url)
         {
             if(url.Contains("en-image"))
             {
