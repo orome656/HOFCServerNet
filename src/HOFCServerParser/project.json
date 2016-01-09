@@ -13,6 +13,7 @@
   "dependencies": {
     "HtmlAgilityPack.NetCore":  "1.4.9.1",
     "HOFCServerNet.Data": "",
+    "HOFCServerNet.Utils": "",
     "System.Net.Http":  "4.0.1-beta-23516"
   },
 

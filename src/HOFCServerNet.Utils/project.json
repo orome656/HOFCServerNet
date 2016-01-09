@@ -1,0 +1,18 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "HOFCServerNet.Utils Class Library",
+  "authors": [ "Anthony" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+
+  "dependencies": {
+    "HOFCServerNet.Data": "",
+    "System.Net.Http": "4.0.1-beta-23516"
+  },
+  "frameworks": {
+    "dnx451": { },
+    "dnxcore50": { }
+  }
+}
