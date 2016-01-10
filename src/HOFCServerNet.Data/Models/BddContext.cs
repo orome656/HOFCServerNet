@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Entity;
+using Microsoft.Extensions.Configuration;
 
 namespace HOFCServerNet.Models
 {
@@ -13,8 +14,13 @@ namespace HOFCServerNet.Models
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.AddJsonFile("appsettings.json");
+            configurationBuilder.AddEnvironmentVariables();
+            var configuration = configurationBuilder.Build();
+
             // TODO a récupérer d'un fichier de conf
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=MyDB;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(configuration["Data:DefaultConnection:ConnectionString"]);
         }
     }
 }
