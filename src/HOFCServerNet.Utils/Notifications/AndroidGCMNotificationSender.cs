@@ -11,7 +11,7 @@ namespace HOFCServerParser.Utils
 {
     public class AndroidGCMNotificationSender
     {
-        public void SendNotification(string titre, string message)
+        public void SendNotification(string titre, string message, string type, string urlParam)
         {
             string URL = "https://android.googleapis.com/gcm/send";
             using (var bddContext = new BddContext())
@@ -29,7 +29,11 @@ namespace HOFCServerParser.Utils
                 {
                     string deviceId = nClient.NotificationID;
                     string postData = "collapse_key=score_update&time_to_live=108&delay_while_idle=1&data.title=" + titre + "&data.message=" + value + "&data.time=" + System.DateTime.Now.ToString() + "&registration_id=" + deviceId + "";
-
+                    postData += "&data.TYPE=" + type;
+                    if(urlParam != null)
+                    {
+                        postData += "&data.URL=" + urlParam;
+                    }
                     var content = new StringContent(postData,
                                                         Encoding.UTF8,
                                                         "application/x-www-form-urlencoded");
