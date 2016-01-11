@@ -62,7 +62,7 @@ namespace HOFCServerNet.Parsers
                                     .Descendants("li");
                 foreach (var arbitre in infosArbitres)
                 {
-                    infos.Arbitres.Add(arbitre.InnerText.Trim().Replace("&#xA0;", " "));
+                    infos.Arbitres.Add(HtmlEntity.DeEntitize(arbitre.InnerText.Trim()));
                 }
             }
             return infos;

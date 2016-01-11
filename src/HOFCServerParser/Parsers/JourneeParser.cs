@@ -72,21 +72,21 @@ namespace HOFCServerParser.Parsers
                                       .ElementAt(0)
                                       .Descendants("tr")
                                       .ElementAt(0);
-                var equipe1 = matchLine.Descendants("td")
+                var equipe1 = HtmlEntity.DeEntitize(matchLine.Descendants("td")
                                        .Where(n => n.GetAttributeValue("class", "").Equals("team t2"))
                                        .First()
                                        .FirstChild
                                        .FirstChild
                                        .InnerText
-                                       .Trim();
+                                       .Trim().ToUpper());
 
-                var equipe2 = matchLine.Descendants("td")
+                var equipe2 = HtmlEntity.DeEntitize(matchLine.Descendants("td")
                                        .Where(n => n.GetAttributeValue("class", "").Equals("team ar tv2"))
                                        .First()
                                        .FirstChild
                                        .FirstChild
                                        .InnerText
-                                       .Trim();
+                                       .Trim().ToUpper());
 
                 var score = matchLine.Descendants("td")
                                        .Where(n => n.GetAttributeValue("class", "").Equals("score s2"))

@@ -63,7 +63,7 @@ namespace HOFCServerParser.Parsers
             else
             {
                 agenda = new Agenda();
-                agenda.Titre = line.ParentNode.PreviousSibling.InnerText;
+                agenda.Titre = HtmlEntity.DeEntitize(line.ParentNode.PreviousSibling.InnerText);
                 CultureInfo infos = new CultureInfo("fr-CA");
                 var date = childs.ElementAt(0).InnerText.Trim().ToLower();
                 var datetime = parseDate(date);
@@ -78,7 +78,8 @@ namespace HOFCServerParser.Parsers
                                        .FirstChild
                                        .FirstChild
                                        .InnerText
-                                       .Trim();
+                                       .Trim()
+                                       .ToUpper();
 
                 var equipe2 = matchLine.Descendants("td")
                                        .Where(n => n.GetAttributeValue("class", "").Equals("team ar tv2"))
@@ -86,7 +87,8 @@ namespace HOFCServerParser.Parsers
                                        .FirstChild
                                        .FirstChild
                                        .InnerText
-                                       .Trim();
+                                       .Trim()
+                                       .ToUpper();
 
                 var score = matchLine.Descendants("td")
                                        .Where(n => n.GetAttributeValue("class", "").Equals("score s2"))

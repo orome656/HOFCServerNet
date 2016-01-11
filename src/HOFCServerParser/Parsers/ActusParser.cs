@@ -32,11 +32,11 @@ namespace HOFCServerParser.Parsers
             var actu = new Actu();
             actu.PostId = int.Parse(line.GetAttributeValue("id", "0-0").Split('-').ElementAt(1));
             var headerNode = line.Descendants("div").Where(n => n.GetAttributeValue("class", "").Equals("title")).First().Descendants("a").First();
-            actu.Titre = headerNode.InnerText.Trim();
+            actu.Titre = HtmlEntity.DeEntitize(headerNode.InnerText.Trim());
             actu.URL = headerNode.GetAttributeValue("href", null);
             
             var contentNode = line.Descendants("div").Where(n => n.GetAttributeValue("class", "").Equals("entry")).First();
-            actu.Texte = contentNode.Descendants("p").First().InnerText.Trim();
+            actu.Texte = HtmlEntity.DeEntitize(contentNode.Descendants("p").First().InnerText.Trim());
             actu.ImageURL = contentNode.Descendants("img").First().GetAttributeValue("src", null);
     
             var dateString = line.Descendants("div").Where(n => n.GetAttributeValue("class", "").Equals("postmeta")).First().InnerText.Trim();

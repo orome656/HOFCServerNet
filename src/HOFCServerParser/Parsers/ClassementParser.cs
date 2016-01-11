@@ -41,7 +41,7 @@ namespace HOFCServerParser.Parsers
             var bc = int.Parse(classementAttributes.ElementAt(9).InnerText);
             var diff = int.Parse(classementAttributes.ElementAt(11).InnerText);
             
-            classement.Equipe = nom;
+            classement.Equipe = HtmlEntity.DeEntitize(nom.ToUpper());
             classement.Joue = joue;
             classement.Points = points;
             classement.Victoire = victoire;
