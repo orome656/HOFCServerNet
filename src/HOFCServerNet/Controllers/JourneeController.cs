@@ -17,9 +17,9 @@ namespace HOFCServerNet.Controllers
 
         // GET api/values/equipe1/1
         [HttpGet("{categorie}/{numJournee}")]
-        public List<Journee> Get(string categorie, int numJournee)
+        public List<Match> Get(string categorie, int numJournee)
         {
-            return BddContext.Journees.Where(item => item.Categorie.Equals(categorie) && item.IdJournee.Equals(numJournee)).ToList();
+            return BddContext.Matchs.Where(item => item.Competition != null && item.Competition.Categorie.Equals(categorie) && item.IdJournee.Equals(numJournee)).ToList();
         }
     }
 }

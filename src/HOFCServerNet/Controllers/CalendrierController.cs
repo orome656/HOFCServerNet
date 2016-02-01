@@ -17,16 +17,16 @@ namespace HOFCServerNet.Controllers
 
         // GET: api/Calendrier
         [HttpGet]
-        public IEnumerable<Calendrier> Get()
+        public IEnumerable<Match> Get()
         {
-            return BddContext.Calendriers.OrderBy(item => item.Date).ToList();
+            return BddContext.Matchs.Where(item => item.Equipe1.Contains("HORGUES ODOS") || item.Equipe2.Contains("HORGUES ODOS")).OrderBy(item => item.Date).ToList();
         }
 
         // GET: api/Calendrier/equipe1
         [HttpGet("{categorie}")]
-        public IEnumerable<Calendrier> Get(string categorie)
+        public IEnumerable<Match> Get(string categorie)
         {
-            return BddContext.Calendriers.Where(item => item.Categorie.Equals(categorie)).OrderBy(item => item.Date).ToList();
+            return BddContext.Matchs.Where(item => item.Competition != null && item.Competition.Categorie.Equals(categorie) && (item.Equipe1.Contains("HORGUES ODOS") || item.Equipe2.Contains("HORGUES ODOS"))).OrderBy(item => item.Date).ToList();
         }
     }
 }

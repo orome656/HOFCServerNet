@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.Net.Http;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using HOFCServerNet.Models;
 using HOFCServerParser.Constants;
+using HOFCServerParser.Database;
 
 namespace HOFCServerParser.Parsers
 {
-    public class AgendaParser : Parser<Agenda>
+    public class AgendaParser : Parser<Match>
     {
         private static Dictionary<string, string> moisTransform = new Dictionary<string, string>
         {
@@ -51,9 +51,9 @@ namespace HOFCServerParser.Parsers
             return lines;
         }
 
-        protected override Agenda ParseLine(HtmlNode line)
+        protected override Match ParseLine(HtmlNode line)
         {
-            Agenda agenda = null;
+            Match agenda = null;
             var childs = line.ChildNodes;
             var now = DateTime.Now;
             if (childs.Count() != 6)
@@ -62,8 +62,8 @@ namespace HOFCServerParser.Parsers
             }
             else
             {
-                agenda = new Agenda();
-                agenda.Titre = HtmlEntity.DeEntitize(line.ParentNode.PreviousSibling.InnerText);
+                agenda = new Match();
+                agenda.CompetitionId = HtmlEntity.DeEntitize(line.ParentNode.PreviousSibling.InnerText);
                 CultureInfo infos = new CultureInfo("fr-CA");
                 var date = childs.ElementAt(0).InnerText.Trim().ToLower();
                 var datetime = parseDate(date);
@@ -116,8 +116,7 @@ namespace HOFCServerParser.Parsers
                 agenda.Equipe1 = equipe1;
                 agenda.Equipe2 = equipe2;
                 agenda.Date = datetime;
-                agenda.Semaine = this.semaine;
-                Regex regex = new Regex(@"det_match\(this,'([0-9]+)");
+                System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"det_match\(this,'([0-9]+)");
                 agenda.InfosId = regex.Match(childs.Last().InnerHtml).Groups[1].Value;
             }
             return agenda;
@@ -125,7 +124,7 @@ namespace HOFCServerParser.Parsers
 
         private static DateTime parseDate(string dateString)
         {
-            dateString = Regex.Replace(dateString, @"\s+", " ");
+            dateString = System.Text.RegularExpressions.Regex.Replace(dateString, @"\s+", " ");
             var dateArray = dateString.Split(' ');
             var jour = dateArray.ElementAt(1);
             var mois = moisTransform[dateArray.ElementAt(2)];
@@ -147,35 +146,12 @@ namespace HOFCServerParser.Parsers
             return DateTime.ParseExact(completeDate, parseFormat, infos);
         }
 
-        protected override void SaveToBDD(List<Agenda> list)
+        protected override void SaveToBDD(List<Match> list)
         {
-            using (var bddContext = new BddContext())
-            {
-                foreach (Agenda calendrier in list)
-                {
-                    if (bddContext.Agendas.Any(item => calendrier.Equipe1.Equals(item.Equipe1)
-                                                            && calendrier.Equipe2.Equals(item.Equipe2)
-                                                            && this.semaine.Equals(item.Semaine)))
-                    {
-                        Agenda bddCalendrier = bddContext.Agendas.First(item => calendrier.Equipe1.Equals(item.Equipe1)
-                                                                                        && calendrier.Equipe2.Equals(item.Equipe2)
-                                                                                        && this.semaine.Equals(item.Semaine));
-
-                        
-                        bddCalendrier.Date = calendrier.Date;
-                        bddCalendrier.Score1 = calendrier.Score1;
-                        bddCalendrier.Score2 = calendrier.Score2;
-
-                        bddContext.Entry(bddCalendrier).State = Microsoft.Data.Entity.EntityState.Modified;
-                    }
-                    else
-                    {
-                        // New Element insert it and send notification
-                        bddContext.Agendas.Add(calendrier);
-                    }
-                }
-                bddContext.SaveChanges();
-            }
+            //DateTime dateStart = DateTime.ParseExact(this.semaine, "ddMMyyyy", new CultureInfo("fr-FR"));
+            //DateTime dateEnd = dateStart.AddDays(7);
+            DatabaseManager manager = new DatabaseManager();
+            manager.SaveMatchs(list);
         }
     }
 }

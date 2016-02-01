@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using HOFCServerNet.Models;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using HOFCServerParser.Utils;
 using HOFCServerParser.Constants;
 
 namespace HOFCServerParser.Parsers
 {
-    public class CalendrierParser: Parser<Calendrier>
+    public class CalendrierParser: Parser<Match>
     {
         private static Dictionary<string, string> moisTransform = new Dictionary<string, string>
         {
@@ -51,9 +50,9 @@ namespace HOFCServerParser.Parsers
             return lines;
         }
 
-        protected override Calendrier ParseLine(HtmlNode node)
+        protected override Match ParseLine(HtmlNode node)
         {
-            Calendrier calendrier = null;
+            Match calendrier = null;
             var childs = node.ChildNodes;
             var now = DateTime.Now;
             if(childs.Count() != 6)
@@ -62,7 +61,7 @@ namespace HOFCServerParser.Parsers
             }
             else
             {
-                calendrier = new Calendrier();
+                calendrier = new Match();
                 CultureInfo infos = new CultureInfo("fr-CA");
                 var date = childs.ElementAt(0).InnerText.Trim().ToLower();
                 var datetime = parseDate(date);
@@ -100,7 +99,6 @@ namespace HOFCServerParser.Parsers
                 calendrier.Equipe1 = equipe1;
                 calendrier.Equipe2 = equipe2;
                 calendrier.Date = datetime;
-                calendrier.Categorie = this.category;
             }
             return calendrier;
 
@@ -108,7 +106,7 @@ namespace HOFCServerParser.Parsers
 
         private static DateTime parseDate(string dateString)
         {
-            dateString = Regex.Replace(dateString, @"\s+", " ");
+            dateString = System.Text.RegularExpressions.Regex.Replace(dateString, @"\s+", " ");
             var dateArray = dateString.Split(' ');
             var jour = dateArray.ElementAt(1);
             var mois = moisTransform[dateArray.ElementAt(2)];
@@ -121,17 +119,17 @@ namespace HOFCServerParser.Parsers
             return DateTime.ParseExact(completeDate, "yyyy/MM/dd HH'h'mm", infos);
         }
 
-        protected override void SaveToBDD(List<Calendrier> list)
+        protected override void SaveToBDD(List<HOFCServerNet.Models.Match> list)
         {
-            AndroidGCMNotificationSender sender = new AndroidGCMNotificationSender();
+            /*AndroidGCMNotificationSender sender = new AndroidGCMNotificationSender();
             using(var bddContext = new BddContext()) {
-                foreach (Calendrier calendrier in list)
+                foreach (Match calendrier in list)
                 {
-                    if (bddContext.Calendriers.Any(item => calendrier.Equipe1.Equals(item.Equipe1) 
+                    if (bddContext.Matchs.Any(item => calendrier.Equipe1.Equals(item.Equipe1) 
                                                             && calendrier.Equipe2.Equals(item.Equipe2)
                                                             && this.category.Equals(item.Categorie)))
                     {
-                        Calendrier bddCalendrier = bddContext.Calendriers.First(item => calendrier.Equipe1.Equals(item.Equipe1)
+                        Match bddCalendrier = bddContext.Matchs.First(item => calendrier.Equipe1.Equals(item.Equipe1)
                                                                                         && calendrier.Equipe2.Equals(item.Equipe2)
                                                                                         && this.category.Equals(item.Categorie));
 
@@ -149,11 +147,11 @@ namespace HOFCServerParser.Parsers
                     else
                     {
                         // New Element insert it and send notification
-                        bddContext.Calendriers.Add(calendrier);
+                        bddContext.Matchs.Add(calendrier);
                     }
                 }
                 bddContext.SaveChanges();
-            }
+            }*/
         }
     }
 }

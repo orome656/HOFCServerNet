@@ -5,21 +5,23 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.Net.Http;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using HOFCServerNet.Models;
 using HOFCServerParser.Constants;
+using HOFCServerParser.Database;
 
 namespace HOFCServerParser.Parsers
 {
-    public class JourneeParser : Parser<Journee>
+    public class JourneeParser : Parser<Match>
     {
         private string Categorie { get; }
         private int IdJournee { get; }
+        private string Competition { get; }
 
-        public JourneeParser(string categorie, int idJournee)
+        public JourneeParser(string categorie, int idJournee, string competition)
         {
             Categorie = categorie;
             IdJournee = idJournee;
+            Competition = competition;
         }
 
         private static Dictionary<string, string> moisTransform = new Dictionary<string, string>
@@ -52,9 +54,9 @@ namespace HOFCServerParser.Parsers
             return lines;
         }
 
-        protected override Journee ParseLine(HtmlNode line)
+        protected override Match ParseLine(HtmlNode line)
         {
-            Journee journee = null;
+            Match journee = null;
             var childs = line.ChildNodes;
             var now = DateTime.Now;
             if (childs.Count() != 6)
@@ -63,7 +65,7 @@ namespace HOFCServerParser.Parsers
             }
             else
             {
-                journee = new Journee();
+                journee = new Match();
                 CultureInfo infos = new CultureInfo("fr-CA");
                 var date = childs.ElementAt(0).InnerText.Trim().ToLower();
                 var datetime = parseDate(date);
@@ -114,9 +116,9 @@ namespace HOFCServerParser.Parsers
                 journee.Equipe1 = equipe1;
                 journee.Equipe2 = equipe2;
                 journee.Date = datetime;
-                journee.Categorie = this.Categorie;
                 journee.IdJournee = this.IdJournee;
-                Regex regex = new Regex(@"det_match\(this,'([0-9]+)");
+                journee.CompetitionId = this.Competition;
+                System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"det_match\(this,'([0-9]+)");
                 journee.InfosId = regex.Match(childs.Last().InnerHtml).Groups[1].Value;
             }
             return journee;
@@ -124,7 +126,7 @@ namespace HOFCServerParser.Parsers
 
         private static DateTime parseDate(string dateString)
         {
-            dateString = Regex.Replace(dateString, @"\s+", " ");
+            dateString = System.Text.RegularExpressions.Regex.Replace(dateString, @"\s+", " ");
             var dateArray = dateString.Split(' ');
             var jour = dateArray.ElementAt(1);
             var mois = moisTransform[dateArray.ElementAt(2)];
@@ -146,37 +148,10 @@ namespace HOFCServerParser.Parsers
             return DateTime.ParseExact(completeDate, parseFormat, infos);
         }
 
-        protected override void SaveToBDD(List<Journee> list)
+        protected override void SaveToBDD(List<Match> list)
         {
-            using (var bddContext = new BddContext())
-            {
-                foreach (Journee journee in list)
-                {
-                    if (bddContext.Journees.Any(item => journee.Equipe1.Equals(item.Equipe1)
-                                                        && journee.Equipe2.Equals(item.Equipe2)
-                                                        && this.IdJournee.Equals(item.IdJournee)
-                                                        && this.Categorie.Equals(item.Categorie)))
-                    {
-                        Journee bddJournee = bddContext.Journees.First(item => journee.Equipe1.Equals(item.Equipe1)
-                                                                                        && journee.Equipe2.Equals(item.Equipe2)
-                                                                                        && this.IdJournee.Equals(item.IdJournee)
-                                                                                        && this.Categorie.Equals(item.Categorie));
-
-
-                        bddJournee.Date = journee.Date;
-                        bddJournee.Score1 = journee.Score1;
-                        bddJournee.Score2 = journee.Score2;
-
-                        bddContext.Entry(bddJournee).State = Microsoft.Data.Entity.EntityState.Modified;
-                    }
-                    else
-                    {
-                        // New Element insert it and send notification
-                        bddContext.Journees.Add(journee);
-                    }
-                }
-                bddContext.SaveChanges();
-            }
+            DatabaseManager manager = new DatabaseManager();
+            manager.SaveMatchs(list);
         }
     }
 }

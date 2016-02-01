@@ -17,11 +17,12 @@ namespace HOFCServerNet.Controllers
 
         // GET api/values/2015-08-17
         [HttpGet("{semaine}")]
-        public List<Agenda> Get(string semaine)
+        public List<Match> Get(string semaine)
         {
             var date = DateTime.Parse(semaine);
+            var dateEnd = date.AddDays(7);
             var idSemaineBdd = date.ToString("ddMMyyyy");
-            return BddContext.Agendas.Where(item => item.Semaine.Equals(idSemaineBdd)).ToList();
+            return BddContext.Matchs.Where(item => date.CompareTo(item.Date) <= 0 && date.CompareTo(item.Date) > 0).ToList();
         }
     }
 }
