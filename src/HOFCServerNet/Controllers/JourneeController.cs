@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Models;
+using Microsoft.Data.Entity;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,7 +20,10 @@ namespace HOFCServerNet.Controllers
         [HttpGet("{categorie}/{numJournee}")]
         public List<Match> Get(string categorie, int numJournee)
         {
-            return BddContext.Matchs.Where(item => item.Competition != null && item.Competition.Categorie.Equals(categorie) && item.IdJournee.Equals(numJournee)).ToList();
+            return BddContext.Matchs
+                             .Where(item => item.Competition != null && item.Competition.Categorie.Equals(categorie) && item.IdJournee.Equals(numJournee))
+                             .Include(item => item.Competition)
+                             .ToList();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Models;
+using Microsoft.Data.Entity;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,7 +23,10 @@ namespace HOFCServerNet.Controllers
             var date = DateTime.Parse(semaine);
             var dateEnd = date.AddDays(7);
             var idSemaineBdd = date.ToString("ddMMyyyy");
-            return BddContext.Matchs.Where(item => date.CompareTo(item.Date) <= 0 && date.CompareTo(item.Date) > 0).ToList();
+            return BddContext.Matchs
+                             .Where(item => date.CompareTo(item.Date) <= 0 && date.CompareTo(item.Date) > 0)
+                             .Include(item => item.Competition)
+                             .ToList();
         }
     }
 }
