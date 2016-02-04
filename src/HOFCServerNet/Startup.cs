@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using HOFCServerNet.Models;
 using Microsoft.Data.Entity;
+using HOFCServerNet.Repositories;
 
 namespace HOFCServerNet
 {
@@ -31,7 +32,7 @@ namespace HOFCServerNet
             services.AddEntityFramework()
                     .AddSqlServer()
                     .AddDbContext<BddContext>();
-
+            services.AddTransient<MatchsRepository>();
             // Add framework services.
             services.AddMvc();
         }
