@@ -1,0 +1,73 @@
+<html lang="en" ng-app="HOFCApp">
+  <head>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link rel="stylesheet" href="main.css">
+    <!-- style sheet -->
+    <link href="lib/md-data-table.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="icon" sizes="192x192" href="images/hofc.png">
+    <meta name="viewport" content="initial-scale=1" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+  </head>
+  <body layout="column" ng-controller="AppCtrl">
+    <md-toolbar layout="row">
+      <md-button ng-click="toggleSidenav('left')" class="md-icon-button menuBtn">
+        <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
+      </md-button>
+      <h1 layout-align-gt-sm="center" class="md-toolbar-tools">HOFC</h1>
+    </md-toolbar>
+    <div layout="row" flex class="content-wrapper">
+        <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+          <md-list class="muppet-list">
+            <md-item ng-repeat="it in menu">
+              <md-item-content>
+                <md-button md-ink-ripple ng-click="selectMenu(it)" ng-href="{{it.lien}}" ng-class="{'selected' : it === selected }">
+                  <!-- img ng-src="{{it.iconurl}}" class="face" alt="" -->
+                  {{it.titre}}
+                </md-button>
+              </md-item-content>
+            </md-item>
+          </md-list>
+        </md-sidenav>
+        <md-content md-scroll-y style="width:100%">
+              <div ng-view class="fade"></div>
+        </md-content>
+    </div>
+    <!-- Angular Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-sanitize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/i18n/angular-locale_fr-fr.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.js"></script>
+    <script type="text/javascript" src="lib/md-data-table.min.js"></script>
+    <script src="app.js"></script>
+
+      <script src="services/ParamsService.js"></script>
+    <script src="filters/CalendrierFilter.js"></script>
+    <script src="filters/AgendaFilter.js"></script>
+    <script src="filters/JourneeFilter.js"></script>
+
+    <script src="services/MatchService.js"></script>
+    <script src="services/ClassementService.js"></script>
+    <script src="services/CalendrierService.js"></script>
+    <script src="services/ActusService.js"></script>
+    <script src="services/AgendaService.js"></script>
+    <script src="services/JourneeService.js"></script>
+    <script src="services/DiaporamaService.js"></script>
+    <script src="services/ArticleService.js"></script>
+    
+    <script src="controllers/ActusController.js"></script>
+    <script src="controllers/AgendaController.js"></script>
+    <script src="controllers/CalendrierController.js"></script>
+    <script src="controllers/ClassementController.js"></script>
+    <script src="controllers/JourneeController.js"></script>
+    <script src="controllers/DiaporamaController.js"></script>
+    <script src="controllers/ArticleController.js"></script>
+    
+  </body>
+</html>

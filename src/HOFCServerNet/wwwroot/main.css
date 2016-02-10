@@ -1,0 +1,129 @@
+md-toolbar:not(.md-menu-toolbar) {
+  background-color: #08589D;
+}
+.md-button.md-icon-button.menuBtn {
+  margin-top: 6px;
+  margin-right: 0;
+}
+
+.muppet-list .md-button {
+  color: inherit;
+  text-align: left;
+  width: 90%;
+}
+.muppet-list .selected {
+  color: #03a9f4;
+}
+.face {
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  display: inline-block;
+  margin: 4px 16px; 
+  vertical-align: middle;
+  width: 48px;
+}
+.content-wrapper {
+  position: relative;
+}
+#primary-col {
+  overflow: hidden;
+}
+#primary-col .md-button {
+  margin: 8px auto 16px 0;
+}
+#primary-col .cell {
+  flex: 1 1 auto;
+}
+#primary-col img {
+  display: block;
+  max-width: 100%;
+}
+
+.round-face {
+    border-radius: 30px;
+    border: 1px solid #ddd;
+    width: 48px;
+    height: 48px;
+    margin: 8px;
+}
+
+@media(max-width:550px) {
+  .round-face {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  table[md-data-table]:not([md-row-select])>thead:not([md-table-progress])>tr>th:nth-child(n+2):nth-last-child(n+2) {
+    padding: 0px !important;
+  }
+  table[md-data-table]>thead:not([md-table-progress])>tr>th:last-child {
+    padding: 0px !important;
+  }
+  table[md-data-table]:not([md-row-select])>tbody>tr>td:nth-child(n+2):nth-last-child(n+2){
+    padding: 0px !important;
+  }
+  table[md-data-table]>tbody>tr>td:last-child {
+    padding: 0px !important;
+  }
+  
+}
+
+.textCentered {
+  text-align: center;
+
+}
+
+md-card img {
+  max-height: 200px;
+}
+
+.hofcTextStyle {
+  color: #08589D;
+  font-weight: bold;
+}
+
+.resizeImg {
+  max-width: 48px;
+  width: 100%;
+  height: auto;
+}
+
+.fullSize {
+  height: 100%;
+}
+
+.tabsOnly {
+  min-height:0px !important;
+}
+
+/**
+ * CSS animation entre les vues 
+ * https://code.angularjs.org/1.3.15/docs/api/ngRoute/directive/ngView
+ */
+
+.fade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    opacity: 1;
+}
+.fade.ng-enter,
+.fade.ng-leave {
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.fade.ng-enter {
+    opacity: 0;
+}
+.fade.ng-enter-active {
+    opacity: 1;
+}
+.fade.ng-leave {
+    opacity: 1;
+}
+.fade.ng-leave-active {
+    opacity: 0;
+}

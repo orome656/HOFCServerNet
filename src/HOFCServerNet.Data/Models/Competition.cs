@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +10,9 @@ namespace HOFCServerNet.Models
     public class Competition: IModel
     {
         [Key]
+        [JsonProperty(PropertyName = "nom")]
         public string Nom { get; set; }
+        [JsonProperty(PropertyName = "categorie")]
         public string Categorie { get; set; }
     }
 }

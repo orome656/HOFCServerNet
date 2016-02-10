@@ -22,7 +22,10 @@ namespace HOFCServerParser.Database
                         bddCalendrier.Date = calendrier.Date;
                         bddCalendrier.Score1 = calendrier.Score1;
                         bddCalendrier.Score2 = calendrier.Score2;
-
+                        if(calendrier.IdJournee != null)
+                        {
+                            bddCalendrier.IdJournee = calendrier.IdJournee;
+                        }
                         bddContext.Entry(bddCalendrier).State = Microsoft.Data.Entity.EntityState.Modified;
                     }
                     else

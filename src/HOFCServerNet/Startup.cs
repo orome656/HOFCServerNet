@@ -33,6 +33,7 @@ namespace HOFCServerNet
                     .AddSqlServer()
                     .AddDbContext<BddContext>();
             services.AddTransient<MatchsRepository>();
+            services.AddTransient<ActusRepository>();
             // Add framework services.
             services.AddMvc();
         }
@@ -61,6 +62,7 @@ namespace HOFCServerNet
             }
             app.UseIISPlatformHandler();
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseMvc();            

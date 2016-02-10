@@ -34,9 +34,8 @@ namespace HOFCServerNet.Models
 
         [JsonProperty(PropertyName = "infos")]
         public string InfosId { get; set; }
-
-        [JsonConverter(typeof(CompetitionToNameConverter))]
-        [JsonProperty(PropertyName = "title")]
+        
+        [JsonProperty(PropertyName = "competition")]
         [ForeignKey("CompetitionId")]
         public Competition Competition { get; set; }
 
