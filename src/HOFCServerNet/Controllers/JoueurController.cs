@@ -33,12 +33,14 @@ namespace HOFCServerNet.Controllers
         [HttpPost]
         public void Post([FromBody]Joueur value)
         {
+            Repository.Create(value);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]Joueur value)
         {
+            Repository.Update(value);
         }
 
         // DELETE api/values/5

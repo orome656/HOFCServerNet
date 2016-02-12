@@ -1,0 +1,28 @@
+﻿<md-data-table-container>
+    <table md-data-table class="md-primary">
+        <thead md-table-head md-order="query.order">
+            <tr>
+                <th name="Nom" order-by="Nom"></th>
+                <th name="Prenom" order-by="Prenom"></th>
+                <th name="Equipe"></th>
+                <th name="Actions"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="joueur in joueurs">
+                <td md-cell>{{joueur.Nom}}</td>
+                <td md-cell>{{joueur.Prenom}}</td>
+                <td md-cell>{{joueur.Categorie}}</td>
+                <td md-cell>
+                    <md-button class="md-icon-button" aria-label="More">
+                        <md-icon md-font-library="material-icons">mode_edit</md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="More">
+                        <md-icon md-font-library="material-icons">delete</md-icon>
+                    </md-button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</md-data-table-container>
+<md-button class="md-raised">Ajouter</md-button>

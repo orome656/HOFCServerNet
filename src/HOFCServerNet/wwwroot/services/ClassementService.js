@@ -3,7 +3,7 @@ app.service('classementService', ['$q', '$http', function($q, $http) {
 	var _classement = [];
     
     var _getClassement = function(categorie){
-        $http.get("/classement/" + categorie)
+        $http.get("/api/Classement/" + categorie)
             .then(function(results){
                 //Success
                 var datas = [];

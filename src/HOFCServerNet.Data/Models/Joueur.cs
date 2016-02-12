@@ -11,6 +11,6 @@ namespace HOFCServerNet.Models
         public string Nom { get; set; }
         public string Prenom { get; set; }
         public string Categorie { get; set; }
-        public List<int> Postes { get; set; }
+        public ICollection<Poste> Postes { get; set; }
     }
 }

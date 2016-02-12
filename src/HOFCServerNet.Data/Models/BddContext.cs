@@ -10,7 +10,7 @@ namespace HOFCServerNet.Models
         public DbSet<Competition> Competitions { get; set;}
         public DbSet<Actu> Actus { get; set; }
         public DbSet<NotificationClient> NotificationClients { get; set; }
-
+        public DbSet<Poste> Postes { get; set; }
         public DbSet<Joueur> Joueurs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

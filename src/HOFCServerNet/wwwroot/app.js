@@ -30,6 +30,10 @@ app.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'views/article.html',
         controller: 'ArticleController'
       })
+      .when('/joueur', {
+          templateUrl: 'views/effectif.html',
+          controller: 'EffectifController'
+      })
 }]);
 
 app.controller('AppCtrl', ['$scope', '$mdSidenav', '$timeout','$log', '$filter', 'paramsService', function($scope, $mdSidenav, $timeout, $log, $filter, paramsService) {
@@ -55,6 +59,9 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', '$timeout','$log', '$filter',
   },{
     titre: 'Journee Equipe 3',
     lien: '#/journees/equipe3/1'
+  }, {
+    titre: 'Effectif',
+    lien: '#/joueur'
   }]
   $scope.selected = null;
   $scope.selectMenu = selectMenu;
