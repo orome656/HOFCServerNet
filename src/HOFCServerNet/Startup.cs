@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using HOFCServerNet.Models;
 using Microsoft.Data.Entity;
 using HOFCServerNet.Repositories;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace HOFCServerNet
 {
@@ -31,7 +32,13 @@ namespace HOFCServerNet
         {
             services.AddEntityFramework()
                     .AddSqlServer()
-                    .AddDbContext<BddContext>();
+                    .AddDbContext<BddContext>()
+                    .AddDbContext<ApplicationDbContext>();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
+
             services.AddTransient<MatchsRepository>();
             services.AddTransient<ActusRepository>();
             services.AddTransient<JoueursRepository>();
@@ -57,6 +64,8 @@ namespace HOFCServerNet
                     {
                         serviceScope.ServiceProvider.GetService<BddContext>()
                              .Database.Migrate();
+                        serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
+                             .Database.Migrate();
                     }
                 }
                 catch { }
@@ -65,6 +74,8 @@ namespace HOFCServerNet
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc();            
         }

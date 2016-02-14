@@ -19,8 +19,7 @@ namespace HOFCServerNet.Models
             configurationBuilder.AddJsonFile("appsettings.json");
             configurationBuilder.AddEnvironmentVariables();
             var configuration = configurationBuilder.Build();
-
-            // TODO a récupérer d'un fichier de conf
+            
             optionsBuilder.UseSqlServer(configuration["Data:DefaultConnection:ConnectionString"]);
         }
     }
