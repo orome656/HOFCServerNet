@@ -1,10 +1,18 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
+﻿<md-input-container>
+    <label>Nom</label>
+    <input ng-model="joueur.Nom">
+</md-input-container>
+<md-input-container>
+    <label>Prénom</label>
+    <input ng-model="joueur.Prenom">
+</md-input-container>
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Equipe</label>
+    <md-select ng-model="joueur.Categorie">
+        <md-option value="equipe1">Equipe 1</md-option>
+        <md-option value="equipe2">Equipe 2</md-option>
+        <md-option value="equipe3">Equipe 3</md-option>
+    </md-select>
+</md-input-container>
 
-</body>
-</html>
+<md-button class="md-raised">Enregistrer</md-button>

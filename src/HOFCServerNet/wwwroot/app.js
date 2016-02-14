@@ -34,6 +34,10 @@ app.config(['$routeProvider', function($routeProvider) {
           templateUrl: 'views/effectif.html',
           controller: 'EffectifController'
       })
+      .when('/joueur/:id', {
+          templateUrl: 'views/joueur.html',
+          controller: 'JoueurController'
+      })
 }]);
 
 app.controller('AppCtrl', ['$scope', '$mdSidenav', '$timeout','$log', '$filter', 'paramsService', function($scope, $mdSidenav, $timeout, $log, $filter, paramsService) {
