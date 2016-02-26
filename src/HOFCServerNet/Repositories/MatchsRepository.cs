@@ -28,6 +28,17 @@ namespace HOFCServerNet.Repositories
             }
         }
 
+        public List<Match> GetMatchByCategoryAndJournee(string categorie, int numJournee)
+        {
+            using(var dbContext = new BddContext())
+            {
+                return dbContext.Matchs
+                             .Where(item => item.Competition != null && item.Competition.Categorie.Equals(categorie) && item.IdJournee.Equals(numJournee))
+                             .Include(item => item.Competition)
+                             .ToList();
+            }
+        }
+
         public List<Match> GetMatchsForHOFCByCategory(string categorie)
         {
             using(var dbContext = new BddContext())
