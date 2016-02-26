@@ -42,6 +42,8 @@ namespace HOFCServerNet
             services.AddTransient<MatchsRepository>();
             services.AddTransient<ActusRepository>();
             services.AddTransient<JoueursRepository>();
+            services.AddTransient<ClassementRepository>();
+
             // Add framework services.
             services.AddMvc();
         }
