@@ -7,7 +7,7 @@ using HOFCServerNet.Models;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace HOFCServerNet.Controllers
+namespace HOFCServerNet.ContAPIrollers
 {
     [Route("api/[controller]")]
     public class ClassementController : Controller
