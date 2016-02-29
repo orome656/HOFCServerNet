@@ -1,0 +1,8 @@
+{
+  "name": "HOFCWeb",
+  "description": "HOFC Web application",
+	"private": true,
+  "dependencies": {
+    "angular-material":  "master"
+  }
+}
