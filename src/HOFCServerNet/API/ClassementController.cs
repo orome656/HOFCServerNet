@@ -13,8 +13,12 @@ namespace HOFCServerNet.ContAPIrollers
     [Route("api/[controller]")]
     public class ClassementController : Controller
     {
-        [FromServices]
         public ClassementRepository Repository { get; set; }
+
+        public ClassementController(ClassementRepository _classementRepository)
+        {
+            Repository = _classementRepository;
+        }
 
         // GET: api/Classement
         [HttpGet]

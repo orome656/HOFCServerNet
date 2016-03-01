@@ -13,8 +13,13 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class JoueurController : Controller
     {
-        [FromServices]
         public JoueursRepository Repository { get; set; }
+
+        public JoueurController(JoueursRepository _joueurRepository)
+        {
+            Repository = _joueurRepository;
+        }
+
         // GET: api/values
         [HttpGet]
         public List<Joueur> Get()

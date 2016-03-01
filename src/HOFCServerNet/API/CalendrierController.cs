@@ -16,6 +16,11 @@ namespace HOFCServerNet.API
     {
         public MatchsRepository Repository { get; set; }
 
+        public CalendrierController(MatchsRepository _matchsRepository)
+        {
+            Repository = _matchsRepository;
+        }
+
         // GET: api/Calendrier
         [HttpGet]
         public IEnumerable<Match> Get()

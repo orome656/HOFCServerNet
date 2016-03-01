@@ -17,6 +17,12 @@ namespace HOFCServerNet.API
         [FromServices]
         public MatchsRepository Repository { get; set; }
         // GET: api/values
+
+        public MatchController(MatchsRepository _matchsRepository)
+        {
+            Repository = _matchsRepository;
+        }
+
         [HttpGet]
         public IEnumerable<Match> Get()
         {

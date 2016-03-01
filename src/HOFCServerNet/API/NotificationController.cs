@@ -16,6 +16,11 @@ namespace HOFCServerNet.API
         [FromServices]
         public NotificationRepository Repository { get; set; }
 
+        public NotificationController(NotificationRepository _notificationRepository)
+        {
+            Repository = _notificationRepository;
+        }
+
         // POST api/values
         [HttpPost]
         public void Post(string uuid, string notification_id)

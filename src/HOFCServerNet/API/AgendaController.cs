@@ -14,8 +14,12 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class AgendaController : Controller
     {
-        [FromServices]
         public MatchsRepository Repository { get; set; }
+        
+        public AgendaController(MatchsRepository _matchsRepository)
+        {
+            Repository = _matchsRepository;
+        }
 
         // GET api/values/2015-08-17
         [HttpGet("{semaine}")]

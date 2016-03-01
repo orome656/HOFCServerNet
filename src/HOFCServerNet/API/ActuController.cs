@@ -13,8 +13,13 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class ActuController : Controller
     {
-        [FromServices]
         public ActusRepository Repository { get; set; }
+        
+        public ActuController(ActusRepository _actusRepository)
+        {
+            Repository = _actusRepository;
+        }
+        
         // GET: api/values
         [HttpGet]
         public IEnumerable<Actu> Get()

@@ -14,8 +14,12 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class JourneeController : Controller
     {
-        [FromServices]
         public MatchsRepository Repository { get; set; }
+
+        public JourneeController(MatchsRepository _matchsRepository)
+        {
+            Repository = _matchsRepository;
+        }
 
         // GET api/values/equipe1/1
         [HttpGet("{categorie}/{numJournee}")]
