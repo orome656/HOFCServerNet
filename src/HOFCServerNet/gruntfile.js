@@ -6,11 +6,19 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
     grunt.initConfig({
         uglify: {
             prod: {
                 files: { 'wwwroot/app.js': ['Scripts/app.js', 'Scripts/**/*.js'] }
+            }
+        },
+
+        concat: {
+            dev: {
+                src: ['Scripts/app.js', 'Scripts/**/*.js'],
+                dest: 'wwwroot/app.js'
             }
         },
 

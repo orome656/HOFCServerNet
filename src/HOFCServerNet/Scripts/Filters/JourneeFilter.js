@@ -1,4 +1,5 @@
-﻿app.filter('JourneeFilter', function () {
+﻿angular
+    .module('HOFCApp').filter('JourneeFilter', function () {
     return function (input, categorie, journee) {
         if (input == null || input.length == 0)
             return [];

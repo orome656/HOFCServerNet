@@ -1,4 +1,5 @@
-﻿app.filter('CalendrierFilter', function () {
+﻿angular
+    .module('HOFCApp').filter('CalendrierFilter', function () {
     return function (input, categorie) {
         if (input == null || input.length == 0)
             return [];

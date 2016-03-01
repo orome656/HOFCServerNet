@@ -1,4 +1,6 @@
-﻿app.filter('AgendaFilter', function () {
+﻿angular
+    .module('HOFCApp')
+    .filter('AgendaFilter', function () {
     return function (input, date) {
         if (input == null || input.length == 0)
             return [];

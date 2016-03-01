@@ -79,13 +79,13 @@ namespace HOFCServerNet
             app.UseStaticFiles();
 
             app.UseIdentity();
-
-            app.UseMvc(routes =>
+            
+            app.UseMvc(/*routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });            
+            }*/);            
         }
 
         // Entry point for the application.

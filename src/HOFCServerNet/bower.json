@@ -1,8 +1,12 @@
 {
   "name": "HOFCWeb",
   "description": "HOFC Web application",
-	"private": true,
+  "private": true,
   "dependencies": {
-    "angular-material":  "master"
+    "angular-material": "master",
+    "angular-material-data-table": "master"
+  },
+  "resolutions": {
+    "angular-material": "^1.0.0"
   }
 }
