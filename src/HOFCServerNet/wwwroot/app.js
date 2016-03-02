@@ -116,24 +116,6 @@
     }
 })();
 
-/*
-app.controller('ArticleController', ['$scope', '$routeParams', '$mdToast', 'articleService', function ($scope, $routeParams, $mdToast, articleService) {
-	$scope.article = articleService.article;
-	$scope.url = $routeParams.url;
-	$scope.isLoading = true;
-	
-	articleService.getArticle($routeParams.url, function() {
-		$scope.isLoading = false;
-	}, function() {
-		$scope.isLoading = false;
-		$mdToast.show(
-			$mdToast.simple()
-				.content('Erreur du téléchargement du contenu')
-				.hideDelay(3000)
-		);
-	});
-}]);
-*/
 (function () {
     'use strict';
 
@@ -144,7 +126,11 @@ app.controller('ArticleController', ['$scope', '$routeParams', '$mdToast', 'arti
     ArticleController.$inject = ['$scope', '$routeParams', '$mdToast', 'articleService'];
 
     function ArticleController($scope, $routeParams, $mdToast, articleService) {
-        $scope.article = articleService.query({ "url": $routeParams.url });
+        $scope.isLoading = true;
+        articleService.getActus($routeParams.url).then(function (results) {
+            $scope.isLoading = false;
+            $scope.article = results;
+        });
     }
 })();
 
@@ -243,10 +229,26 @@ angular
 
     angular
         .module('HOFCApp')
-        .factory('articleService', ['$resource', function ($resource) {
-            return $resource('/api/ParsePage', {url:null}, {
-                query: { cache: true, method: 'POST', isArray: true }
-            });
+        .factory('articleService', ['$resource', '$http', function ($resource, $http) {
+            var _actus = [];
+
+            var _getActus = function (url, callback, errCallback) {
+                var deferred = $q.defer();
+                $http.post("/api/ParsePage", '"'+url+'"')
+                     .then(function (results) {
+                         //Success
+                         angular.copy(results.data, _actus); //this is the preferred; instead of $scope.movies = result.data
+                         deferred.resolve(_actus);
+                     }, function (results) {
+                         //Error
+                     })
+                return deferred.promise;
+            }
+
+            return {
+                actus: _actus,
+                getActus: _getActus
+            };
         }]);
 
 })();

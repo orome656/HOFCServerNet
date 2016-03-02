@@ -17,14 +17,15 @@ namespace HOFCServerNet.API
         [HttpPost]
         public string Post(string url)
         {
-            if(url.Contains("en-image"))
+            if(!string.IsNullOrWhiteSpace(url) && url.Contains("en-image"))
             {
                 return JsonConvert.SerializeObject(DiaporamaParser.Parse(url));
             }
-            else
+            else if(!string.IsNullOrWhiteSpace(url))
             {
                 return JsonConvert.SerializeObject(ArticleParser.Parse(url));
             }
+            return null;
         }
     }
 }
