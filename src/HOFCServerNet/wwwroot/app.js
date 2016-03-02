@@ -307,6 +307,26 @@
 
     angular
         .module('HOFCApp')
+        .controller('JoueurController', JoueurController);
+
+    JoueurController.$inject = ['$scope', '$routeParams', 'JoueurServices'];
+
+    function JoueurController($scope, $routeParams, JoueurServices) {
+        $scope.idJournee = $routeParams.id;
+        $scope.isLoading = true;
+
+        JoueurServices.query({ id: $routeParams.id }, function(result) {
+            $scope.joueur = result;
+            $scope.isLoading = false;
+        });
+    }
+})();
+
+(function () {
+    'use strict';
+
+    angular
+        .module('HOFCApp')
         .controller('JourneeController', JourneeController);
 
     JourneeController.$inject = ['$scope', '$routeParams', '$filter', '$location', 'matchsServices', 'paramsService'];
@@ -452,8 +472,8 @@ angular
     angular
         .module('HOFCApp')
         .factory('JoueurServices', ['$resource', function ($resource) {
-            return $resource('/api/Joueur', { }, {
-                query: { cache: true, method: 'GET', isArray: true }
+            return $resource('/api/Joueur/:id', null, {
+                query: { cache: true, method: 'GET' }
             });
         }]);
 
