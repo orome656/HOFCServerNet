@@ -15,7 +15,7 @@ namespace HOFCServerNet.API
     {
         // GET api/values/{url}
         [HttpPost]
-        public string Post(string url)
+        public string Post([FromBody]string url)
         {
             if(!string.IsNullOrWhiteSpace(url) && url.Contains("en-image"))
             {

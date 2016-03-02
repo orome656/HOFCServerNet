@@ -9,7 +9,7 @@
 
     function ArticleController($scope, $routeParams, $mdToast, articleService) {
         $scope.isLoading = true;
-        articleService.getActus($routeParams.url).then(function (results) {
+        articleService.getArticle($routeParams.url).then(function (results) {
             $scope.isLoading = false;
             $scope.article = results;
         });

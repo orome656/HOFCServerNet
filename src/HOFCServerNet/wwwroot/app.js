@@ -127,7 +127,7 @@
 
     function ArticleController($scope, $routeParams, $mdToast, articleService) {
         $scope.isLoading = true;
-        articleService.getActus($routeParams.url).then(function (results) {
+        articleService.getArticle($routeParams.url).then(function (results) {
             $scope.isLoading = false;
             $scope.article = results;
         });
@@ -152,6 +152,24 @@
         activate();
 
         function activate() { }
+    }
+})();
+
+(function () {
+    'use strict';
+
+    angular
+        .module('HOFCApp')
+        .controller('DiaporamaController', DiaporamaController);
+
+    DiaporamaController.$inject = ['$scope', '$routeParams', '$mdToast', 'articleService'];
+
+    function DiaporamaController($scope, $routeParams, $mdToast, articleService) {
+        $scope.isLoading = true;
+        articleService.getArticle($routeParams.url).then(function (results) {
+            $scope.isLoading = false;
+            $scope.article = results;
+        });
     }
 })();
 
@@ -229,16 +247,16 @@ angular
 
     angular
         .module('HOFCApp')
-        .factory('articleService', ['$resource', '$http', function ($resource, $http) {
-            var _actus = [];
+        .factory('articleService', ['$q', '$http', function ($q, $http) {
+            var _article = [];
 
-            var _getActus = function (url, callback, errCallback) {
+            var _getArticle = function (url, callback, errCallback) {
                 var deferred = $q.defer();
                 $http.post("/api/ParsePage", '"'+url+'"')
                      .then(function (results) {
                          //Success
-                         angular.copy(results.data, _actus); //this is the preferred; instead of $scope.movies = result.data
-                         deferred.resolve(_actus);
+                         angular.copy(results.data, _article); //this is the preferred; instead of $scope.movies = result.data
+                         deferred.resolve(_article);
                      }, function (results) {
                          //Error
                      })
@@ -246,8 +264,8 @@ angular
             }
 
             return {
-                actus: _actus,
-                getActus: _getActus
+                article: _article,
+                getArticle: _getArticle
             };
         }]);
 
