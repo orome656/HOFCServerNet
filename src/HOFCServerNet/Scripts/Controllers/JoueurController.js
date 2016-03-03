@@ -11,7 +11,7 @@
         $scope.idJournee = $routeParams.id;
         $scope.isLoading = true;
 
-        JoueurServices.query({ id: $routeParams.id }, function(result) {
+        JoueurServices.get({ id: $routeParams.id }, function(result) {
             $scope.joueur = result;
             $scope.isLoading = false;
         });

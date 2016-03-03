@@ -4,9 +4,7 @@
     angular
         .module('HOFCApp')
         .factory('JoueurServices', ['$resource', function ($resource) {
-            return $resource('/api/Joueur/:id', null, {
-                query: { cache: true, method: 'GET' }
-            });
+            return $resource('/api/Joueur/:id');
         }]);
 
 })();

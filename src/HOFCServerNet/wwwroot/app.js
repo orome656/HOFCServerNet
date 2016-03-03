@@ -307,6 +307,23 @@
 
     angular
         .module('HOFCApp')
+        .controller('EffectifController', EffectifController);
+
+    EffectifController.$inject = ['$scope', '$routeParams', 'JoueurServices'];
+
+    function EffectifController($scope, $routeParams, JoueurServices) {
+        $scope.isLoading = true;
+        JoueurServices.query(function (result) {
+            $scope.joueurs = result;
+            $scope.isLoading = false;
+        });
+    }
+})();
+(function () {
+    'use strict';
+
+    angular
+        .module('HOFCApp')
         .controller('JoueurController', JoueurController);
 
     JoueurController.$inject = ['$scope', '$routeParams', 'JoueurServices'];
@@ -315,7 +332,7 @@
         $scope.idJournee = $routeParams.id;
         $scope.isLoading = true;
 
-        JoueurServices.query({ id: $routeParams.id }, function(result) {
+        JoueurServices.get({ id: $routeParams.id }, function(result) {
             $scope.joueur = result;
             $scope.isLoading = false;
         });
@@ -472,8 +489,18 @@ angular
     angular
         .module('HOFCApp')
         .factory('JoueurServices', ['$resource', function ($resource) {
-            return $resource('/api/Joueur/:id', null, {
-                query: { cache: true, method: 'GET' }
+            return $resource('/api/Joueur/:id');
+        }]);
+
+})();
+(function () {
+    'use strict';
+
+    angular
+        .module('HOFCApp')
+        .factory('matchsServices', ['$resource', function ($resource) {
+            return $resource('/api/Match', {}, {
+                query: { method: 'GET', params: {}, isArray: true }
             });
         }]);
 
@@ -486,18 +513,6 @@ angular
         .factory('paramsService', ['$resource', function ($resource) {
             return $resource('/api/Params', { }, {
                 query: { cache: true, method: 'GET' }
-            });
-        }]);
-
-})();
-(function () {
-    'use strict';
-
-    angular
-        .module('HOFCApp')
-        .factory('matchsServices', ['$resource', function ($resource) {
-            return $resource('/api/Match', {}, {
-                query: { method: 'GET', params: {}, isArray: true }
             });
         }]);
 
