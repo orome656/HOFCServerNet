@@ -56,7 +56,7 @@ namespace HOFCServerNet.Repositories
                     joueur.Categorie = value.Categorie;
                     joueur.Nom = value.Nom;
                     joueur.Prenom = value.Prenom;
-                    joueur.Postes = value.Postes;
+                    // A Modifier ! joueur.Postes = value.Postes;
 
                     bddContext.SaveChanges();
                 }

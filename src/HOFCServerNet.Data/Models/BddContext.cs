@@ -22,5 +22,21 @@ namespace HOFCServerNet.Models
             
             optionsBuilder.UseSqlServer(configuration["Data:DefaultConnection:ConnectionString"]);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<JoueurPoste>()
+                .HasKey(t => new { t.IdJoueur, t.IdPoste });
+
+            modelBuilder.Entity<JoueurPoste>()
+                .HasOne(jp => jp.Joueur)
+                .WithMany(j => j.JoueurPostes)
+                .HasForeignKey(jp => jp.IdJoueur);
+            
+            modelBuilder.Entity<JoueurPoste>()
+                .HasOne(jp => jp.Poste)
+                .WithMany(p => p.JoueurPostes)
+                .HasForeignKey(jp => jp.IdPoste);
+        }
     }
 }

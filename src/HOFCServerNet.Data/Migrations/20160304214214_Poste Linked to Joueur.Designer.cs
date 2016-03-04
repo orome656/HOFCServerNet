@@ -8,8 +8,8 @@ using HOFCServerNet.Models;
 namespace HOFCServerNet.Migrations
 {
     [DbContext(typeof(BddContext))]
-    [Migration("20160212212015_Add_Joueur")]
-    partial class Add_Joueur
+    [Migration("20160304214214_Poste Linked to Joueur")]
+    partial class PosteLinkedtoJoueur
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,6 +88,15 @@ namespace HOFCServerNet.Migrations
                     b.HasKey("Id");
                 });
 
+            modelBuilder.Entity("HOFCServerNet.Models.JoueurPoste", b =>
+                {
+                    b.Property<int>("IdJoueur");
+
+                    b.Property<int>("IdPoste");
+
+                    b.HasKey("IdJoueur", "IdPoste");
+                });
+
             modelBuilder.Entity("HOFCServerNet.Models.Match", b =>
                 {
                     b.Property<int>("Id")
@@ -129,11 +138,21 @@ namespace HOFCServerNet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("JoueurId");
-
-                    b.Property<string>("Nom");
+                    b.Property<string>("Nom")
+                        .HasAnnotation("MaxLength", 10);
 
                     b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("HOFCServerNet.Models.JoueurPoste", b =>
+                {
+                    b.HasOne("HOFCServerNet.Models.Joueur")
+                        .WithMany()
+                        .HasForeignKey("IdJoueur");
+
+                    b.HasOne("HOFCServerNet.Models.Poste")
+                        .WithMany()
+                        .HasForeignKey("IdPoste");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Models.Match", b =>
@@ -141,13 +160,6 @@ namespace HOFCServerNet.Migrations
                     b.HasOne("HOFCServerNet.Models.Competition")
                         .WithMany()
                         .HasForeignKey("CompetitionId");
-                });
-
-            modelBuilder.Entity("HOFCServerNet.Models.Poste", b =>
-                {
-                    b.HasOne("HOFCServerNet.Models.Joueur")
-                        .WithMany()
-                        .HasForeignKey("JoueurId");
                 });
         }
     }

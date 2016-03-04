@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.Metadata;
 
 namespace HOFCServerNet.Migrations
 {
-    public partial class Add_Joueur : Migration
+    public partial class PosteLinkedtoJoueur : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,25 +29,42 @@ namespace HOFCServerNet.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    JoueurId = table.Column<int>(nullable: true),
                     Nom = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Poste", x => x.Id);
+                });
+            migrationBuilder.CreateTable(
+                name: "JoueurPoste",
+                columns: table => new
+                {
+                    IdJoueur = table.Column<int>(nullable: false),
+                    IdPoste = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JoueurPoste", x => new { x.IdJoueur, x.IdPoste });
                     table.ForeignKey(
-                        name: "FK_Poste_Joueur_JoueurId",
-                        column: x => x.JoueurId,
+                        name: "FK_JoueurPoste_Joueur_IdJoueur",
+                        column: x => x.IdJoueur,
                         principalTable: "Joueur",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JoueurPoste_Poste_IdPoste",
+                        column: x => x.IdPoste,
+                        principalTable: "Poste",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable("Poste");
+            migrationBuilder.DropTable("JoueurPoste");
             migrationBuilder.DropTable("Joueur");
+            migrationBuilder.DropTable("Poste");
         }
     }
 }
