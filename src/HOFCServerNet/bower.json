@@ -3,10 +3,9 @@
   "description": "HOFC Web application",
   "private": true,
   "dependencies": {
-    "angular-material": "master",
-    "angular-material-data-table": "master"
-  },
-  "resolutions": {
-    "angular-material": "^1.0.0"
+    "angular-material": "1.0.6",
+    "angular-material-data-table": "master",
+    "angular-sanitize": "1.5.0",
+    "angular-i18n": "1.5.0"
   }
 }

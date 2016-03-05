@@ -14,5 +14,14 @@
         <md-option value="equipe3">Equipe 3</md-option>
     </md-select>
 </md-input-container>
+<h2>Postes</h2>
+<md-input-container class="md-block" flex-gt-sm>
+    <div>
+        <md-checkbox ng-repeat="poste in postes"
+                     ng-checked="exists(poste)"
+                     ng-click="toggle(poste)"
+                     value="{{poste}}">{{poste}}</md-checkbox>
+    </div>
+</md-input-container>
 
-<md-button class="md-raised">Enregistrer</md-button>
+<md-button ng-click="save()" class="md-raised">Enregistrer</md-button>

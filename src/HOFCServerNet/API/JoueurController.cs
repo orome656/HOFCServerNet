@@ -22,28 +22,28 @@ namespace HOFCServerNet.API
 
         // GET: api/values
         [HttpGet]
-        public List<Joueur> Get()
+        public List<APIModels.Joueur> Get()
         {
             return Repository.GetAll();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public Joueur Get(int id)
+        public APIModels.Joueur Get(int id)
         {
             return Repository.GetById(id);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]Joueur value)
+        public void Post([FromBody]APIModels.Joueur value)
         {
             Repository.Create(value);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]Joueur value)
+        public void Put(int id, [FromBody]APIModels.Joueur value)
         {
             Repository.Update(value);
         }

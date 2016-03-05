@@ -1,3 +1,41 @@
+/* Toolbar */
+.menu {
+  background-color: transparent;
+  border: none;
+  height: 38px;
+  margin: 16px;
+  width: 36px;
+}
+/* Sidenav area */
+
+md-list-item > button {
+  width:100%;
+  text-align:left !important;
+  height:70px;
+}
+
+md-icon.avatar {
+  margin-right: 20px;
+}
+
+  md-list .md-button.selected {
+    color: #03a9f4;
+  }
+
+
+button#main {
+  margin-bottom: 10px;
+}
+
+md-sidenav > md-toolbar {
+  height:64px;
+}
+
+md-list-item {
+  overflow: hidden;
+}
+
+
 md-toolbar:not(.md-menu-toolbar) {
   background-color: #08589D;
 }
@@ -6,14 +44,6 @@ md-toolbar:not(.md-menu-toolbar) {
   margin-right: 0;
 }
 
-.muppet-list .md-button {
-  color: inherit;
-  text-align: left;
-  width: 90%;
-}
-.muppet-list .selected {
-  color: #03a9f4;
-}
 .face {
   border-radius: 30px;
   border: 1px solid #ddd;

@@ -1,6 +1,6 @@
 <div class='md-padding' layout="row" layout-wrap layout-align="center">
   <md-card style="width:300px" ng-repeat="item in actus">
-    <img src="{{item.image}}" class="md-card-image" alt="image caption">
+    <img ng-src="{{item.image}}" class="md-card-image" alt="image caption">
     <md-card-content>
       <h2>{{item.titre}}</h2>
       <p>{{item.texte}}</p>

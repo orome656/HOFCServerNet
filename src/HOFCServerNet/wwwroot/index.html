@@ -1,53 +1,64 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="HOFCApp">
-  <head>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
-    <link rel="stylesheet" href="main.css">
-    <!-- style sheet -->
-    <link href="lib/md-data-table.min.css" rel="stylesheet" type="text/css"/>
-    <link rel="icon" sizes="192x192" href="images/hofc.png">
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <meta name="viewport" content="initial-scale=1" />
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-  </head>
-  <body layout="column" ng-controller="AppCtrl">
-    <md-toolbar layout="row">
-      <md-button ng-click="toggleSidenav('left')" class="md-icon-button menuBtn">
-        <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
-      </md-button>
-      <h1 layout-align-gt-sm="center" class="md-toolbar-tools">HOFC</h1>
+
+    <!-- style sheet -->
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link href="bower_components/angular-material-data-table/dist/md-data-table.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+
+    <link rel="icon" sizes="192x192" href="images/hofc.png">
+</head>
+<body ng-app="HOFCApp" layout="column" ng-controller="AppCtrl">
+    <md-toolbar layout="row" class="md-whiteframe-z2">
+        <md-button hide-gt-md ng-click="toggleSidenav('left')" class="menu" aria-label="Show Menu">
+            <md-icon md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
+        </md-button>
+        <h3>HOFC</h3>
     </md-toolbar>
-    <div layout="row" flex class="content-wrapper">
-        <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
-          <md-list class="muppet-list">
-            <md-item ng-repeat="it in menu">
-              <md-item-content>
-                <md-button md-ink-ripple ng-click="selectMenu(it)" ng-href="{{it.lien}}" ng-class="{'selected' : it === selected }">
-                  <!-- img ng-src="{{it.iconurl}}" class="face" alt="" -->
-                  {{it.titre}}
-                </md-button>
-              </md-item-content>
-            </md-item>
-          </md-list>
+
+    <div flex layout="row">
+
+        <md-sidenav class="md-whiteframe-z2"
+                    md-component-id="left"
+                    ng-click="toggleSidenav('left')"
+                    md-is-locked-open="$mdMedia('gt-md')">
+            <md-list>
+                <md-list-item ng-repeat="it in menu">
+                    <md-item-content>
+                        <md-button md-ink-ripple ng-click="selectMenu(it)" ng-href="{{it.lien}}" ng-class="{'selected' : it === selected }">
+                            <!--img ng-src="{{it.iconurl}}" class="face" alt="" -->
+                            {{it.titre}}
+                        </md-button>
+                    </md-item-content>
+                </md-list-item>
+            </md-list>
         </md-sidenav>
-        <md-content md-scroll-y style="width:100%">
-              <div ng-view class="fade"></div>
+        <md-content flex>
+            <div ng-view class="fade"></div>
         </md-content>
     </div>
-    <!-- Angular Material Dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-sanitize.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-resource.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/i18n/angular-locale_fr-fr.js"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.js"></script>
-    <script type="text/javascript" src="lib/md-data-table.min.js"></script>
+    <!-- Angular Material Dependencies -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-i18n/angular-locale_fr-fr.js"></script>
+
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-material-data-table/dist/md-data-table.js"></script>
     <script src="app.js"></script>
-    
-  </body>
+
+</body>
 </html>

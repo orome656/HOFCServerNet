@@ -45,11 +45,11 @@
               templateUrl: 'views/article.html',
               controller: 'ArticleController'
           })
-          .when('/joueur', {
+          .when('/joueurs', {
               templateUrl: 'views/effectif.html',
               controller: 'EffectifController'
           })
-          .when('/joueur/:id', {
+          .when('/joueur/:id?', {
               templateUrl: 'views/joueur.html',
               controller: 'JoueurController'
           })
@@ -80,7 +80,7 @@
             lien: '#/journees/equipe3/1'
         }, {
             titre: 'Effectif',
-            lien: '#/joueur'
+            lien: '#/joueurs'
         }]
         $scope.selected = null;
         $scope.selectMenu = selectMenu;

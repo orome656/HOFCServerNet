@@ -1,28 +1,28 @@
-﻿<md-data-table-container>
-    <table md-data-table class="md-primary">
-        <thead md-table-head md-order="query.order">
-            <tr>
-                <th name="Nom" order-by="Nom"></th>
-                <th name="Prenom" order-by="Prenom"></th>
-                <th name="Equipe"></th>
-                <th name="Actions"></th>
+﻿<md-table-container>
+    <table md-table class="md-primary">
+        <thead md-head md-order="query.order">
+            <tr md-row>
+                <th md-column name="Nom" order-by="Nom"></th>
+                <th md-column name="Prenom" order-by="Prenom"></th>
+                <th md-column name="Equipe"></th>
+                <th md-column name="Actions"></th>
             </tr>
         </thead>
-        <tbody>
-            <tr ng-repeat="joueur in joueurs">
+        <tbody md-body>
+            <tr md-row ng-repeat="joueur in joueurs">
                 <td md-cell>{{joueur.Nom}}</td>
                 <td md-cell>{{joueur.Prenom}}</td>
                 <td md-cell>{{joueur.Categorie}}</td>
                 <td md-cell>
-                    <md-button class="md-icon-button" aria-label="More">
+                    <md-button ng-click="go('joueur/' + joueur.Id)" class="md-icon-button" aria-label="More">
                         <md-icon md-font-library="material-icons">mode_edit</md-icon>
                     </md-button>
-                    <md-button class="md-icon-button" aria-label="More">
+                    <md-button ng-click="remove($index)" class="md-icon-button" aria-label="More">
                         <md-icon md-font-library="material-icons">delete</md-icon>
                     </md-button>
                 </td>
             </tr>
         </tbody>
     </table>
-</md-data-table-container>
-<md-button class="md-raised">Ajouter</md-button>
+</md-table-container>
+<md-button ng-click="go('joueur')" class="md-raised">Ajouter</md-button>

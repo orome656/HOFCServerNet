@@ -8,6 +8,8 @@
     ActusController.$inject = ['$scope', 'actusServices'];
 
     function ActusController($scope, actusServices) {
-        $scope.actus = actusServices.query();
+        actusServices.query(function (results) {
+            $scope.actus = results;
+        });
     }
 })();

@@ -54,25 +54,28 @@ namespace HOFCServerNet
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+
+            try
+            {
+                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+                    .CreateScope())
+                {
+                    serviceScope.ServiceProvider.GetService<BddContext>()
+                         .Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
+                         .Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<BddContext>().EnsureSeedData();
+                }
+            }
+            catch { }
+
             if (env.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
 
-            }
-            else
-            {
-                try
-                {
-                    using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-                        .CreateScope())
-                    {
-                        serviceScope.ServiceProvider.GetService<BddContext>()
-                             .Database.Migrate();
-                        serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
-                             .Database.Migrate();
-                    }
-                }
-                catch { }
-            }
             app.UseIISPlatformHandler();
 
             app.UseDefaultFiles();
