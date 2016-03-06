@@ -12,6 +12,7 @@ namespace HOFCServerParser.Database
         {
             using (var bddContext = new BddContext())
             {
+                List<string> addedCompetitions = new List<string>();
                 foreach (Match calendrier in matchs)
                 {
                     Match bddCalendrier = bddContext.Matchs.FirstOrDefault(item => calendrier.Equipe1.Equals(item.Equipe1)
@@ -30,6 +31,15 @@ namespace HOFCServerParser.Database
                     }
                     else
                     {
+                        if (!string.IsNullOrWhiteSpace(calendrier.CompetitionId) && !addedCompetitions.Contains(calendrier.CompetitionId) && !bddContext.Competitions.Any(c => c.Nom == calendrier.CompetitionId))
+                        {
+                            bddContext.Competitions.Add(new Competition()
+                            {
+                                Nom = calendrier.CompetitionId
+                            });
+                            addedCompetitions.Add(calendrier.CompetitionId);
+                        }
+
                         // New Element insert it and send notification
                         bddContext.Matchs.Add(calendrier);
                     }
