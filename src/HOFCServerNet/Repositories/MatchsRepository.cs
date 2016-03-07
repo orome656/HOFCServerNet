@@ -39,6 +39,17 @@ namespace HOFCServerNet.Repositories
             }
         }
 
+        internal Match GetMatchById(int id)
+        {
+            using (var dbContext = new BddContext())
+            {
+                return dbContext.Matchs
+                             .Where(item => item.Id == id)
+                             .Include(item => item.Competition)
+                             .First();
+            }
+        }
+
         public List<Match> GetMatchsForHOFCByCategory(string categorie)
         {
             using(var dbContext = new BddContext())

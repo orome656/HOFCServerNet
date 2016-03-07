@@ -30,10 +30,10 @@ namespace HOFCServerNet.API
         }
 
         // GET api/values/5
-        [HttpGet("{categorie}")]
-        public List<Match> Get(string categorie)
+        [HttpGet("{id}")]
+        public Match Get(int id)
         {
-            return Repository.GetMatchByCategory(categorie);
+            return Repository.GetMatchById(id);
         }
     }
 }
