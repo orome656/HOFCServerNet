@@ -1,0 +1,24 @@
+﻿<md-table-container>
+    <table md-table class="md-primary">
+        <thead md-head md-order="query.order">
+            <tr md-row>
+                <th md-column name="Nom Equipe 1" order-by="Equipe1"></th>
+                <th md-column name="Nom Equipe 2" order-by="Equipe2"></th>
+                <th md-column name="Date"></th>
+                <th md-column name="Actions"></th>
+            </tr>
+        </thead>
+        <tbody md-body>
+            <tr md-row ng-repeat="match in matchs">
+                <td md-cell>{{match.equipe1}}</td>
+                <td md-cell>{{match.equipe2}}</td>
+                <td md-cell>{{joueur.date}}</td>
+                <td md-cell>
+                    <md-button ng-click="go('composition/' + match.Id)" class="md-icon-button" aria-label="More">
+                        <md-icon md-font-library="material-icons">mode_edit</md-icon>
+                    </md-button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>

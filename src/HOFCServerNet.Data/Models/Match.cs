@@ -11,7 +11,6 @@ namespace HOFCServerNet.Models
 {
     public class Match: IModel
     {
-        [JsonIgnore]
         public int Id { get; set; }
 
         [JsonProperty(PropertyName = "equipe1")]
