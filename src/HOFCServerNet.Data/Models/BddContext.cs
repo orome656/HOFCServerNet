@@ -12,6 +12,7 @@ namespace HOFCServerNet.Models
         public DbSet<NotificationClient> NotificationClients { get; set; }
         public DbSet<Poste> Postes { get; set; }
         public DbSet<Joueur> Joueurs { get; set; }
+        public DbSet<Composition> Compositions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
