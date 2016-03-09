@@ -11,6 +11,6 @@ namespace HOFCServerNet.APIModels
     {
         public int IdMatch { get; set; }
         public int IdJoueur { get; set; }
-        public string NomPoste { get; set; }
+        public string PosteCompo { get; set; }
     }
 }

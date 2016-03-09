@@ -5,14 +5,16 @@
         .module('HOFCApp')
         .controller('CompositionController', CompositionController);
 
-    CompositionController.$inject = ['$scope', '$routeParams', '$filter', 'matchsServices', 'JoueurServices'];
+    CompositionController.$inject = ['$scope', '$routeParams', '$filter', 'matchsServices', 'JoueurServices', 'CompositionService'];
 
-    function CompositionController($scope, $routeParams, $filter, matchsServices, JoueurServices) {
+    function CompositionController($scope, $routeParams, $filter, matchsServices, JoueurServices, CompositionService) {
         $scope.title = 'CompositionController';
 
         $scope.save = function () {
             var compo = $filter('filter')($scope.joueurs, { PosteCompo: '' });
-            console.log(compo);
+            for (var i = 0; i < compo.length; i++) {
+                CompositionService.save({ PosteCompo: compo[i].PosteCompo, IdJoueur: compo[i].Id, IdMatch: $routeParams.id });
+            }
         }
 
         matchsServices.get({ id: $routeParams.id }, function (matchs) {

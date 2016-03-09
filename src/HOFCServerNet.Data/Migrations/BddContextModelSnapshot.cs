@@ -73,6 +73,20 @@ namespace HOFCServerNet.Migrations
                     b.HasKey("Nom");
                 });
 
+            modelBuilder.Entity("HOFCServerNet.Models.Composition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("JoueurId");
+
+                    b.Property<int?>("MatchId");
+
+                    b.Property<int?>("PosteId");
+
+                    b.HasKey("Id");
+                });
+
             modelBuilder.Entity("HOFCServerNet.Models.Joueur", b =>
                 {
                     b.Property<int>("Id")
@@ -141,6 +155,21 @@ namespace HOFCServerNet.Migrations
                         .HasAnnotation("MaxLength", 10);
 
                     b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("HOFCServerNet.Models.Composition", b =>
+                {
+                    b.HasOne("HOFCServerNet.Models.Joueur")
+                        .WithMany()
+                        .HasForeignKey("JoueurId");
+
+                    b.HasOne("HOFCServerNet.Models.Match")
+                        .WithMany()
+                        .HasForeignKey("MatchId");
+
+                    b.HasOne("HOFCServerNet.Models.Poste")
+                        .WithMany()
+                        .HasForeignKey("PosteId");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Models.JoueurPoste", b =>

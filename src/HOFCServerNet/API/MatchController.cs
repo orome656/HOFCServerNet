@@ -14,7 +14,6 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class MatchController : Controller
     {
-        [FromServices]
         public MatchsRepository Repository { get; set; }
         // GET: api/values
 

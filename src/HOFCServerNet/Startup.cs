@@ -44,6 +44,7 @@ namespace HOFCServerNet
             services.AddTransient<JoueursRepository>();
             services.AddTransient<ClassementRepository>();
             services.AddTransient<NotificationRepository>();
+            services.AddTransient<CompositionsRepository>();
 
             // Add framework services.
             services.AddMvc();
