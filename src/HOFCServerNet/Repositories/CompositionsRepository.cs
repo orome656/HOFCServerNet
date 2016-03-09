@@ -15,7 +15,12 @@ namespace HOFCServerNet.Repositories
         {
             using(var bddContext = new BddContext())
             {
-                List<Models.Composition> composBdd = bddContext.Compositions.Where(c => c.Match.Id == idMatch).ToList();
+                List<Models.Composition> composBdd = bddContext.Compositions
+                                                               .Where(c => c.Match.Id == idMatch)
+                                                               .Include(c => c.Match)
+                                                               .Include(c => c.Joueur)
+                                                               .Include(c => c.Poste)
+                                                               .ToList();
                 List<APIModels.Composition> compos = new List<APIModels.Composition>();
                 foreach(Models.Composition compoBdd in composBdd)
                 {

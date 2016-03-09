@@ -23,7 +23,18 @@
         
         JoueurServices.query(function (joueurs) {
             $scope.joueurs = joueurs;
+            CompositionService.query({ id: $routeParams.id }, function (results) {
+                for (var i = 0; i < results.length; i++) {
+                    for (var j = 0; j < $scope.joueurs.length; j++) {
+                        if ($scope.joueurs[j].Id == results[i].IdJoueur) {
+                            $scope.joueurs[j].PosteCompo = results[i].PosteCompo;
+                            break;
+                        }
+                    }
+                }
+            });
         });
+
 
     }
 })();

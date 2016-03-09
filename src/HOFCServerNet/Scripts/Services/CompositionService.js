@@ -9,7 +9,7 @@
 
     function CompositionService($resource) {
         return $resource('/api/Composition/:id', {}, {
-
+            query: {method: 'GET', isArray: true}
         });
     }
 })();

@@ -25,7 +25,7 @@ namespace HOFCServerNet.API
         /// <param name="id">id du match</param>
         /// <returns>Liste des postes pour chaque joueur</returns>
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{idMatch}")]
         public List<Composition> Get(int idMatch)
         {
             return Repository.GetForMatch(idMatch);
