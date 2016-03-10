@@ -33,7 +33,7 @@ namespace HOFCServerNet.API
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]Composition value)
+        public void Post([FromBody]List<Composition> value)
         {
             Repository.SaveComposition(value);
         }

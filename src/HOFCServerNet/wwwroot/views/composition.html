@@ -1,7 +1,7 @@
 ﻿<div>
     <!-- Affichage de la compo -->
     <ul>
-        <li ng-repeat="joueur in joueurs | filter:{PosteCompo:''}">
+        <li ng-repeat="joueur in joueurs | filter:{PosteCompo:''}" ng-if="joueur.PosteCompo">
             {{joueur.Nom}} {{joueur.Prenom}} {{joueur.PosteCompo}}
         </li>
     </ul>
@@ -26,6 +26,7 @@
                     <td md-cell>{{joueur.Categorie}}</td>
                     <td md-cell>
                         <md-select ng-model="joueur.PosteCompo">
+                            <md-option value="">-</md-option>
                             <md-option value="G">G</md-option>
                             <md-option value="DG">DG</md-option>
                             <md-option value="DD">DD</md-option>

@@ -39,53 +39,27 @@ namespace HOFCServerNet.Repositories
             return compo;
         }
 
-        public void SaveComposition(APIModels.Composition compo)
+        public void SaveComposition(List<APIModels.Composition> compos)
         {
             using(var bddContext = new BddContext())
             {
-                Models.Composition compoBdd = bddContext.Compositions
-                                                        .Where(c => c.Match.Id == compo.IdMatch && c.Joueur.Id == compo.IdJoueur)
-                                                        .Include(c => c.Poste)
-                                                        .Include(c => c.Joueur)
-                                                        .FirstOrDefault();
-                if(compoBdd != null && compoBdd.Poste.Nom != compo.PosteCompo)
+                if(bddContext.Compositions.Where(c => c.Match.Id == compos[0].IdMatch).Any())
                 {
+                    bddContext.Compositions.RemoveRange(bddContext.Compositions.Where(c => c.Match.Id == compos[0].IdMatch));
+                }
+                foreach (APIModels.Composition compo in compos)
+                {
+                    Models.Composition nouveauCompoPoste = new Models.Composition();
                     Poste poste = bddContext.Postes.Where(p => p.Nom == compo.PosteCompo).First();
-                    if(poste != null)
+                    if (poste != null)
                     {
-                        compoBdd.Poste = poste;
-                        bddContext.SaveChanges();
-                    }
-
-                } 
-                else
-                {
-                    Models.Composition compoBddPoste = bddContext.Compositions
-                                                        .Where(c => c.Match.Id == compo.IdMatch && c.Poste.Nom == compo.PosteCompo)
-                                                        .FirstOrDefault();
-                    if(compoBddPoste != null && compoBddPoste.Joueur.Id != compo.IdJoueur)
-                    {
-                        bddContext.Remove(compoBddPoste);
-                        Models.Composition nouveauCompoPoste = new Models.Composition();
                         nouveauCompoPoste.Joueur = new Models.Joueur() { Id = compo.IdJoueur };
-                        nouveauCompoPoste.Poste = compoBddPoste.Poste;
-                        nouveauCompoPoste.Match = compoBddPoste.Match;
+                        nouveauCompoPoste.Poste = poste;
+                        nouveauCompoPoste.Match = new Match() { Id = compo.IdMatch };
                         bddContext.Compositions.Add(nouveauCompoPoste);
-                        bddContext.SaveChanges();
-                    } else if (compoBdd == null && compoBddPoste == null) {
-                        Models.Composition nouveauCompoPoste = new Models.Composition();
-                        Poste poste = bddContext.Postes.Where(p => p.Nom == compo.PosteCompo).First();
-                        if (poste != null)
-                        {
-                            nouveauCompoPoste.Joueur = new Models.Joueur() { Id = compo.IdJoueur };
-                            nouveauCompoPoste.Poste = poste;
-                            nouveauCompoPoste.Match = new Match() { Id = compo.IdMatch};
-                            bddContext.Compositions.Add(nouveauCompoPoste);
-                            bddContext.SaveChanges();
-                        }
-                        
                     }
                 }
+                bddContext.SaveChanges();
             }
         }
     }

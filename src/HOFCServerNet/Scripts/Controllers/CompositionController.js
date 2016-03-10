@@ -12,9 +12,12 @@
 
         $scope.save = function () {
             var compo = $filter('filter')($scope.joueurs, { PosteCompo: '' });
+            var listCompo = [];
             for (var i = 0; i < compo.length; i++) {
-                CompositionService.save({ PosteCompo: compo[i].PosteCompo, IdJoueur: compo[i].Id, IdMatch: $routeParams.id });
+                if(compo[i].PosteCompo != null && compo[i].PosteCompo.length > 0)
+                    listCompo.push({ PosteCompo: compo[i].PosteCompo, IdJoueur: compo[i].Id, IdMatch: $routeParams.id });
             }
+            CompositionService.save(listCompo);
         }
 
         matchsServices.get({ id: $routeParams.id }, function (matchs) {
