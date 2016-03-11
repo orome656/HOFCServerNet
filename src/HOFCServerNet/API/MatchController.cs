@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
-using HOFCServerNet.Models;
+using HOFCServerNet.Data.Models;
 using Microsoft.Data.Entity;
 using HOFCServerNet.Repositories;
 

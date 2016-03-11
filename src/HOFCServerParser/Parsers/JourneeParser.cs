@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.Net.Http;
 using System.Globalization;
-using HOFCServerNet.Models;
+using HOFCServerNet.Data.Models;
 using HOFCServerParser.Constants;
 using HOFCServerParser.Database;
 

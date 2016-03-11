@@ -1,5 +1,5 @@
 ﻿using HOFCServerNet.APIModels;
-using HOFCServerNet.Models;
+using Models = HOFCServerNet.Data.Models;
 using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace HOFCServerNet.Repositories
 
         public List<APIModels.Composition> GetForMatch(int idMatch)
         {
-            using(var bddContext = new BddContext())
+            using(var bddContext = new Models.BddContext())
             {
                 List<Models.Composition> composBdd = bddContext.Compositions
                                                                .Where(c => c.Match.Id == idMatch)
@@ -41,7 +41,7 @@ namespace HOFCServerNet.Repositories
 
         public void SaveComposition(List<APIModels.Composition> compos)
         {
-            using(var bddContext = new BddContext())
+            using(var bddContext = new Models.BddContext())
             {
                 if(bddContext.Compositions.Where(c => c.Match.Id == compos[0].IdMatch).Any())
                 {
@@ -50,12 +50,12 @@ namespace HOFCServerNet.Repositories
                 foreach (APIModels.Composition compo in compos)
                 {
                     Models.Composition nouveauCompoPoste = new Models.Composition();
-                    Poste poste = bddContext.Postes.Where(p => p.Nom == compo.PosteCompo).First();
+                    Models.Poste poste = bddContext.Postes.Where(p => p.Nom == compo.PosteCompo).First();
                     if (poste != null)
                     {
                         nouveauCompoPoste.Joueur = new Models.Joueur() { Id = compo.IdJoueur };
                         nouveauCompoPoste.Poste = poste;
-                        nouveauCompoPoste.Match = new Match() { Id = compo.IdMatch };
+                        nouveauCompoPoste.Match = new Models.Match() { Id = compo.IdMatch };
                         bddContext.Compositions.Add(nouveauCompoPoste);
                     }
                 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace HOFCServerNet.Models
+namespace HOFCServerNet.Data.Models
 {
     public class ApplicationUser: IdentityUser
     {

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HOFCServerNet.Models
+namespace HOFCServerNet.Data.Models
 {
     public class Match: IModel
     {

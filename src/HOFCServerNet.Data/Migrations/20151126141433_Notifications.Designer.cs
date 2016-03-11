@@ -3,7 +3,7 @@ using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
-using HOFCServerNet.Models;
+using HOFCServerNet.Data.Models;
 
 namespace HOFCServerNet.Migrations
 {
@@ -17,7 +17,7 @@ namespace HOFCServerNet.Migrations
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("HOFCServerNet.Models.Actu", b =>
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Actu", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -37,7 +37,7 @@ namespace HOFCServerNet.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("HOFCServerNet.Models.Calendrier", b =>
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Calendrier", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -57,7 +57,7 @@ namespace HOFCServerNet.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("HOFCServerNet.Models.Classement", b =>
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Classement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -83,7 +83,7 @@ namespace HOFCServerNet.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("HOFCServerNet.Models.NotificationClient", b =>
+            modelBuilder.Entity("HOFCServerNet.Data.Models.NotificationClient", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();

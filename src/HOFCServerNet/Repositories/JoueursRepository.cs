@@ -1,4 +1,4 @@
-﻿using HOFCServerNet.Models;
+﻿using HOFCServerNet.Data.Models;
 using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
@@ -148,7 +148,7 @@ namespace HOFCServerNet.Repositories
 
         private Joueur convertToBddPlayer(APIModels.Joueur joueurAPI)
         {
-            Models.Joueur joueur = new Models.Joueur();
+            Data.Models.Joueur joueur = new Data.Models.Joueur();
             joueur.Nom = joueurAPI.Nom;
             joueur.Prenom = joueurAPI.Prenom;
             joueur.Categorie = joueurAPI.Categorie;

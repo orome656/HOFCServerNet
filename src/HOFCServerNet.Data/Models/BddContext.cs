@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 
-namespace HOFCServerNet.Models
+namespace HOFCServerNet.Data.Models
 {
     public class BddContext : DbContext
     {

@@ -1,5 +1,5 @@
 ﻿using HOFCServerNet.Data.Constants;
-using HOFCServerNet.Models;
+using HOFCServerNet.Data.Models;
 using HOFCServerParser.Parsers;
 using System;
 

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HOFCServerNet.Models;
+using HOFCServerNet.Data.Models;
 
 namespace HOFCServerNet.APIModels
 {
-    public class Joueur: Models.Joueur
+    public class Joueur: Data.Models.Joueur
     {
         public List<string> Postes { get; set; }
         

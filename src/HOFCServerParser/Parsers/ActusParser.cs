@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using HOFCServerNet.Models;
+using HOFCServerNet.Data.Models;
 using HtmlAgilityPack;
 using HOFCServerParser.Utils;
 using HOFCServerParser.Constants;

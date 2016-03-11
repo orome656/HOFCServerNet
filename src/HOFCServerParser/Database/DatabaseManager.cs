@@ -1,4 +1,4 @@
-﻿using HOFCServerNet.Models;
+﻿using HOFCServerNet.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HOFCServerNet.Models
+namespace HOFCServerNet.Data.Models
 {
     public class Poste
     {

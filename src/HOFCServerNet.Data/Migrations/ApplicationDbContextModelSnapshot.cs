@@ -3,7 +3,7 @@ using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
-using HOFCServerNet.Models;
+using HOFCServerNet.Data.Models;
 
 namespace HOFCServerNet.Data.Migrations
 {
@@ -16,7 +16,7 @@ namespace HOFCServerNet.Data.Migrations
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("HOFCServerNet.Models.ApplicationUser", b =>
+            modelBuilder.Entity("HOFCServerNet.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
 
@@ -155,14 +155,14 @@ namespace HOFCServerNet.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("HOFCServerNet.Models.ApplicationUser")
+                    b.HasOne("HOFCServerNet.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("HOFCServerNet.Models.ApplicationUser")
+                    b.HasOne("HOFCServerNet.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
@@ -173,7 +173,7 @@ namespace HOFCServerNet.Data.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId");
 
-                    b.HasOne("HOFCServerNet.Models.ApplicationUser")
+                    b.HasOne("HOFCServerNet.Data.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });

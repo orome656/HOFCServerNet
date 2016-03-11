@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using HOFCServerNet.Models;
+using HOFCServerNet.Data.Models;
 using System.Globalization;
 using HOFCServerParser.Utils;
 using HOFCServerParser.Constants;
@@ -119,7 +119,7 @@ namespace HOFCServerParser.Parsers
             return DateTime.ParseExact(completeDate, "yyyy/MM/dd HH'h'mm", infos);
         }
 
-        protected override void SaveToBDD(List<HOFCServerNet.Models.Match> list)
+        protected override void SaveToBDD(List<HOFCServerNet.Data.Models.Match> list)
         {
             /*AndroidGCMNotificationSender sender = new AndroidGCMNotificationSender();
             using(var bddContext = new BddContext()) {

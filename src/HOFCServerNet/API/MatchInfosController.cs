@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Parsers;
-using HOFCServerNet.Models;
+using HOFCServerNet.Data.Models;
 using System.Web.Http;
 using System.Net;
 

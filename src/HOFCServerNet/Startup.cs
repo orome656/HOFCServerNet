@@ -7,7 +7,7 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using HOFCServerNet.Models;
+using HOFCServerNet.Data.Models;
 using Microsoft.Data.Entity;
 using HOFCServerNet.Repositories;
 using Microsoft.AspNet.Identity.EntityFramework;
