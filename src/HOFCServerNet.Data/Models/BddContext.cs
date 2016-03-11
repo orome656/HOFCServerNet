@@ -13,6 +13,7 @@ namespace HOFCServerNet.Data.Models
         public DbSet<Poste> Postes { get; set; }
         public DbSet<Joueur> Joueurs { get; set; }
         public DbSet<Composition> Compositions { get; set; }
+        public DbSet<Vote> Votes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
