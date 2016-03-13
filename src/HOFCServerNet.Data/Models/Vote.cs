@@ -10,6 +10,7 @@ namespace HOFCServerNet.Data.Models
 {
     public class Vote
     {
+        public int Id { get; set; }
         public Match Match { get; set; }
         public Joueur Joueur { get; set; }
 

@@ -8,9 +8,10 @@ using HOFCServerNet.Data.Models;
 namespace HOFCServerNet.Migrations
 {
     [DbContext(typeof(BddContext))]
-    partial class BddContextModelSnapshot : ModelSnapshot
+    [Migration("20160311214615_Correctly add vote")]
+    partial class Correctlyaddvote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
