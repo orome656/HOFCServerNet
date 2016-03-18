@@ -16,6 +16,38 @@ namespace HOFCServerNet.Repositories
                 return dbContext.Matchs.Include(item => item.Competition).ToList();
             }
         }
+        
+        public Dictionary<string,List<Match>> GetAllGroupedByCategory()
+        {
+            Dictionary<string, List<Match>> mapMatchs = new Dictionary<string, List<Match>>();
+            mapMatchs.Add("equipe1", this.GetMatchByCategory("equipe1"));
+            mapMatchs.Add("equipe2", this.GetMatchByCategory("equipe2"));
+            mapMatchs.Add("equipe3", this.GetMatchByCategory("equipe3"));
+            return mapMatchs;
+            using (var dbContext = new BddContext())
+            {
+                /*var test = from match in dbContext.Matchs
+                           from comp in dbContext.Competitions
+                           where match.CompetitionId == comp.Nom
+                           select match;*/
+
+                /*var matchMap = (from match in dbContext.Matchs
+                                from competition in dbContext.Competitions
+                                where competition.Nom == match.CompetitionId
+                                group match by competition.Categorie
+                                into matchs
+                                select matchs).ToDictionary(group => group.Key, group => group.ToList());*/
+                //group match by match.Competition.Categorie;
+
+                //var sortie = test.ToDictionary(group => group.Key, group => group.ToList());
+
+                /*var grouping = dbContext.Matchs
+                                .Join(dbContext.Competitions, m => m.CompetitionId, c => c.Nom, (m,c) => new { Match = m, Competition = c})
+                                .Select(x => x.Match)
+                                .GroupBy(x => x.Competition.Categorie);
+                return grouping.ToDictionary(group => group.Key, group => group.ToList());*/
+            }
+        }
 
         public List<Match> GetMatchsForHOFC()
         {

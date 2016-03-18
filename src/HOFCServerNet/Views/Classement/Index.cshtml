@@ -1,1 +1,53 @@
-﻿
+﻿@using HOFCServerNet.Data.Models;
+@{
+    Dictionary<string, List<Classement>> classements = (Dictionary<string, List<Classement>>)ViewData["classement"];
+}
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+        <a href="#equipe1" class="mdl-tabs__tab is-active">Equipe 1</a>
+        <a href="#equipe2" class="mdl-tabs__tab">Equipe 2</a>
+        <a href="#equipe3" class="mdl-tabs__tab">Equipe 3</a>
+    </div>
+    @foreach (KeyValuePair<string, List<Classement>> classement in classements)
+    {
+        <div class="mdl-tabs__panel @(@classement.Key == "equipe1" ? "is-active" : "")" id="@classement.Key">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th class="mdl-data-table__cell--non-numeric full-width">Nom</th>
+                        <th>Points</th>
+                        <th>J</th>
+                        <th>V</th>
+                        <th>N</th>
+                        <th>P</th>
+                        <th>BP</th>
+                        <th>BC</th>
+                        <th>Diff</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                    }
+                    @foreach (Classement c in classement.Value)
+                    {
+                        <tr>
+                            <td data-lable="#">@i</td>
+                            <td data-lable="Nom" class="mdl-data-table__cell--non-numeric">@c.Equipe</td>
+                            <td data-lable="Points">@c.Points</td>
+                            <td data-lable="J">@c.Joue</td>
+                            <td data-lable="V">@c.Victoire</td>
+                            <td data-lable="N">@c.Nul</td>
+                            <td data-lable="P">@c.Defaite</td>
+                            <td data-lable="BP">@c.Bp</td>
+                            <td data-lable="BC">@c.Bc</td>
+                            <td data-lable="Diff">@c.Difference</td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

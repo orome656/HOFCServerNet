@@ -11,6 +11,7 @@ using HOFCServerNet.Data.Models;
 using Microsoft.Data.Entity;
 using HOFCServerNet.Repositories;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Diagnostics.Entity;
 
 namespace HOFCServerNet
 {
@@ -84,12 +85,12 @@ namespace HOFCServerNet
 
             app.UseIdentity();
             
-            app.UseMvc(/*routes =>
+            app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-            }*/);            
+            });
         }
 
         // Entry point for the application.

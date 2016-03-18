@@ -30,5 +30,17 @@ namespace HOFCServerNet.Repositories
                              .ToList();
             }
         }
+
+        public Dictionary<string, List<Classement>> GetAllOrderedByCategory()
+        {
+            using (var dbContext = new BddContext())
+            {
+                return dbContext.Classements
+                             .OrderByDescending(item => item.Points)
+                             .ThenByDescending(item => item.Difference)
+                             .GroupBy(item => item.Categorie)
+                             .ToDictionary(group => group.Key, group => group.ToList());
+            }
+        }
     }
 }
