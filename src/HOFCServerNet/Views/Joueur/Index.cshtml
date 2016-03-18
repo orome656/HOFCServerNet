@@ -1,0 +1,16 @@
+﻿@using HOFCServerNet.ViewModels.Joueur;
+@using HOFCServerNet.APIModels;
+@model JoueurViewModel
+
+<div class="mdl-list">
+    @foreach (Joueur joueur in Model.Joueurs)
+    {
+    <div class="mdl-list__item">
+        <span class="mdl-list__item-primary-content">
+            <i class="material-icons mdl-list__item-avatar">person</i>
+            <span>@joueur.Nom</span>
+        </span>
+        <a class="mdl-list__item-secondary-action" asp-controller="Joueur" asp-action="Details" asp-route-id="@joueur.Id"><i class="material-icons">mode edit</i></a>
+    </div>
+    }
+</div>

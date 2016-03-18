@@ -1,0 +1,15 @@
+﻿@using HOFCServerNet.ViewModels.Joueur;
+@model JoueurDetailsViewModel
+<form asp-controller="Joueur" asp-action="Details" method="post" class="form-horizontal" role="form">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input asp-for="Nom" class="mdl-textfield__input" type="text" />
+        <label class="mdl-textfield__label" asp-for="Nom">Nom</label>
+        <span asp-validation-for="Nom" class="text-danger"></span>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input asp-for="Prenom" class="mdl-textfield__input" type="text" />
+        <label class="mdl-textfield__label" asp-for="Prenom">Prenom</label>
+        <span asp-validation-for="Prenom" class="text-danger"></span>
+    </div>
+    <button type="submit">Enregistrer</button>
+</form>

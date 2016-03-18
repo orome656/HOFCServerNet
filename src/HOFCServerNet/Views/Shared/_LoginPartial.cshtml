@@ -1,0 +1,11 @@
+﻿@using System.Security.Claims
+
+@if (User.IsSignedIn())
+{
+    <a asp-controller="Profile" asp-action="Index" class="mdl-navigation__link">@User.GetUserName()</a>
+    <a asp-controller="Account" asp-action="LogOff" class="mdl-navigation__link">Se déconnecter</a>
+}
+else
+{
+    <a class="mdl-navigation__link" href="/Account/Login">Se connecter</a>
+}

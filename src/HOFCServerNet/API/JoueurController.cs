@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Repositories;
 using HOFCServerNet.Data.Models;
+using Microsoft.AspNet.Authorization;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,6 +37,7 @@ namespace HOFCServerNet.API
 
         // POST api/values
         [HttpPost]
+        [Authorize(Roles = "Contributor")]
         public void Post([FromBody]APIModels.Joueur value)
         {
             Repository.Create(value);
@@ -43,6 +45,7 @@ namespace HOFCServerNet.API
 
         // PUT api/values/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "Contributor")]
         public void Put(int id, [FromBody]APIModels.Joueur value)
         {
             Repository.Update(value);
@@ -50,6 +53,7 @@ namespace HOFCServerNet.API
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Contributor")]
         public void Delete(int id)
         {
             Repository.Delete(id);
