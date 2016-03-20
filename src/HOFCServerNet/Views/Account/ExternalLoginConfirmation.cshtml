@@ -4,25 +4,18 @@
 <h3>Associate your @ViewData["LoginProvider"] account.</h3>
 
 <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-    <h4>Association Form</h4>
+    <h4>Connexion</h4>
     <hr />
     <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
 
     <p class="text-info">
-        You've successfully authenticated with <strong>@ViewData["LoginProvider"]</strong>.
-        Please enter a user name for this site below and click the Register button to finish
-        logging in.
+        Succés de la connexion avec <strong>@ViewData["LoginProvider"]</strong>.
+        Merci d'entrer votre nom d'utilisateur pour finir l'enregistrement
     </p>
-    <div class="form-group">
-        <label asp-for="Email" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+        <input asp-for="Email" class="mdl-textfield__input" type="text" />
+        <label class="mdl-textfield__label" asp-for="Email">Email</label>
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-default">Register</button>
-        </div>
-    </div>
+    <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect">Sauvegarder</button>
 </form>
