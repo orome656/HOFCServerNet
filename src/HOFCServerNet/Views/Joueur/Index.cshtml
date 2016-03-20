@@ -2,6 +2,22 @@
 @using HOFCServerNet.APIModels;
 @model JoueurViewModel
 
+@if(Model.Message != null)
+{
+    <div id="message-toast" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+    <script>
+        window.onload = function () {
+            setTimeout(function () {
+                var data = { message: '@Model.Message' };
+                document.querySelector('#message-toast').MaterialSnackbar.showSnackbar(data);
+            }, 2000)
+            
+        };
+    </script>
+}
 <div class="mdl-list">
     @foreach (Joueur joueur in Model.Joueurs)
     {

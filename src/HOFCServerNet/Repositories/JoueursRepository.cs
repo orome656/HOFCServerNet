@@ -112,32 +112,39 @@ namespace HOFCServerNet.Repositories
                         {
                             listPosteBdd = joueurBdd.JoueurPostes.Select(jp => jp.Poste).Select(p => p.Nom).ToList();
                         }
-
-                        foreach (string nomPoste in joueur.Postes)
+                        if (joueur.Postes != null)
                         {
-                            Poste poste = bddContext.Postes.First(p => p.Nom.Equals(nomPoste));
-                            if (poste != null) {
-                                listPosteRecus.Add(poste.Nom);
-                                if (joueurBdd.JoueurPostes == null)
-                                    joueurBdd.JoueurPostes = new List<JoueurPoste>();
-
-                                if (!listPosteBdd.Contains(poste.Nom))
+                            foreach (string nomPoste in joueur.Postes)
+                            {
+                                Poste poste = bddContext.Postes.First(p => p.Nom.Equals(nomPoste));
+                                if (poste != null)
                                 {
-                                    joueurBdd.JoueurPostes.Add(new JoueurPoste()
+                                    listPosteRecus.Add(poste.Nom);
+                                    if (joueurBdd.JoueurPostes == null)
+                                        joueurBdd.JoueurPostes = new List<JoueurPoste>();
+
+                                    if (!listPosteBdd.Contains(poste.Nom))
                                     {
-                                        IdPoste = poste.Id,
-                                        Poste = poste
-                                    });
+                                        joueurBdd.JoueurPostes.Add(new JoueurPoste()
+                                        {
+                                            IdPoste = poste.Id,
+                                            Poste = poste
+                                        });
+                                    }
+                                }
+                            }
+                            List<JoueurPoste> listJoueurPosteBdd = joueurBdd.JoueurPostes.ToList();
+                            foreach (JoueurPoste joueurPoste in listJoueurPosteBdd)
+                            {
+                                if (!listPosteRecus.Contains(joueurPoste.Poste.Nom))
+                                {
+                                    joueurBdd.JoueurPostes.Remove(joueurPoste);
                                 }
                             }
                         }
-                        List<JoueurPoste> listJoueurPosteBdd = joueurBdd.JoueurPostes.ToList();
-                        foreach (JoueurPoste joueurPoste in listJoueurPosteBdd)
+                        else
                         {
-                            if(!listPosteRecus.Contains(joueurPoste.Poste.Nom))
-                            {
-                                joueurBdd.JoueurPostes.Remove(joueurPoste);
-                            }
+                            // On fait autre chose ?
                         }
                     
                         bddContext.SaveChanges();

@@ -29,13 +29,13 @@
         <div class="mdl-layout__drawer">
             <span class="mdl-layout-title">HOFC</span>
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="/Actu">Actualités</a>
-                <a class="mdl-navigation__link" href="/Classement">Classement</a>
-                <a class="mdl-navigation__link" href="/Calendrier">Calendrier</a>
-                <a class="mdl-navigation__link" href="/Journee/equipe1">Journee Equipe 1</a>
-                <a class="mdl-navigation__link" href="/Journee/equipe2">Journee Equipe 2</a>
-                <a class="mdl-navigation__link" href="/Journee/equipe3">Journee Equipe 3</a>
-                <a class="mdl-navigation__link" href="/Joueurs">Effectif</a>
+                <a class="mdl-navigation__link" asp-controller="Actu" asp-action="Index">Actualités</a>
+                <a class="mdl-navigation__link" asp-controller="Classement" asp-action="Index">Classement</a>
+                <a class="mdl-navigation__link" asp-controller="Calendrier" asp-action="Index">Calendrier</a>
+                <a class="mdl-navigation__link" asp-controller="Journee" asp-action="Index" asp-route-id="equipe1">Journee Equipe 1</a>
+                <a class="mdl-navigation__link" asp-controller="Journee" asp-action="Index" asp-route-id="equipe2">Journee Equipe 2</a>
+                <a class="mdl-navigation__link" asp-controller="Journee" asp-action="Index" asp-route-id="equipe3">Journee Equipe 3</a>
+                <a class="mdl-navigation__link" asp-controller="Joueur" asp-action="Index">Effectif</a>
             </nav>
         </div>
         <main class="mdl-layout__content">

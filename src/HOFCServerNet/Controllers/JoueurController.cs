@@ -20,10 +20,10 @@ namespace HOFCServerNet.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public IActionResult Index(string Message = null)
         {
             JoueurViewModel viewModel = new JoueurViewModel();
-
+            viewModel.Message = Message;
             viewModel.Joueurs = Repository.GetAll();
 
             return View(viewModel);
@@ -48,7 +48,16 @@ namespace HOFCServerNet.Controllers
         [HttpPost]
         public IActionResult Details(JoueurDetailsViewModel JoueurDetails)
         {
-            return View();
+            APIModels.Joueur joueur = new APIModels.Joueur();
+            if (JoueurDetails.Id != null)
+            {
+                joueur.Id = JoueurDetails.Id.Value;
+            }
+            joueur.Nom = JoueurDetails.Nom;
+            joueur.Prenom = JoueurDetails.Prenom;
+
+            Repository.Update(joueur);
+            return RedirectToAction(nameof(JoueurController.Index), "Joueur", new { Message = "Joueur modifié"});
         }
     }
 }
