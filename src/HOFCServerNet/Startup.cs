@@ -79,7 +79,10 @@ namespace HOFCServerNet
                 app.UseDatabaseErrorPage();
             }
 
-            app.UseIISPlatformHandler();
+            app.UseIISPlatformHandler(options =>
+            {
+                options.AuthenticationDescriptions.Clear();
+            });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

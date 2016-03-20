@@ -20,3 +20,10 @@
 .full-width {
     width: 100%;
 }
+
+.googleButton {
+    height: 46px;
+    width: 191px;
+    background-image: url('images/btn_google_signin_light_normal_web.png');
+    background-repeat: no-repeat;
+}
