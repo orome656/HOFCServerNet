@@ -12,6 +12,7 @@ using Microsoft.Data.Entity;
 using HOFCServerNet.Repositories;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Diagnostics.Entity;
+using Microsoft.AspNet.Authentication.Google;
 
 namespace HOFCServerNet
 {
@@ -84,7 +85,13 @@ namespace HOFCServerNet
             app.UseStaticFiles();
 
             app.UseIdentity();
-            
+
+            app.UseGoogleAuthentication(new GoogleOptions()
+            {
+                ClientId = Configuration["GOOGLE_CLIENT_ID"],
+                ClientSecret = Configuration["GOOGLE_CLIENT_SECRET"]
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
