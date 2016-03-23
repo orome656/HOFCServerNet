@@ -69,7 +69,7 @@ namespace HOFCServerNet.Controllers
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    //return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 }
                 if (result.IsLockedOut)
                 {
@@ -87,6 +87,7 @@ namespace HOFCServerNet.Controllers
             return View(model);
         }
 
+        /*
         //
         // GET: /Account/Register
         [HttpGet]
@@ -125,7 +126,7 @@ namespace HOFCServerNet.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
+        */
         //
         // POST: /Account/LogOff
         [HttpGet]
@@ -170,7 +171,7 @@ namespace HOFCServerNet.Controllers
             }
             if (result.RequiresTwoFactor)
             {
-                return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl });
+                //return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl });
             }
             if (result.IsLockedOut)
             {
@@ -224,7 +225,7 @@ namespace HOFCServerNet.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View(model);
         }
-
+        /*
         // GET: /Account/ConfirmEmail
         [HttpGet]
         [AllowAnonymous]
@@ -434,7 +435,7 @@ namespace HOFCServerNet.Controllers
                 return View(model);
             }
         }
-
+        */
         #region Helpers
 
         private void AddErrors(IdentityResult result)
