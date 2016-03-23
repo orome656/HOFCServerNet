@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
-using HOFCServerNet.Repositories;
+using HOFCServerNet.Services;
 using HOFCServerNet.Data.Models;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,16 +12,16 @@ namespace HOFCServerNet.Controllers
 {
     public class ActuController : Controller
     {
-        private ActusRepository Repository { get; set; }
-        public ActuController(ActusRepository _actusRepository)
+        private ActuService Service { get; set; }
+        public ActuController(ActuService _service)
         {
-            Repository = _actusRepository;
+            Service = _service;
         }
 
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<Actu> actus = Repository.GetAll();
+            List<Actu> actus = Service.GetAll();
             ViewData["actus"] = actus;
             return View(actus);
         }

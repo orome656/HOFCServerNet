@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Data.Models;
 using Microsoft.Data.Entity;
-using HOFCServerNet.Repositories;
+using HOFCServerNet.Services;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,11 +14,11 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class AgendaController : Controller
     {
-        public MatchsRepository Repository { get; set; }
+        public MatchService Service { get; set; }
         
-        public AgendaController(MatchsRepository _matchsRepository)
+        public AgendaController(MatchService _service)
         {
-            Repository = _matchsRepository;
+            Service = _service;
         }
 
         // GET api/values/2015-08-17
@@ -27,7 +27,7 @@ namespace HOFCServerNet.API
         {
             var date = DateTime.Parse(semaine);
             var dateEnd = date.AddDays(7);
-            return Repository.GetMatchBetweenDates(date, dateEnd);
+            return Service.GetMatchBetweenDates(date, dateEnd);
         }
     }
 }

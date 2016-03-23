@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
-using HOFCServerNet.APIModels;
-using HOFCServerNet.Repositories;
+using HOFCServerNet.ViewModels;
+using HOFCServerNet.Services;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,11 +13,11 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class CompositionController : Controller
     {
-        public CompositionsRepository Repository { get; set; }
+        public CompositionService Service { get; set; }
 
-        public CompositionController(CompositionsRepository _compoRepository)
+        public CompositionController(CompositionService _service)
         {
-            Repository = _compoRepository;
+            Service = _service;
         }
         /// <summary>
         ///     Permet de récupérer la composition d'un match
@@ -26,16 +26,16 @@ namespace HOFCServerNet.API
         /// <returns>Liste des postes pour chaque joueur</returns>
         // GET api/values/5
         [HttpGet("{idMatch}")]
-        public List<Composition> Get(int idMatch)
+        public List<CompositionViewModel> Get(int idMatch)
         {
-            return Repository.GetForMatch(idMatch);
+            return Service.GetForMatch(idMatch);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]List<Composition> value)
+        public void Post([FromBody]List<CompositionViewModel> value)
         {
-            Repository.SaveComposition(value);
+            Service.SaveComposition(value);
         }
         
         // DELETE api/values/5

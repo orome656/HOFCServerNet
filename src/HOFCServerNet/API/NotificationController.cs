@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Data.Models;
-using HOFCServerNet.Repositories;
+using HOFCServerNet.Services;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,11 +14,11 @@ namespace HOFCServerNet.API
     public class NotificationController : Controller
     {
         [FromServices]
-        public NotificationRepository Repository { get; set; }
+        public NotificationService Service { get; set; }
 
-        public NotificationController(NotificationRepository _notificationRepository)
+        public NotificationController(NotificationService _service)
         {
-            Repository = _notificationRepository;
+            Service = _service;
         }
 
         // POST api/values
@@ -27,7 +27,7 @@ namespace HOFCServerNet.API
         {
             if(uuid != null && notification_id != null)
             {
-                Repository.AddNewClient(uuid, notification_id);
+                Service.AddNewClient(uuid, notification_id);
             } else
             {
                 // TODO add logs here

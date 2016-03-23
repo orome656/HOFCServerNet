@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Data.Models;
 using Microsoft.Data.Entity;
-using HOFCServerNet.Repositories;
+using HOFCServerNet.Services;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,25 +14,25 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class CalendrierController : Controller
     {
-        public MatchsRepository Repository { get; set; }
+        public MatchService Service { get; set; }
 
-        public CalendrierController(MatchsRepository _matchsRepository)
+        public CalendrierController(MatchService _service)
         {
-            Repository = _matchsRepository;
+            Service = _service;
         }
 
         // GET: api/Calendrier
         [HttpGet]
         public IEnumerable<Match> Get()
         {
-            return Repository.GetMatchsForHOFC();
+            return Service.GetMatchsForHOFC();
         }
 
         // GET: api/Calendrier/equipe1
         [HttpGet("{categorie}")]
         public IEnumerable<Match> Get(string categorie)
         {
-            return Repository.GetMatchsForHOFCByCategory(categorie);
+            return Service.GetMatchsForHOFCByCategory(categorie);
         }
     }
 }

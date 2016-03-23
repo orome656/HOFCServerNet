@@ -10,5 +10,7 @@ namespace HOFCServerNet.ViewModels.Joueur
         public int? Id { get; set; }
         public string Nom { get; set; }
         public string Prenom { get; set; }
+        public string Categorie { get; set; }
+        public List<string> Postes { get; set; }
     }
 }

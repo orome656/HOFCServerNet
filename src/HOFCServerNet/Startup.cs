@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using HOFCServerNet.Data.Models;
 using Microsoft.Data.Entity;
-using HOFCServerNet.Repositories;
+using HOFCServerNet.Services;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Authentication.Google;
@@ -41,12 +41,12 @@ namespace HOFCServerNet
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
 
-            services.AddTransient<MatchsRepository>();
-            services.AddTransient<ActusRepository>();
-            services.AddTransient<JoueursRepository>();
-            services.AddTransient<ClassementRepository>();
-            services.AddTransient<NotificationRepository>();
-            services.AddTransient<CompositionsRepository>();
+            services.AddTransient<MatchService>();
+            services.AddTransient<ActuService>();
+            services.AddTransient<JoueurService>();
+            services.AddTransient<ClassementService>();
+            services.AddTransient<NotificationService>();
+            services.AddTransient<CompositionService>();
 
             // Add framework services.
             services.AddMvc();

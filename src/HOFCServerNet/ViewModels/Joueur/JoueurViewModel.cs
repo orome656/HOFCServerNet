@@ -9,6 +9,6 @@ namespace HOFCServerNet.ViewModels.Joueur
     {
         public string Message { get; set; }
 
-        public List<APIModels.Joueur> Joueurs { get; set; }
+        public List<JoueurDetailsViewModel> Joueurs { get; set; }
     }
 }

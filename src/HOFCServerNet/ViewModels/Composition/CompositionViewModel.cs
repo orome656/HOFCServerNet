@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HOFCServerNet.APIModels
+namespace HOFCServerNet.ViewModels
 {
-    public class Composition
+    public class CompositionViewModel
     {
         public int IdMatch { get; set; }
         public int IdJoueur { get; set; }
