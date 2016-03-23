@@ -27,3 +27,11 @@
     background-image: url('images/btn_google_signin_light_normal_web.png');
     background-repeat: no-repeat;
 }
+
+
+.facebookButton {
+    height: 62px;
+    width: 288px;
+    background-image: url('images/btn_facebook.png');
+    background-repeat: no-repeat;
+}

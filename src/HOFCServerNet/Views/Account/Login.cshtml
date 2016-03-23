@@ -55,7 +55,7 @@
                             <p>
                                 @foreach (var provider in loginProviders)
                                 {
-                                    <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect @(provider.AuthenticationScheme.Equals("Google") ? "googleButton": "")" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account"></button>
+                                    <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect @(provider.AuthenticationScheme.ToLower() + "Button")" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account"></button>
                                 }
                             </p>
                         </div>

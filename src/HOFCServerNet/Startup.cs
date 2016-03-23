@@ -13,6 +13,7 @@ using HOFCServerNet.Services;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Authentication.Google;
+using Microsoft.AspNet.Authentication.Facebook;
 
 namespace HOFCServerNet
 {
@@ -93,6 +94,12 @@ namespace HOFCServerNet
             {
                 ClientId = Configuration["GOOGLE_CLIENT_ID"],
                 ClientSecret = Configuration["GOOGLE_CLIENT_SECRET"]
+            });
+
+            app.UseFacebookAuthentication(new FacebookOptions()
+            {
+                AppId = Configuration["FACEBOOK_APP_ID"],
+                AppSecret = Configuration["FACEBOOK_SECRET_ID"]
             });
 
             app.UseMvc(routes =>
