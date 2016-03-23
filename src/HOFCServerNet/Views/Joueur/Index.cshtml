@@ -1,5 +1,5 @@
 ﻿@using HOFCServerNet.ViewModels.Joueur;
-@using HOFCServerNet.APIModels;
+
 @model JoueurViewModel
 
 @if(Model.Message != null)
@@ -19,7 +19,7 @@
     </script>
 }
 <div class="mdl-list">
-    @foreach (Joueur joueur in Model.Joueurs)
+    @foreach (JoueurDetailsViewModel joueur in Model.Joueurs)
     {
     <div class="mdl-list__item">
         <span class="mdl-list__item-primary-content">
