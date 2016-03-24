@@ -11,10 +11,11 @@
   },
 
   "dependencies": {
-    "HtmlAgilityPack.NetCore":  "1.4.9.1",
+    "HtmlAgilityPack.NetCore": "1.4.9.1",
     "HOFCServerNet.Data": "",
     "HOFCServerNet.Utils": "",
-    "System.Net.Http":  "4.0.1-beta-23516"
+    "System.Net.Http": "4.0.1-beta-23516",
+    "runtime.win7.System.Runtime.Extensions": "4.0.11-beta-23516"
   },
 
   "commands": {

@@ -63,7 +63,13 @@ namespace HOFCServerParser.Parsers
             else
             {
                 agenda = new Match();
-                agenda.CompetitionId = HtmlEntity.DeEntitize(line.ParentNode.PreviousSibling.InnerText);
+                var competitionNode = line.ParentNode.PreviousSibling;
+                while(String.IsNullOrEmpty(competitionNode.InnerText) || competitionNode.InnerText.Contains("En attente"))
+                {
+                    competitionNode = competitionNode.PreviousSibling;
+                }
+                string competitionId = competitionNode.InnerText;
+                agenda.CompetitionId = HtmlEntity.DeEntitize(competitionId);
                 CultureInfo infos = new CultureInfo("fr-CA");
                 var date = childs.ElementAt(0).InnerText.Trim().ToLower();
                 var datetime = parseDate(date);
@@ -76,19 +82,18 @@ namespace HOFCServerParser.Parsers
                                        .Where(n => n.GetAttributeValue("class", "").Equals("team t2"))
                                        .First()
                                        .FirstChild
-                                       .FirstChild
                                        .InnerText
                                        .Trim()
                                        .ToUpper();
-
+                equipe1 = HtmlEntity.DeEntitize(equipe1);
                 var equipe2 = matchLine.Descendants("td")
                                        .Where(n => n.GetAttributeValue("class", "").Equals("team ar tv2"))
                                        .First()
                                        .FirstChild
-                                       .FirstChild
                                        .InnerText
                                        .Trim()
                                        .ToUpper();
+                equipe2 = HtmlEntity.DeEntitize(equipe2);
 
                 var score = matchLine.Descendants("td")
                                        .Where(n => n.GetAttributeValue("class", "").Equals("score s2"))

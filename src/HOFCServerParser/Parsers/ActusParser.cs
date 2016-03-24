@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using HOFCServerParser.Utils;
 using HOFCServerParser.Constants;
 using System.Globalization;
+using System.Net;
 
 namespace HOFCServerParser.Parsers
 {
@@ -38,11 +39,10 @@ namespace HOFCServerParser.Parsers
             var contentNode = line.Descendants("div").Where(n => n.GetAttributeValue("class", "").Equals("entry")).First();
             actu.Texte = HtmlEntity.DeEntitize(contentNode.Descendants("p").First().InnerText.Trim());
             actu.ImageURL = contentNode.Descendants("img").First().GetAttributeValue("src", null);
-    
+            actu.ImageURL = actu.ImageURL.Replace("amp;", "");
             var dateString = line.Descendants("div").Where(n => n.GetAttributeValue("class", "").Equals("postmeta")).First().InnerText.Trim();
             actu.Date = ParseDate(dateString);
             
-            Console.WriteLine(actu.ToString());
             return actu;
         }
 
