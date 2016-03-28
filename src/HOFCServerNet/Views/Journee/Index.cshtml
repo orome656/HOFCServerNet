@@ -1,0 +1,21 @@
+﻿@using HOFCServerNet.Data.Models;
+@model HOFCServerNet.ViewModels.Journee.JourneeViewModel
+
+@{
+    List<Match> matchs = Model.Matchs;
+}<div class="dropdown text-center">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Changer de journée
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        @for (int i = 1; i <= Model.NbMatchs; i++)
+        {
+            <li><a asp-controller="Journee" asp-action="Index" asp-route-equipe="@Model.Categorie" asp-route-idJournee="@i" />@i</li>
+        }
+    </ul>
+</div>
+@foreach (Match match in matchs)
+{
+    @await Html.PartialAsync("~/Views/Match/Match", match);
+}

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Services;
 using HOFCServerNet.Data.Models;
+using HOFCServerNet.ViewModels.Calendrier;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,11 +21,11 @@ namespace HOFCServerNet.Controllers
         }
 
         // GET: /<controller>
-        public IActionResult Index()
+        public IActionResult Index(string id)
         {
-            Dictionary<string,List<Match>> matchs = Service.GetAllGroupedByCategory();
-            ViewData["matchs"] = matchs;
-            return View();
+            CalendrierViewModel viewModel = new CalendrierViewModel();
+            viewModel.Calendriers = Service.GetMatchsForHOFCByCategory(id);
+            return View(viewModel);
         }
     }
 }

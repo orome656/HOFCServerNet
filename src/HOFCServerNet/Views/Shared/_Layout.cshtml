@@ -1,46 +1,73 @@
 ﻿<html lang="fr">
 <head>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.1.1/material.indigo-pink.min.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
     <link rel="stylesheet" href="/app.css">
-    <script defer src="https://code.getmdl.io/1.1.1/material.min.js"></script>
-    <!-- style sheet -->
+
     <link rel="icon" sizes="192x192" href="images/hofc.png">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="viewport" content="initial-scale=1" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
-    <!-- Always shows a header, even in smaller screens. -->
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <header class="mdl-layout__header">
-            <div class="mdl-layout__header-row">
-                <!-- Title -->
-                <span class="mdl-layout-title">HOFC</span>
-                <!-- Add spacer, to align navigation to the right -->
-                <div class="mdl-layout-spacer"></div>
-                <!-- Navigation -->
-                <nav class="mdl-navigation">
-                    @await Html.PartialAsync("_LoginPartial")
-                </nav>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Ouvrir le menu</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" asp-controller="Actu" asp-action="Index">HOFC</a>
             </div>
-        </header>
-        <div class="mdl-layout__drawer">
-            <span class="mdl-layout-title">HOFC</span>
-            <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" asp-controller="Actu" asp-action="Index">Actualités</a>
-                <a class="mdl-navigation__link" asp-controller="Classement" asp-action="Index">Classement</a>
-                <a class="mdl-navigation__link" asp-controller="Calendrier" asp-action="Index">Calendrier</a>
-                <a class="mdl-navigation__link" asp-controller="Journee" asp-action="Index" asp-route-id="equipe1">Journee Equipe 1</a>
-                <a class="mdl-navigation__link" asp-controller="Journee" asp-action="Index" asp-route-id="equipe2">Journee Equipe 2</a>
-                <a class="mdl-navigation__link" asp-controller="Journee" asp-action="Index" asp-route-id="equipe3">Journee Equipe 3</a>
-                <a class="mdl-navigation__link" asp-controller="Joueur" asp-action="Index">Effectif</a>
-            </nav>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a asp-controller="Actu" asp-action="Index">Actus</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Classements <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-controller="Classement" asp-action="Index" asp-route-id="equipe1">Equipe 1</a></li>
+                            <li><a asp-controller="Classement" asp-action="Index" asp-route-id="equipe2">Equipe 2</a></li>
+                            <li><a asp-controller="Classement" asp-action="Index" asp-route-id="equipe3">Equipe 3</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Calendrier <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-controller="Calendrier" asp-action="Index" asp-route-id="equipe1">Equipe 1</a></li>
+                            <li><a asp-controller="Calendrier" asp-action="Index" asp-route-id="equipe2">Equipe 2</a></li>
+                            <li><a asp-controller="Calendrier" asp-action="Index" asp-route-id="equipe3">Equipe 3</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Journée <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-controller="Journee" asp-action="Index" asp-route-equipe="equipe1" asp-route-idJournee="1">Equipe 1</a></li>
+                            <li><a asp-controller="Journee" asp-action="Index" asp-route-equipe="equipe2" asp-route-idJournee="1">Equipe 2</a></li>
+                            <li><a asp-controller="Journee" asp-action="Index" asp-route-equipe="equipe3" asp-route-idJournee="1">Equipe 3</a></li>
+                        </ul>
+                    </li>
+                    <li><a asp-controller="Joueur" asp-action="Index">Effectif</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @await Html.PartialAsync("_LoginPartial")
+                </ul>
+            </div><!--/.nav-collapse -->
         </div>
-        <main class="mdl-layout__content">
-            <div class="page-content">@RenderBody()</div>
-        </main>
+    </nav>
+    <div class="container-fuild">
+        @RenderBody()
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

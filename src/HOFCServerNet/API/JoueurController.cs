@@ -7,6 +7,7 @@ using HOFCServerNet.Services;
 using HOFCServerNet.Data.Models;
 using Microsoft.AspNet.Authorization;
 using HOFCServerNet.ViewModels.Joueur;
+using HOFCServerNet.Constants;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -55,9 +56,17 @@ namespace HOFCServerNet.API
         // DELETE api/values/5
         [HttpDelete("{id}")]
         [Authorize(Roles = "Contributor")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-            Service.Delete(id);
+            ServiceConstants.DELETE_STATUT statut = Service.Delete(id);
+            if(ServiceConstants.DELETE_STATUT.INCONNU.Equals(statut))
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                return Ok();
+            }
         }
     }
 }

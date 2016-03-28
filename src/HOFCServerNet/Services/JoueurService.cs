@@ -1,4 +1,5 @@
-﻿using HOFCServerNet.Data.Models;
+﻿using HOFCServerNet.Constants;
+using HOFCServerNet.Data.Models;
 using HOFCServerNet.ViewModels.Joueur;
 using Microsoft.Data.Entity;
 using System;
@@ -36,7 +37,7 @@ namespace HOFCServerNet.Services
             }
         }
 
-        public void Delete(int id)
+        public ServiceConstants.DELETE_STATUT Delete(int id)
         {
             using (var bddContext = new BddContext())
             {
@@ -45,6 +46,11 @@ namespace HOFCServerNet.Services
                 {
                     bddContext.Joueurs.Remove(joueur);
                     bddContext.SaveChanges();
+                    return ServiceConstants.DELETE_STATUT.SUCCES;
+                } 
+                else
+                {
+                    return ServiceConstants.DELETE_STATUT.INCONNU;
                 }
             }
         }

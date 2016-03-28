@@ -104,6 +104,8 @@ namespace HOFCServerNet
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute("journee",
+                    template: "Journee/Index/{equipe}/{idJournee}", defaults: new { controller = "Journee", action="Index", equipe="equipe1", idJournee = 1});
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
