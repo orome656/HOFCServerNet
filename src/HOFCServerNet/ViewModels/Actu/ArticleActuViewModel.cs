@@ -1,13 +1,12 @@
-﻿using HOFCServerNet.Data.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HOFCServerNet.ViewModels.Actu
 {
-    public class ActuViewModel
+    public class ArticleActuViewModel
     {
-        public List<Data.Models.Actu> Actus { get; set; }
+        public string Titre { get; set; }
     }
 }

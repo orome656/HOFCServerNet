@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Services;
 using HOFCServerNet.Data.Models;
+using HOFCServerNet.ViewModels.Actu;
+using HOFCServerNet.Parsers;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,9 +23,30 @@ namespace HOFCServerNet.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<Actu> actus = Service.GetAll();
-            ViewData["actus"] = actus;
-            return View(actus);
+            ActuViewModel viewModel = new ActuViewModel();
+
+            viewModel.Actus = Service.GetAll();
+
+            return View(viewModel);
+        }
+
+        public IActionResult Detail(string url)
+        {
+            if(!String.IsNullOrEmpty(url) && url.Contains("en-images"))
+            {
+                DiaporamaActuViewModel viewModel = new DiaporamaActuViewModel();
+                viewModel.Urls = DiaporamaParser.Parse(url);
+                return View("Diaporama", viewModel);
+            }
+            else if(!String.IsNullOrEmpty(url))
+            {
+                ArticleActuViewModel viewModel = new ArticleActuViewModel();
+                Article article = ArticleParser.Parse(url);
+                viewModel.Titre = article.Titre;
+
+                return View("Article", viewModel);
+            }
+            return HttpNotFound();
         }
     }
 }
