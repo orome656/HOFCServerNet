@@ -43,6 +43,8 @@ namespace HOFCServerNet.Controllers
                 ArticleActuViewModel viewModel = new ArticleActuViewModel();
                 Article article = ArticleParser.Parse(url);
                 viewModel.Titre = article.Titre;
+                viewModel.Contenu = article.Contenu;
+                viewModel.Date = article.Date;
 
                 return View("Article", viewModel);
             }

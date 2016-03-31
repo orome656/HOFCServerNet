@@ -25,3 +25,8 @@
     background-image: url('images/btn_facebook.png');
     background-repeat: no-repeat;
 }
+
+.meta-info {
+    margin-bottom: 20px;
+    color: #999;
+}

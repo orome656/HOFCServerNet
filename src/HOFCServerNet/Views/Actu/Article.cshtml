@@ -1,0 +1,5 @@
+﻿@model HOFCServerNet.ViewModels.Actu.ArticleActuViewModel
+
+<h2>@Html.Raw(@Model.Titre)</h2>
+<p class="meta-info">@Model.Date.ToString("dd MMM yyyy")</p>
+<p>@Model.Contenu</p>
