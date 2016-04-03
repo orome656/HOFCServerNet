@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Services;
 using HOFCServerNet.ViewModels.Joueur;
+using Microsoft.AspNet.Authorization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -44,7 +45,7 @@ namespace HOFCServerNet.Controllers
             return View(viewModel);
         }
 
-        //[Authorize(Roles = "Contributor")]
+        [Authorize(Roles = "Contributor")]
         [HttpPost]
         public IActionResult Details(JoueurDetailsViewModel JoueurDetails)
         {

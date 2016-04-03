@@ -30,6 +30,20 @@ namespace HOFCServerNet.Services
             }
         }
 
+        /// <summary>
+        /// Retourne l'ensemble des joueurs ainsi que ceux que les informations de composition configuré 
+        /// pour chacun
+        /// </summary>
+        /// <param name="idMatch"></param>
+        /// <returns></returns>
+        public List<Models.Composition> GetJoueursForCompoEdit(int idMatch)
+        {
+            using(var bddContext = new Models.BddContext())
+            {
+                return null;
+            }
+        }
+
         private CompositionViewModel compoBddToAPI(Models.Composition compoBdd)
         {
             CompositionViewModel compo = new CompositionViewModel();
