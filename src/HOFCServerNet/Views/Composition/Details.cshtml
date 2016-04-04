@@ -1,0 +1,29 @@
+﻿@model HOFCServerNet.ViewModels.Composition.DetailsCompoViewModel
+
+<p>Composition du match @Model.Match?.Equipe1 - @Model.Match?.Equipe2</p>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var compoDetail in Model.Compositions)
+        {
+            <tr>
+                <td>@compoDetail.Joueur.Prenom</td>
+                <td>@compoDetail.Joueur.Nom</td>
+                <td>
+                    @*if (User.IsInRole("Contributor"))
+                        {*@
+                    
+                    @*}*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

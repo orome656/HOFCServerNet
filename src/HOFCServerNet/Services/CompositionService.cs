@@ -40,7 +40,16 @@ namespace HOFCServerNet.Services
         {
             using(var bddContext = new Models.BddContext())
             {
-                return null;
+                var test = from joueur in bddContext.Joueurs
+                           /*join composition in bddContext.Compositions on joueur.Id equals composition.Joueur.Id into cj
+                           from subcompo in cj.DefaultIfEmpty()
+                           where subcompo.Match.Id == idMatch*/
+                           select new Models.Composition()
+                           {
+                               Joueur = joueur//,
+                               //Poste = (subcompo == null) ? null : subcompo.Poste
+                           };
+                return test.ToList();
             }
         }
 

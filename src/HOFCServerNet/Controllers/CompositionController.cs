@@ -41,7 +41,7 @@ namespace HOFCServerNet.Controllers
         {
             DetailsCompoViewModel viewModel = new DetailsCompoViewModel();
 
-            viewModel.Compositions = CompoService.GetForMatch(id);
+            viewModel.Compositions = CompoService.GetJoueursForCompoEdit(id);
 
             return View(viewModel);
         }

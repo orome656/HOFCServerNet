@@ -10,6 +10,6 @@ namespace HOFCServerNet.ViewModels.Composition
     public class DetailsCompoViewModel
     {
         public Match Match { get; set; }
-        public List<CompositionViewModel> Compositions { get; set; }
+        public List<Data.Models.Composition> Compositions { get; set; }
     }
 }
