@@ -37,13 +37,25 @@ namespace HOFCServerNet.Controllers
         }
 
         //Permet d'afficher et de configurer la composition d'un match
+        [HttpGet]
         public IActionResult Details(int id)
         {
             DetailsCompoViewModel viewModel = new DetailsCompoViewModel();
 
             viewModel.Compositions = CompoService.GetJoueursForCompoEdit(id);
+            viewModel.PostesPossibles = CompoService.GetPostes();
+            viewModel.Match = new Data.Models.Match();
+            viewModel.Match.Id = id;
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Details(DetailsCompoViewModel viewModel)
+        {
+            CompoService.SaveComposition(viewModel.Match.Id,viewModel.Compositions);
+
+            return RedirectToAction("Details");
         }
     }
 }

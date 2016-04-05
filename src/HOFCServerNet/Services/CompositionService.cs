@@ -41,6 +41,7 @@ namespace HOFCServerNet.Services
             using(var bddContext = new Models.BddContext())
             {
                 var test = from joueur in bddContext.Joueurs
+                           join match in bddContext.Matchs on idMatch equals match.Id
                            /*join composition in bddContext.Compositions on joueur.Id equals composition.Joueur.Id into cj
                            from subcompo in cj.DefaultIfEmpty()
                            where subcompo.Match.Id == idMatch*/
@@ -50,6 +51,14 @@ namespace HOFCServerNet.Services
                                //Poste = (subcompo == null) ? null : subcompo.Poste
                            };
                 return test.ToList();
+            }
+        }
+
+        public List<Models.Poste> GetPostes()
+        {
+            using (var bddContext = new Models.BddContext())
+            {
+                return bddContext.Postes.ToList();
             }
         }
 
@@ -81,6 +90,22 @@ namespace HOFCServerNet.Services
                         nouveauCompoPoste.Match = new Models.Match() { Id = compo.IdMatch };
                         bddContext.Compositions.Add(nouveauCompoPoste);
                     }
+                }
+                bddContext.SaveChanges();
+            }
+        }
+
+        public void SaveComposition(int idMatch, List<Models.Composition> compos)
+        {
+            using (var bddContext = new Models.BddContext())
+            {
+                if (bddContext.Compositions.Where(c => c.Match.Id == idMatch).Any())
+                {
+                    bddContext.Compositions.RemoveRange(bddContext.Compositions.Where(c => c.Match.Id == idMatch));
+                }
+                foreach (Models.Composition compo in compos)
+                {
+                    bddContext.Compositions.Add(compo);
                 }
                 bddContext.SaveChanges();
             }

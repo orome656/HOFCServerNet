@@ -1,29 +1,43 @@
-﻿@model HOFCServerNet.ViewModels.Composition.DetailsCompoViewModel
+﻿@using HOFCServerNet.Data.Constants;
+@model HOFCServerNet.ViewModels.Composition.DetailsCompoViewModel
 
 <p>Composition du match @Model.Match?.Equipe1 - @Model.Match?.Equipe2</p>
 
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var compoDetail in Model.Compositions)
-        {
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Match.Id)
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>@compoDetail.Joueur.Prenom</td>
-                <td>@compoDetail.Joueur.Nom</td>
-                <td>
-                    @*if (User.IsInRole("Contributor"))
-                        {*@
-                    
-                    @*}*@
-                </td>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Compositions.Count; i++)
+            {
+                <tr>
+                    @Html.HiddenFor(model => model.Match.Id)
+                    @Html.HiddenFor(model => model.Compositions[i].Joueur.Id)
+                    <td>@Model.Compositions[i].Joueur.Prenom</td>
+                    <td>@Model.Compositions[i].Joueur.Nom</td>
+                    <td>
+                        @*if (User.IsInRole("Contributor"))
+                            {*@
+                        @Html.DropDownListFor(model => model.Compositions[i].Poste.Id,
+                               Model.PostesPossibles.Select(x => new SelectListItem() { 
+                                   Value = x.Id + "",
+                                   Text = x.Nom
+                               }),
+                               "Sélectionner un poste",
+                               new { @class = "form-control"})
+                        
+                        @*}*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-default">Enregistrer</button>
+}
