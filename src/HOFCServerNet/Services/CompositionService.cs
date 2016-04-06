@@ -40,17 +40,33 @@ namespace HOFCServerNet.Services
         {
             using(var bddContext = new Models.BddContext())
             {
-                var test = from joueur in bddContext.Joueurs
-                           join match in bddContext.Matchs on idMatch equals match.Id
-                           /*join composition in bddContext.Compositions on joueur.Id equals composition.Joueur.Id into cj
+                /*var test = bddContext.Joueurs
+                                 .GroupJoin(bddContext.Compositions.Include(c => c.Poste),
+                                       joueur => joueur.Id,
+                                       composition => composition.Joueur.Id,
+                                       (joueur, composition) => new Models.Composition {
+                                               Joueur = joueur,
+                                               Poste = composition.Where(c => c.Match.Id == idMatch).Select(c => c.Poste).FirstOrDefault()
+                                           }
+                                 )
+                                 .ToList();
+                return test;*/
+                var compos = bddContext.Compositions.Where(c => c.Match.Id == idMatch).Include(c => c.Joueur).Include(c => c.Poste).ToList();
+                var joueurs = bddContext.Joueurs.Where(j => !bddContext.Compositions
+                                                                       .Where(c => c.Match.Id == idMatch)
+                                                                       .Select(c => c.Joueur.Id)
+                                                                       .Contains(j.Id)).Select(joueur=>new Models.Composition() { Joueur = joueur}).ToList();
+                return compos.Concat(joueurs).ToList();
+                /*var test = from joueur in bddContext.Joueurs
+                           join composition in bddContext.Compositions on joueur.Id equals composition.Joueur.Id into cj
                            from subcompo in cj.DefaultIfEmpty()
-                           where subcompo.Match.Id == idMatch*/
+                           where subcompo.Match.Id == idMatch
                            select new Models.Composition()
                            {
-                               Joueur = joueur//,
-                               //Poste = (subcompo == null) ? null : subcompo.Poste
+                               Joueur = joueur,
+                               Poste = (subcompo == null) ? null : subcompo.Poste
                            };
-                return test.ToList();
+                return test.ToList();*/
             }
         }
 
@@ -105,6 +121,13 @@ namespace HOFCServerNet.Services
                 }
                 foreach (Models.Composition compo in compos)
                 {
+                    if(compo.Match == null)
+                    {
+                        compo.Match = new Data.Models.Match()
+                        {
+                            Id = idMatch
+                        };
+                    }
                     bddContext.Compositions.Add(compo);
                 }
                 bddContext.SaveChanges();

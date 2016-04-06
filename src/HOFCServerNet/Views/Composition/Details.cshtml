@@ -28,7 +28,8 @@
                         @Html.DropDownListFor(model => model.Compositions[i].Poste.Id,
                                Model.PostesPossibles.Select(x => new SelectListItem() { 
                                    Value = x.Id + "",
-                                   Text = x.Nom
+                                   Text = x.Nom,
+                                   Selected = x.Id == Model.Compositions[i].Poste?.Id
                                }),
                                "Sélectionner un poste",
                                new { @class = "form-control"})

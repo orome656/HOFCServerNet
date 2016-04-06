@@ -44,8 +44,10 @@ namespace HOFCServerNet.Controllers
 
             viewModel.Compositions = CompoService.GetJoueursForCompoEdit(id);
             viewModel.PostesPossibles = CompoService.GetPostes();
-            viewModel.Match = new Data.Models.Match();
-            viewModel.Match.Id = id;
+            viewModel.Match = new Data.Models.Match()
+            {
+                Id = id
+            };
 
             return View(viewModel);
         }
