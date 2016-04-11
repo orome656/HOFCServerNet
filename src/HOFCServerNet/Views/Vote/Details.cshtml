@@ -1,0 +1,22 @@
+﻿@model HOFCServerNet.ViewModels.Vote.VoteDetailsViewModel
+
+@using (Html.BeginForm())
+{
+    @for (var i = 0; i < Model.Votes.Count; i++)
+    {
+        <h2>@Model.Votes[i].TypeVoteString</h2>
+        @Html.HiddenFor(model => model.MatchId, Model.MatchId)
+
+        @Html.HiddenFor(model => model.Votes[i].TypeVote)
+
+        @Html.DropDownListFor(model => model.Votes[i].Joueur.Id,
+                            Model.Joueurs.Select(x => new SelectListItem() {
+                                Value = x.Id + "",
+                                Text = x.Nom + " " + x.Prenom,
+                                Selected = x.Id == Model.Votes[i].Joueur?.Id
+                            }),
+                            "Sélectionner un joueur",
+                            new { @class = "form-control" })
+    }
+    <button type="submit" class="btn btn-default">Enregistrer</button>
+}

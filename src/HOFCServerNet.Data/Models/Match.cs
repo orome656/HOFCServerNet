@@ -39,6 +39,9 @@ namespace HOFCServerNet.Data.Models
         public Competition Competition { get; set; }
 
         [JsonIgnore]
+        public int VoteStatut { get; set; }
+
+        [JsonIgnore]
         public string CompetitionId { get; set; }
 
         public override string ToString()

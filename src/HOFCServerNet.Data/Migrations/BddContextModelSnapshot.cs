@@ -131,6 +131,8 @@ namespace HOFCServerNet.Migrations
 
                     b.Property<int?>("Score2");
 
+                    b.Property<int>("VoteStatut");
+
                     b.HasKey("Id");
                 });
 
@@ -168,6 +170,8 @@ namespace HOFCServerNet.Migrations
 
                     b.Property<string>("TypeVoteString")
                         .HasAnnotation("Relational:ColumnName", "TypeVote");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
                 });

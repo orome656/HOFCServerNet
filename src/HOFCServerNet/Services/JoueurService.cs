@@ -37,6 +37,19 @@ namespace HOFCServerNet.Services
             }
         }
 
+
+        public List<Joueur> GetAllForMatch(int idMatch)
+        {
+            using (var bddContext = new BddContext())
+            {
+                var joueurs = from j in bddContext.Joueurs
+                              join c in bddContext.Compositions on j.Id equals c.Joueur.Id
+                              where c.Match.Id == idMatch
+                              select j;
+                return joueurs.ToList();
+            }
+        }
+
         public ServiceConstants.DELETE_STATUT Delete(int id)
         {
             using (var bddContext = new BddContext())

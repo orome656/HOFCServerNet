@@ -14,6 +14,8 @@ namespace HOFCServerNet.Data.Models
         public Match Match { get; set; }
         public Joueur Joueur { get; set; }
 
+        public string UserId { get; set; }
+
         [Column("TypeVote")]
         public string TypeVoteString {
             get { return TypeVote.ToString(); }

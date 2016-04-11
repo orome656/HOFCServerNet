@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HOFCServerNet.Data.Enums
 {
-    public enum TypeVote
+    public enum TypeVote: int
     {
         TOP = 1,
         DOWN = 2

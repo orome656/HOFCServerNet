@@ -48,6 +48,7 @@ namespace HOFCServerNet
             services.AddTransient<ClassementService>();
             services.AddTransient<NotificationService>();
             services.AddTransient<CompositionService>();
+            services.AddTransient<VoteService>();
 
             // Add framework services.
             services.AddMvc();
