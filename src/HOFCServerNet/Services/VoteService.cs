@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HOFCServerNet.ViewModels.Vote;
 
 namespace HOFCServerNet.Services
 {
@@ -60,6 +61,24 @@ namespace HOFCServerNet.Services
                     bddContext.SaveChanges();
                 }
                 
+            }
+        }
+
+        internal List<VoteSum> GetResultsForMatch(int matchId)
+        {
+            using(var bddContext = new BddContext())
+            {
+                var query = bddContext.Votes
+                                .Where(v => v.MatchId == matchId)
+                                .GroupBy(v => new { v.JoueurId, v.TypeVote })
+                                .Select(g => new VoteSum() { JoueurId = g.Key.JoueurId, TypeVote = g.Key.TypeVote, Nb = g.Count() });
+
+                var result = query.ToList();
+                foreach (var entry in result)
+                    entry.Joueur = bddContext.Joueurs.FirstOrDefault(j => j.Id == entry.JoueurId);
+                // There is a bug when using Include and Group By. Change this code when this bug is fixed
+                // https://github.com/aspnet/EntityFramework/issues/3418
+                return result;
             }
         }
     }

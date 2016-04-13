@@ -53,5 +53,13 @@ namespace HOFCServerNet.Controllers
 
             return RedirectToAction("Details");
         }
+
+        public IActionResult ResultatMatch(int id)
+        {
+            ResultatMatchViewModel viewModel = new ResultatMatchViewModel();
+            viewModel.Results = VoteService.GetResultsForMatch(id);
+
+            return View(viewModel);
+        }
     }
 }
