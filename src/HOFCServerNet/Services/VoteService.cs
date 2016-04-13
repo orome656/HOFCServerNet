@@ -63,13 +63,14 @@ namespace HOFCServerNet.Services
                 
             }
         }
+        
 
-        internal List<VoteSum> GetResultsForMatch(int matchId)
+        internal List<VoteSum> GetResultsForMatch(int? matchId)
         {
             using(var bddContext = new BddContext())
             {
                 var query = bddContext.Votes
-                                .Where(v => v.MatchId == matchId)
+                                .Where(v => matchId == null || v.MatchId == matchId)
                                 .GroupBy(v => new { v.JoueurId, v.TypeVote })
                                 .Select(g => new VoteSum() { JoueurId = g.Key.JoueurId, TypeVote = g.Key.TypeVote, Nb = g.Count() });
 

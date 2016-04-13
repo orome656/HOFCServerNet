@@ -8,6 +8,6 @@ namespace HOFCServerNet.ViewModels.Vote
 {
     public class VoteIndexViewModel
     {
-        public List<Match> Matchs { get; set; }
+        public List<VoteMatchViewModel> Matchs { get; set; }
     }
 }

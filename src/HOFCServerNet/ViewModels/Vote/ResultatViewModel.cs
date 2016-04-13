@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HOFCServerNet.ViewModels.Vote
 {
-    public class ResultatMatchViewModel
+    public class ResultatViewModel
     {
         public List<VoteSum> Results { get; set; }
 

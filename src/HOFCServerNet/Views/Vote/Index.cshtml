@@ -1,5 +1,10 @@
 ﻿@model HOFCServerNet.ViewModels.Vote.VoteIndexViewModel
 
+<a asp-controller="Vote" asp-action="Resultat">
+    <button class="btn btn-default">Voir les classements de la saison</button>
+</a>
+
+<h2>Votes ouverts</h2>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -10,7 +15,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var match in Model.Matchs)
+        @foreach (var match in Model.Matchs.Where(v => v.Statut == 1))
         {
             <tr>
                 <td>@match.Date.ToString("dd/MM/yyyy HH:mm")</td>
@@ -19,8 +24,33 @@
                 <td>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a asp-controller="Vote" asp-action="Details" asp-route-id="@match.Id"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></a>
+                        <a asp-controller="Vote" asp-action="Details" asp-route-id="@match.MatchId"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></a>
                     }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Votes terminés</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Equipe Domicile</th>
+            <th>Equipe Extérieure</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var match in Model.Matchs.Where(v => v.Statut == 2))
+        {
+            <tr>
+                <td>@match.Date.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@match.Equipe1</td>
+                <td>@match.Equipe2</td>
+                <td>
+                    <a asp-controller="Vote" asp-action="Resultat" asp-route-id="@match.MatchId"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a>
                 </td>
             </tr>
         }

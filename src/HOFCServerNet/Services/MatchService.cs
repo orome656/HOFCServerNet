@@ -1,4 +1,5 @@
 ﻿using HOFCServerNet.Data.Models;
+using HOFCServerNet.ViewModels.Vote;
 using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
@@ -117,11 +118,14 @@ namespace HOFCServerNet.Services
 
         }
 
-        public List<Match> GetOpenedVoteMatch()
+        public List<VoteMatchViewModel> GetOpenedVoteMatch()
         {
             using (var dbContext = new BddContext())
             {
-                return dbContext.Matchs.Where(m => m.VoteStatut == 1).ToList();
+                return dbContext
+                    .Matchs
+                    .Where(m => m.VoteStatut == 1 || m.VoteStatut == 2)
+                    .Select(x => new VoteMatchViewModel() { MatchId = x.Id, Date = x.Date, Equipe1 = x.Equipe1, Equipe2 = x.Equipe2, Statut = x.VoteStatut}).ToList();
             }
         }
     }
