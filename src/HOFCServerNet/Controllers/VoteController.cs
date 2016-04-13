@@ -30,7 +30,7 @@ namespace HOFCServerNet.Controllers
         public IActionResult Index()
         {
             VoteIndexViewModel viewModel = new VoteIndexViewModel();
-            viewModel.Matchs = MatchService.GetOpenedVoteMatch();
+            viewModel.Matchs = MatchService.GetVoteMatchs(User);
             return View(viewModel);
         }
 
@@ -60,6 +60,22 @@ namespace HOFCServerNet.Controllers
             viewModel.Results = VoteService.GetResultsForMatch(id);
 
             return View(viewModel);
+        }
+
+        [Authorize(Roles = "Contributor")]
+        public IActionResult Add(int id)
+        {
+            MatchService.ActivateVote(id);
+
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "Contributor")]
+        public IActionResult Close(int id)
+        {
+            MatchService.CloseVote(id);
+
+            return RedirectToAction("Index");
         }
     }
 }

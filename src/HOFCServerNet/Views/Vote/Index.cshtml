@@ -1,4 +1,5 @@
-﻿@model HOFCServerNet.ViewModels.Vote.VoteIndexViewModel
+﻿@using HOFCServerNet.Data.Enums;
+@model HOFCServerNet.ViewModels.Vote.VoteIndexViewModel
 
 <a asp-controller="Vote" asp-action="Resultat">
     <button class="btn btn-default">Voir les classements de la saison</button>
@@ -9,22 +10,28 @@
     <thead>
         <tr>
             <th>Date</th>
+            <th>Compétition</th>
             <th>Equipe Domicile</th>
             <th>Equipe Extérieure</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var match in Model.Matchs.Where(v => v.Statut == 1))
+        @foreach (var match in Model.Matchs.Where(v => v.Statut == StatutVote.OUVERT))
         {
             <tr>
                 <td>@match.Date.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@match.Competition</td>
                 <td>@match.Equipe1</td>
                 <td>@match.Equipe2</td>
                 <td>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <a asp-controller="Vote" asp-action="Details" asp-route-id="@match.MatchId"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></a>
+                        @if (User.IsInRole("Contributor"))
+                        {
+                            <a asp-controller="Vote" asp-action="Close" asp-route-id="@match.MatchId"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        }
                     }
                 </td>
             </tr>
@@ -37,16 +44,18 @@
     <thead>
         <tr>
             <th>Date</th>
+            <th>Compétition</th>
             <th>Equipe Domicile</th>
             <th>Equipe Extérieure</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var match in Model.Matchs.Where(v => v.Statut == 2))
+        @foreach (var match in Model.Matchs.Where(v => v.Statut == StatutVote.CLOS))
         {
             <tr>
                 <td>@match.Date.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@match.Competition</td>
                 <td>@match.Equipe1</td>
                 <td>@match.Equipe2</td>
                 <td>
@@ -57,3 +66,32 @@
     </tbody>
 </table>
 
+@if (User.IsInRole("Contributor"))
+{
+    <h2>Votes non ouverts</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Compétition</th>
+                <th>Equipe Domicile</th>
+                <th>Equipe Extérieure</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in Model.Matchs.Where(v => v.Statut == StatutVote.NON_OUVERT && v.Date < DateTime.Now))
+            {
+                <tr>
+                    <td>@match.Date.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@match.Competition</td>
+                    <td>@match.Equipe1</td>
+                    <td>@match.Equipe2</td>
+                    <td>
+                        <a asp-controller="Vote" asp-action="Add" asp-route-id="@match.MatchId"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

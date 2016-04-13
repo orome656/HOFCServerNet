@@ -1,9 +1,12 @@
-﻿using HOFCServerNet.Data.Models;
+﻿using HOFCServerNet.Data.Enums;
+using HOFCServerNet.Data.Models;
 using HOFCServerNet.ViewModels.Vote;
+using Microsoft.AspNet.Mvc.Controllers;
 using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace HOFCServerNet.Services
@@ -48,6 +51,34 @@ namespace HOFCServerNet.Services
                             .GroupBy(x => x.Competition.Categorie);
             return grouping.ToDictionary(group => group.Key, group => group.ToList());
         }*/
+        }
+
+        internal void ActivateVote(int id)
+        {
+            using (var bddContext = new BddContext())
+            {
+                Match match = bddContext.Matchs.FirstOrDefault(m => m.Id == id);
+                if(match != null)
+                {
+                    match.VoteStatut = (int)StatutVote.OUVERT;
+                    bddContext.SaveChanges();
+                }
+
+            }
+        }
+
+        internal void CloseVote(int id)
+        {
+            using (var bddContext = new BddContext())
+            {
+                Match match = bddContext.Matchs.FirstOrDefault(m => m.Id == id);
+                if (match != null)
+                {
+                    match.VoteStatut = (int)StatutVote.CLOS;
+                    bddContext.SaveChanges();
+                }
+
+            }
         }
 
         public List<Match> GetMatchsForHOFC()
@@ -118,14 +149,16 @@ namespace HOFCServerNet.Services
 
         }
 
-        public List<VoteMatchViewModel> GetOpenedVoteMatch()
+        public List<VoteMatchViewModel> GetVoteMatchs(ClaimsPrincipal user)
         {
             using (var dbContext = new BddContext())
             {
                 return dbContext
                     .Matchs
-                    .Where(m => m.VoteStatut == 1 || m.VoteStatut == 2)
-                    .Select(x => new VoteMatchViewModel() { MatchId = x.Id, Date = x.Date, Equipe1 = x.Equipe1, Equipe2 = x.Equipe2, Statut = x.VoteStatut}).ToList();
+                    .Where(m => (m.Equipe1.Contains("HORGUES ODOS") || m.Equipe2.Contains("HORGUES ODOS")) && (m.VoteStatut == 1 || m.VoteStatut == 2 || (user.IsInRole("Contributor") && m.VoteStatut == 0 && m.Date < DateTime.Now)))
+                    .Select(x => new VoteMatchViewModel() { MatchId = x.Id, Date = x.Date, Equipe1 = x.Equipe1, Equipe2 = x.Equipe2, Statut = x.VoteStatutEnum, Competition = x.Competition.Nom})
+                    .OrderBy(x => x.Date)
+                    .ToList();
             }
         }
     }

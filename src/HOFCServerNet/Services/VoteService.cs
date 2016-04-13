@@ -64,7 +64,6 @@ namespace HOFCServerNet.Services
             }
         }
         
-
         internal List<VoteSum> GetResultsForMatch(int? matchId)
         {
             using(var bddContext = new BddContext())

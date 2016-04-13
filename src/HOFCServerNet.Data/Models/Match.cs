@@ -41,6 +41,9 @@ namespace HOFCServerNet.Data.Models
         [JsonIgnore]
         public int VoteStatut { get; set; }
 
+        [NotMapped]
+        public Enums.StatutVote VoteStatutEnum { get { return (Enums.StatutVote)VoteStatut; } }
+
         [JsonIgnore]
         public string CompetitionId { get; set; }
 
