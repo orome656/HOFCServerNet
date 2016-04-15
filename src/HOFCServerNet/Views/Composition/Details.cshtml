@@ -23,18 +23,18 @@
                     <td>@Model.Compositions[i].Joueur.Prenom</td>
                     <td>@Model.Compositions[i].Joueur.Nom</td>
                     <td>
-                        @*if (User.IsInRole("Contributor"))
-                            {*@
-                        @Html.DropDownListFor(model => model.Compositions[i].Poste.Id,
-                               Model.PostesPossibles.Select(x => new SelectListItem() { 
-                                   Value = x.Id + "",
-                                   Text = x.Nom,
-                                   Selected = x.Id == Model.Compositions[i].Poste?.Id
-                               }),
-                               "Sélectionner un poste",
-                               new { @class = "form-control"})
+                        @if (User.IsInRole("Contributor"))
+                        {
+                            @Html.DropDownListFor(model => model.Compositions[i].Poste.Id,
+                                   Model.PostesPossibles.Select(x => new SelectListItem() { 
+                                       Value = x.Id + "",
+                                       Text = x.Nom,
+                                       Selected = x.Id == Model.Compositions[i].Poste?.Id
+                                   }),
+                                   "Sélectionner un poste",
+                                   new { @class = "form-control"})
                         
-                        @*}*@
+                        }
                     </td>
                 </tr>
             }

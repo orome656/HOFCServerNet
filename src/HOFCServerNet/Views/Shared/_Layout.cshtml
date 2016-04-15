@@ -60,6 +60,7 @@
                     <li class="@Html.IsActive(actionName: "Index", controllerName: "Joueur")"><a asp-controller="Joueur" asp-action="Index">Effectif</a></li>
                     <li class="@Html.IsActive(actionName: "Index", controllerName: "Composition")"><a asp-controller="Composition" asp-action="Index">Composition</a></li>
                     <li class="@Html.IsActive(actionName: "Index", controllerName: "Vote")"><a asp-controller="Vote" asp-action="Index">Vote Top/Flop</a></li>
+                    <li class="@Html.IsActive(actionName: "Index", controllerName: "Stat")"><a asp-controller="Stat" asp-action="Index">Stats</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @await Html.PartialAsync("_LoginPartial")

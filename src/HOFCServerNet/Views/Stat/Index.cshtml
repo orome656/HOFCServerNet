@@ -1,0 +1,58 @@
+﻿@using HOFCServerNet.Data.Enums;
+@model HOFCServerNet.ViewModels.Stat.IndexStatViewModel
+
+<h2>Classement des buteurs</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Nombre de buts</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stats in Model.Stats.Where(v => v.TypeStatEnum == TypeStat.BUT))
+        {
+            <tr>
+                <td>@stats.Joueur.Nom</td>
+                <td>@stats.Joueur.Prenom</td>
+                <td>@stats.Nombre</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<h2>Classement des passeurs</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Nombre de buts</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stats in Model.Stats.Where(v => v.TypeStatEnum == TypeStat.PASSE))
+        {
+            <tr>
+                <td>@stats.Joueur.Nom</td>
+                <td>@stats.Joueur.Prenom</td>
+                <td>@stats.Nombre</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="dropdown text-center">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Obtenir les stats d'un match
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        @foreach (var match in Model.Matchs)
+        {
+            <li><a asp-controller="Stat" asp-action="Match" asp-route-id="@match.Id" />@match.Date : @match.Date.ToShortDateString() @match.Equipe1 - @match.Equipe2</li>
+        }
+    </ul>
+</div>

@@ -159,7 +159,7 @@ namespace HOFCServerNet.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("HOFCServerNet.Data.Models.Vote", b =>
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Stat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -167,6 +167,22 @@ namespace HOFCServerNet.Migrations
                     b.Property<int?>("JoueurId");
 
                     b.Property<int?>("MatchId");
+
+                    b.Property<int>("Nombre");
+
+                    b.Property<int>("TypeStat");
+
+                    b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Vote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("JoueurId");
+
+                    b.Property<int>("MatchId");
 
                     b.Property<string>("TypeVoteString")
                         .HasAnnotation("Relational:ColumnName", "TypeVote");
@@ -207,6 +223,17 @@ namespace HOFCServerNet.Migrations
                     b.HasOne("HOFCServerNet.Data.Models.Competition")
                         .WithMany()
                         .HasForeignKey("CompetitionId");
+                });
+
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Stat", b =>
+                {
+                    b.HasOne("HOFCServerNet.Data.Models.Joueur")
+                        .WithMany()
+                        .HasForeignKey("JoueurId");
+
+                    b.HasOne("HOFCServerNet.Data.Models.Match")
+                        .WithMany()
+                        .HasForeignKey("MatchId");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Vote", b =>

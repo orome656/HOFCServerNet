@@ -1,0 +1,50 @@
+﻿@using HOFCServerNet.Data.Enums;
+@model HOFCServerNet.ViewModels.Stat.MatchStatViewModel
+
+<h2>Stats du Match @Model.Match.Equipe1 - @Model.Match.Equipe2</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Buts</th>
+            <th>Passes Décisives</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stats in Model.Stats)
+        {
+            <tr>
+                <td>@stats.Joueur.Nom</td>
+                <td>@stats.Joueur.Prenom</td>
+                <td>@stats.NbBut</td>
+                <td>@stats.NbPasse</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (User.IsInRole("Contributor"))
+{
+    @using (Html.BeginForm())
+    {
+        <h2>Ajouter une stat</h2>
+        @Html.HiddenFor(model => model.Match.Id);
+        @Html.DropDownListFor(model => model.Joueur.Id,
+                                   Model.Joueurs.Select(x => new SelectListItem()
+                                   {
+                                       Value = x.Id + "",
+                                       Text = x.Prenom + " " + x.Nom
+                                   }),
+                                   "Sélectionner un joueur",
+                                   new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.TypeStat,
+                                   @Html.GetEnumSelectList(typeof(TypeStat)),
+                                   "Sélectionner le type de stat",
+                                   new { @class = "form-control" })
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @type = "number" })
+
+        <button class="btn btn-default" type="submit">Enregistrer</button>
+    }
+
+}

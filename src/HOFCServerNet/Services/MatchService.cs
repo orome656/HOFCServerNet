@@ -141,7 +141,7 @@ namespace HOFCServerNet.Services
         {
             using (var dbContext = new BddContext())
             {
-                return dbContext.Matchs.Where(item => date.CompareTo(item.Date) <= 0 && dateEnd.CompareTo(item.Date) > 0)
+                return dbContext.Matchs.Where(item => (date == null || date.CompareTo(item.Date) <= 0) && (dateEnd == null || dateEnd.CompareTo(item.Date) > 0))
                                        .Include(item => item.Competition)
                                        .ToList();
             }
@@ -159,6 +159,16 @@ namespace HOFCServerNet.Services
                     .Select(x => new VoteMatchViewModel() { MatchId = x.Id, Date = x.Date, Equipe1 = x.Equipe1, Equipe2 = x.Equipe2, Statut = x.VoteStatutEnum, Competition = x.Competition.Nom})
                     .OrderBy(x => x.Date)
                     .ToList();
+            }
+        }
+
+        public List<Match> GetHOFCPastMatch()
+        {
+            using (var dbContext = new BddContext())
+            {
+                return dbContext.Matchs.Where(item => item.Date <= DateTime.Now && (item.Equipe1.Contains("HORGUES ODOS") || item.Equipe2.Contains("HORGUES ODOS")))
+                                       .Include(item => item.Competition)
+                                       .ToList();
             }
         }
     }
