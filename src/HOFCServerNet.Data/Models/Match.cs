@@ -35,7 +35,6 @@ namespace HOFCServerNet.Data.Models
         public string InfosId { get; set; }
         
         [JsonProperty(PropertyName = "competition")]
-        [ForeignKey("CompetitionId")]
         public Competition Competition { get; set; }
 
         [JsonIgnore]
@@ -45,7 +44,7 @@ namespace HOFCServerNet.Data.Models
         public Enums.StatutVote VoteStatutEnum { get { return (Enums.StatutVote)VoteStatut; } }
 
         [JsonIgnore]
-        public string CompetitionId { get; set; }
+        public int CompetitionId { get; set; }
 
         public override string ToString()
         {

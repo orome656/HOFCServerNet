@@ -5,11 +5,11 @@ using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
 using HOFCServerNet.Data.Models;
 
-namespace HOFCServerNet.Migrations
+namespace HOFCServerNet.Data.Migrations.Bdd
 {
     [DbContext(typeof(BddContext))]
-    [Migration("20160311204022_Add Vote")]
-    partial class AddVote
+    [Migration("20160415130138_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,11 +67,16 @@ namespace HOFCServerNet.Migrations
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Competition", b =>
                 {
-                    b.Property<string>("Nom");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Categorie");
 
-                    b.HasKey("Nom");
+                    b.Property<string>("Nom");
+
+                    b.Property<string>("Saison");
+
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Composition", b =>
@@ -116,7 +121,7 @@ namespace HOFCServerNet.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CompetitionId");
+                    b.Property<int>("CompetitionId");
 
                     b.Property<DateTime>("Date");
 
@@ -131,6 +136,8 @@ namespace HOFCServerNet.Migrations
                     b.Property<int?>("Score1");
 
                     b.Property<int?>("Score2");
+
+                    b.Property<int>("VoteStatut");
 
                     b.HasKey("Id");
                 });
@@ -154,6 +161,39 @@ namespace HOFCServerNet.Migrations
 
                     b.Property<string>("Nom")
                         .HasAnnotation("MaxLength", 10);
+
+                    b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Stat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("JoueurId");
+
+                    b.Property<int>("MatchId");
+
+                    b.Property<int>("Nombre");
+
+                    b.Property<int>("TypeStat");
+
+                    b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Vote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("JoueurId");
+
+                    b.Property<int>("MatchId");
+
+                    b.Property<string>("TypeVoteString")
+                        .HasAnnotation("Relational:ColumnName", "TypeVote");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
                 });
@@ -189,6 +229,28 @@ namespace HOFCServerNet.Migrations
                     b.HasOne("HOFCServerNet.Data.Models.Competition")
                         .WithMany()
                         .HasForeignKey("CompetitionId");
+                });
+
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Stat", b =>
+                {
+                    b.HasOne("HOFCServerNet.Data.Models.Joueur")
+                        .WithMany()
+                        .HasForeignKey("JoueurId");
+
+                    b.HasOne("HOFCServerNet.Data.Models.Match")
+                        .WithMany()
+                        .HasForeignKey("MatchId");
+                });
+
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Vote", b =>
+                {
+                    b.HasOne("HOFCServerNet.Data.Models.Joueur")
+                        .WithMany()
+                        .HasForeignKey("JoueurId");
+
+                    b.HasOne("HOFCServerNet.Data.Models.Match")
+                        .WithMany()
+                        .HasForeignKey("MatchId");
                 });
         }
     }

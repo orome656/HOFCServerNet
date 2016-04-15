@@ -119,7 +119,7 @@ namespace HOFCServerNet.Services
             using (var dbContext = new BddContext())
             {
                 return dbContext.Matchs
-                                .Where(item => item.Competition != null && item.Competition.Categorie.Equals(categorie) && (item.Equipe1.Contains("HORGUES ODOS") || item.Equipe2.Contains("HORGUES ODOS")))
+                                .Where(item => item.Competition.Categorie.Equals(categorie) && (item.Equipe1.Contains("HORGUES ODOS") || item.Equipe2.Contains("HORGUES ODOS")))
                                 .OrderBy(item => item.Date)
                                 .Include(item => item.Competition)
                                 .ToList();

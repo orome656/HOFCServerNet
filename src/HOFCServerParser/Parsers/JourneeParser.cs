@@ -16,12 +16,14 @@ namespace HOFCServerParser.Parsers
         private string Categorie { get; }
         private int IdJournee { get; }
         private string Competition { get; }
+        private string SeasonIndex { get; }
 
-        public JourneeParser(string categorie, int idJournee, string competition)
+        public JourneeParser(string categorie, int idJournee, string competition, string seasonIndex)
         {
             Categorie = categorie;
             IdJournee = idJournee;
             Competition = competition;
+            SeasonIndex = seasonIndex;
         }
 
         private static Dictionary<string, string> moisTransform = new Dictionary<string, string>
@@ -117,7 +119,8 @@ namespace HOFCServerParser.Parsers
                 journee.Equipe2 = equipe2;
                 journee.Date = datetime;
                 journee.IdJournee = this.IdJournee;
-                journee.CompetitionId = this.Competition;
+                journee.Competition = new Competition() { Nom = this.Competition, Saison = this.SeasonIndex, Categorie = this.Categorie };
+
                 System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"det_match\(this,'([0-9]+)");
                 journee.InfosId = regex.Match(childs.Last().InnerHtml).Groups[1].Value;
             }

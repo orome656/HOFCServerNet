@@ -8,6 +8,7 @@ using System.Globalization;
 using HOFCServerNet.Data.Models;
 using HOFCServerParser.Constants;
 using HOFCServerParser.Database;
+using HOFCServerNet.Utils.Common;
 
 namespace HOFCServerParser.Parsers
 {
@@ -68,8 +69,14 @@ namespace HOFCServerParser.Parsers
                 {
                     competitionNode = competitionNode.PreviousSibling;
                 }
-                string competitionId = competitionNode.InnerText;
-                agenda.CompetitionId = HtmlEntity.DeEntitize(competitionId);
+                string competitionId = HtmlEntity.DeEntitize(competitionNode.InnerText);
+
+                agenda.Competition = new Competition() {
+                    Nom = competitionId,
+                    Saison = SeasonTool.GetSeasonIndex(),
+                    Categorie = CompetitionTool.GetCategorieFromCompetition(competitionId)
+                };
+                
                 CultureInfo infos = new CultureInfo("fr-CA");
                 var date = childs.ElementAt(0).InnerText.Trim().ToLower();
                 var datetime = parseDate(date);

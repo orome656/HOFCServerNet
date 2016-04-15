@@ -9,9 +9,13 @@ namespace HOFCServerNet.Data.Models
 {
     public class Competition: IModel
     {
-        [Key]
+        public int Id { get; set; }
+
         [JsonProperty(PropertyName = "nom")]
         public string Nom { get; set; }
+
+        public string Saison { get; set; }
+
         [JsonProperty(PropertyName = "categorie")]
         public string Categorie { get; set; }
     }

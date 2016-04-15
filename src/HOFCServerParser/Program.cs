@@ -1,5 +1,6 @@
 ﻿using HOFCServerNet.Data.Constants;
 using HOFCServerNet.Data.Models;
+using HOFCServerNet.Utils.Common;
 using HOFCServerParser.Parsers;
 using System;
 
@@ -78,19 +79,20 @@ namespace HOFCServerParser
             int nbJourneesEquipe1 = AppConstants.NbMatchEquipe1;
             int nbJourneesEquipe2 = AppConstants.NbMatchEquipe2;
             int nbJourneesEquipe3 = AppConstants.NbMatchEquipe3;
+            string seasonIndex = SeasonTool.GetSeasonIndex();
             for (var i = 1; i <= nbJourneesEquipe1; i++)
             {
-                JourneeParser parser = new JourneeParser("equipe1", i, "EXCELLENCE POULE UNIQUE");
+                JourneeParser parser = new JourneeParser("equipe1", i, "EXCELLENCE POULE UNIQUE", seasonIndex);
                 parser.Parse();
             }
             for (var i = 1; i <= nbJourneesEquipe2; i++)
             {
-                JourneeParser parser = new JourneeParser("equipe2", i, "PREMIERE DIVISION POULE UNIQUE");
+                JourneeParser parser = new JourneeParser("equipe2", i, "PREMIERE DIVISION POULE UNIQUE", seasonIndex);
                 parser.Parse();
             }
             for (var i = 1; i <= nbJourneesEquipe3; i++)
             {
-                JourneeParser parser = new JourneeParser("equipe3", i, "PROMOTION 1ERE DIVISION POULE A");
+                JourneeParser parser = new JourneeParser("equipe3", i, "PROMOTION 1ERE DIVISION POULE A", seasonIndex);
                 parser.Parse();
             }
         }
