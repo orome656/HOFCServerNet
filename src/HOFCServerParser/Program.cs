@@ -2,15 +2,24 @@
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Utils.Common;
 using HOFCServerParser.Parsers;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace HOFCServerParser
 {
     public class Program
     {
+        public static IConfigurationRoot Configuration { get; set; }
+
         public static void Main(string[] args)
-        { 
+        {
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables();
+            Configuration = builder.Build();
+
             string[] equipe = new string[] { "equipe1", "equipe2", "equipe3"};
+
             // Parsing classement
             ParseClassement(equipe);
 
@@ -43,7 +52,7 @@ namespace HOFCServerParser
         {
             foreach (string name in equipes)
             {
-                var classementParser = new ClassementParser(name);
+                var classementParser = new ClassementParser(name, Configuration["Parser:" + name + ":NomCompetition"]);
                 classementParser.Parse();
             }
         }

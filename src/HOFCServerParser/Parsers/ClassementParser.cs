@@ -5,21 +5,24 @@ using System.Net.Http;
 using HtmlAgilityPack;
 using HOFCServerNet.Data.Models;
 using HOFCServerParser.Constants;
+using HOFCServerNet.Utils.Common;
 
 namespace HOFCServerParser.Parsers
 {
     public class ClassementParser: Parser<Classement>
     {
-		public string category;
+		public string Categorie;
+        public string CompetitionName { get; set; }
 
-        public ClassementParser(string category) 
+        public ClassementParser(string _category, string _competitionName) 
         {
-            this.category = category;
+            this.Categorie = _category;
+            this.CompetitionName = _competitionName;
         }
         protected override IEnumerable<HtmlNode> GetLines()
         {
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(URLMiseAJour.Classement[category]).Result;
+            string html = httpClient.GetStringAsync(URLMiseAJour.Classement[Categorie]).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;
@@ -50,7 +53,7 @@ namespace HOFCServerParser.Parsers
             classement.Bp = bp;
             classement.Bc = bc;
             classement.Difference = diff;
-            classement.Categorie = this.category;
+            classement.Categorie = this.Categorie;
             Console.WriteLine(classement.ToString());
             return classement;
         }
@@ -58,11 +61,12 @@ namespace HOFCServerParser.Parsers
         protected override void SaveToBDD(List<Classement> list)
         {
             using(var bddContext = new BddContext()) {
+                Competition competition = bddContext.Competitions.FirstOrDefault(c => c.Nom.Equals(this.CompetitionName) && c.Saison.Equals(SeasonTool.GetSeasonIndex()));
                 foreach(Classement classement in list)
                 {
-                    if (bddContext.Classements.Any(item => classement.Equipe.Equals(item.Equipe) && this.category.Equals(item.Categorie)))
+                    if (bddContext.Classements.Any(item => classement.Equipe.Equals(item.Equipe) && this.Categorie.Equals(item.Categorie)))
                     {
-                        Classement bddClassement = bddContext.Classements.First(item => classement.Equipe.Equals(item.Equipe) && this.category.Equals(item.Categorie));
+                        Classement bddClassement = bddContext.Classements.First(item => classement.Equipe.Equals(item.Equipe) && this.Categorie.Equals(item.Categorie));
 
                         bddClassement.Joue = classement.Joue;
                         bddClassement.Points = classement.Points;
@@ -77,6 +81,7 @@ namespace HOFCServerParser.Parsers
                     }
                     else
                     {
+                        classement.Competition = competition;
                         // New Element insert it
                         bddContext.Classements.Add(classement);
                     }
