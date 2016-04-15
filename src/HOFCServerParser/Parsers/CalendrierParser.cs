@@ -7,7 +7,7 @@ using HtmlAgilityPack;
 using HOFCServerNet.Data.Models;
 using System.Globalization;
 using HOFCServerParser.Utils;
-using HOFCServerParser.Constants;
+using HOFCServerNet.Utils.Common;
 
 namespace HOFCServerParser.Parsers
 {
@@ -39,7 +39,7 @@ namespace HOFCServerParser.Parsers
         protected override IEnumerable<HtmlNode> GetLines()
         {
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(URLMiseAJour.Calendrier[category]).Result;
+            string html = httpClient.GetStringAsync(Program.Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":" + category + ":CalendrierURL"]).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;

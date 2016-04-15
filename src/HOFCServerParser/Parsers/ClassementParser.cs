@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using HtmlAgilityPack;
 using HOFCServerNet.Data.Models;
-using HOFCServerParser.Constants;
 using HOFCServerNet.Utils.Common;
 
 namespace HOFCServerParser.Parsers
@@ -22,7 +21,7 @@ namespace HOFCServerParser.Parsers
         protected override IEnumerable<HtmlNode> GetLines()
         {
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(URLMiseAJour.Classement[Categorie]).Result;
+            string html = httpClient.GetStringAsync(Program.Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":" + Categorie + ":ClassementURL"]).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;

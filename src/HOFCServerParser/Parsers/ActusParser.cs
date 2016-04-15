@@ -5,7 +5,6 @@ using System.Net.Http;
 using HOFCServerNet.Data.Models;
 using HtmlAgilityPack;
 using HOFCServerParser.Utils;
-using HOFCServerParser.Constants;
 using System.Globalization;
 using System.Net;
 
@@ -16,7 +15,7 @@ namespace HOFCServerParser.Parsers
         protected override IEnumerable<HtmlNode> GetLines()
         {
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(URLMiseAJour.Actus).Result;
+            string html = httpClient.GetStringAsync(Program.Configuration["Parser:ActuURL"]).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;
