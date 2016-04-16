@@ -60,5 +60,14 @@ namespace HOFCServerNet.Controllers
             Service.Update(joueur);
             return RedirectToAction(nameof(JoueurController.Index), "Joueur", new { Message = "Joueur modifié"});
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Contributor")]
+        public IActionResult Remove(int id)
+        {
+            Service.Delete(id);
+
+            return RedirectToAction(nameof(JoueurController.Index));
+        }
     }
 }

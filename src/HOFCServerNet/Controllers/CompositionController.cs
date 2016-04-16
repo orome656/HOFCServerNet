@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using HOFCServerNet.Services;
 using HOFCServerNet.ViewModels.Composition;
+using Microsoft.AspNet.Authorization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -53,11 +54,21 @@ namespace HOFCServerNet.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Contributor")]
         public IActionResult Details(DetailsCompoViewModel viewModel)
         {
             CompoService.SaveComposition(viewModel.Match.Id,viewModel.Compositions);
 
-            return RedirectToAction("Details");
+            return RedirectToAction(nameof(CompositionController.Details), viewModel.Match.Id);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Contributor")]
+        public IActionResult Remove(int id)
+        {
+            CompoService.DeleteMatchComposition(id);
+
+            return RedirectToAction(nameof(CompositionController.Index));
         }
     }
 }
