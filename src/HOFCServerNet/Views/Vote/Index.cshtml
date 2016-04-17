@@ -28,7 +28,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <a asp-controller="Vote" asp-action="Details" asp-route-id="@match.MatchId"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></a>
-                        @if (User.IsInRole("Contributor"))
+                        if (User.IsInRole("Contributor"))
                         {
                             <a asp-controller="Vote" asp-action="Close" asp-route-id="@match.MatchId"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                         }
