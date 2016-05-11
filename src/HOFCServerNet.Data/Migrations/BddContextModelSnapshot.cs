@@ -5,17 +5,15 @@ using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
 using HOFCServerNet.Data.Models;
 
-namespace HOFCServerNet.Data.Migrations.Bdd
+namespace HOFCServerNet.Data.Migrations
 {
     [DbContext(typeof(BddContext))]
-    [Migration("20160415171312_Initial2")]
-    partial class Initial2
+    partial class BddContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348");
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Actu", b =>
                 {

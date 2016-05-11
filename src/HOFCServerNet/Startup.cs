@@ -34,7 +34,7 @@ namespace HOFCServerNet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEntityFramework()
-                    .AddSqlServer()
+                    .AddSqlite()
                     .AddDbContext<BddContext>()
                     .AddDbContext<ApplicationDbContext>();
 

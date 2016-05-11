@@ -23,7 +23,7 @@ namespace HOFCServerNet.Data.Models
             configurationBuilder.AddEnvironmentVariables();
             var configuration = configurationBuilder.Build();
             
-            optionsBuilder.UseSqlServer(configuration["Data:DefaultConnection:ConnectionString"]);
+            optionsBuilder.UseSqlite(configuration["Data:DefaultConnection:ConnectionString"]);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

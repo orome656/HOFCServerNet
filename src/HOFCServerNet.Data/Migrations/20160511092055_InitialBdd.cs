@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Data.Entity.Migrations;
-using Microsoft.Data.Entity.Metadata;
 
-namespace HOFCServerNet.Data.Migrations.Bdd
+namespace HOFCServerNet.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialBdd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +13,7 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Date = table.Column<DateTime>(nullable: false),
                     ImageURL = table.Column<string>(nullable: true),
                     PostId = table.Column<int>(nullable: false),
@@ -27,32 +26,11 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                     table.PrimaryKey("PK_Actu", x => x.Id);
                 });
             migrationBuilder.CreateTable(
-                name: "Classement",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Bc = table.Column<int>(nullable: false),
-                    Bp = table.Column<int>(nullable: false),
-                    Categorie = table.Column<string>(nullable: true),
-                    Defaite = table.Column<int>(nullable: false),
-                    Difference = table.Column<int>(nullable: false),
-                    Equipe = table.Column<string>(nullable: true),
-                    Joue = table.Column<int>(nullable: false),
-                    Nul = table.Column<int>(nullable: false),
-                    Points = table.Column<int>(nullable: false),
-                    Victoire = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Classement", x => x.Id);
-                });
-            migrationBuilder.CreateTable(
                 name: "Competition",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Categorie = table.Column<string>(nullable: true),
                     Nom = table.Column<string>(nullable: true),
                     Saison = table.Column<string>(nullable: true)
@@ -66,7 +44,7 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Categorie = table.Column<string>(nullable: true),
                     Nom = table.Column<string>(nullable: true),
                     Prenom = table.Column<string>(nullable: true)
@@ -80,7 +58,7 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     NotificationID = table.Column<string>(nullable: true),
                     UUID = table.Column<string>(nullable: true)
                 },
@@ -93,7 +71,7 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Nom = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -101,11 +79,39 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                     table.PrimaryKey("PK_Poste", x => x.Id);
                 });
             migrationBuilder.CreateTable(
+                name: "Classement",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Bc = table.Column<int>(nullable: false),
+                    Bp = table.Column<int>(nullable: false),
+                    Categorie = table.Column<string>(nullable: true),
+                    CompetitionId = table.Column<int>(nullable: true),
+                    Defaite = table.Column<int>(nullable: false),
+                    Difference = table.Column<int>(nullable: false),
+                    Equipe = table.Column<string>(nullable: true),
+                    Joue = table.Column<int>(nullable: false),
+                    Nul = table.Column<int>(nullable: false),
+                    Points = table.Column<int>(nullable: false),
+                    Victoire = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Classement", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Classement_Competition_CompetitionId",
+                        column: x => x.CompetitionId,
+                        principalTable: "Competition",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+            migrationBuilder.CreateTable(
                 name: "Match",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     CompetitionId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Equipe1 = table.Column<string>(nullable: true),
@@ -154,7 +160,7 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     JoueurId = table.Column<int>(nullable: true),
                     MatchId = table.Column<int>(nullable: true),
                     PosteId = table.Column<int>(nullable: true)
@@ -186,7 +192,7 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     JoueurId = table.Column<int>(nullable: false),
                     MatchId = table.Column<int>(nullable: false),
                     Nombre = table.Column<int>(nullable: false),
@@ -213,7 +219,7 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     JoueurId = table.Column<int>(nullable: false),
                     MatchId = table.Column<int>(nullable: false),
                     TypeVote = table.Column<string>(nullable: true),

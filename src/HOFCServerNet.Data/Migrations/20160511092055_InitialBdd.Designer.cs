@@ -5,17 +5,16 @@ using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
 using HOFCServerNet.Data.Models;
 
-namespace HOFCServerNet.Data.Migrations.Bdd
+namespace HOFCServerNet.Data.Migrations
 {
     [DbContext(typeof(BddContext))]
-    [Migration("20160415130138_Initial")]
-    partial class Initial
+    [Migration("20160511092055_InitialBdd")]
+    partial class InitialBdd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348");
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Actu", b =>
                 {
@@ -47,6 +46,8 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                     b.Property<int>("Bp");
 
                     b.Property<string>("Categorie");
+
+                    b.Property<int?>("CompetitionId");
 
                     b.Property<int>("Defaite");
 
@@ -196,6 +197,13 @@ namespace HOFCServerNet.Data.Migrations.Bdd
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("HOFCServerNet.Data.Models.Classement", b =>
+                {
+                    b.HasOne("HOFCServerNet.Data.Models.Competition")
+                        .WithMany()
+                        .HasForeignKey("CompetitionId");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Composition", b =>
