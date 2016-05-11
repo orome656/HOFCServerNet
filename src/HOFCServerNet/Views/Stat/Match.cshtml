@@ -26,7 +26,7 @@
 
 @if (User.IsInRole("Contributor"))
 {
-    @using (Html.BeginForm())
+    using (Html.BeginForm())
     {
         <h2>Ajouter une stat</h2>
         @Html.HiddenFor(model => model.Match.Id);

@@ -70,6 +70,19 @@ namespace HOFCServerNet.Services
             }
         }
 
+        internal void DeleteMatchComposition(int id)
+        {
+            using (var bddContext = new Models.BddContext())
+            {
+                var listCompo = bddContext.Compositions.Where(c => c.Match.Id == id).ToList();
+                if (listCompo != null && listCompo.Count > 0)
+                {
+                    bddContext.RemoveRange(listCompo);
+                    bddContext.SaveChanges();
+                }
+            }
+        }
+
         public List<Models.Poste> GetPostes()
         {
             using (var bddContext = new Models.BddContext())

@@ -6,8 +6,8 @@ using HtmlAgilityPack;
 using System.Net.Http;
 using System.Globalization;
 using HOFCServerNet.Data.Models;
-using HOFCServerParser.Constants;
 using HOFCServerParser.Database;
+using HOFCServerNet.Utils.Common;
 
 namespace HOFCServerParser.Parsers
 {
@@ -45,7 +45,7 @@ namespace HOFCServerParser.Parsers
         protected override IEnumerable<HtmlNode> GetLines()
         {
             var httpClient = new HttpClient();
-            string html = httpClient.GetStringAsync(URLMiseAJour.Journee[Categorie] + IdJournee).Result;
+            string html = httpClient.GetStringAsync(Program.Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":" + Categorie + ":JourneeURL"] + IdJournee).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;

@@ -52,7 +52,7 @@
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
         @foreach (var match in Model.Matchs)
         {
-            <li><a asp-controller="Stat" asp-action="Match" asp-route-id="@match.Id" />@match.Date : @match.Date.ToShortDateString() @match.Equipe1 - @match.Equipe2</li>
+            <li><a asp-controller="Stat" asp-action="Match" asp-route-id="@match.Id" />@match.Date.ToString("dd/MM/yyyy HH:mm") : @match.Equipe1 - @match.Equipe2</li>
         }
     </ul>
 </div>

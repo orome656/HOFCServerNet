@@ -52,7 +52,7 @@ namespace HOFCServerParser
         {
             foreach (string name in equipes)
             {
-                var classementParser = new ClassementParser(name, Configuration["Parser:" + name + ":NomCompetition"]);
+                var classementParser = new ClassementParser(name, Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":" + name + ":NomCompetition"]);
                 classementParser.Parse();
             }
         }
