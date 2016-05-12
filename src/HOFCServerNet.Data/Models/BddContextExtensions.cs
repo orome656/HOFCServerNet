@@ -27,7 +27,7 @@ namespace HOFCServerNet.Data.Models
                 context.SaveChanges();
             }
 
-            if(!context.Competitions.Any())
+            /*if(!context.Competitions.Any())
             {
                 context.Competitions.Add(new Competition()
                 {
@@ -150,7 +150,7 @@ namespace HOFCServerNet.Data.Models
                     Categorie = "u17"
                 });
                 context.SaveChanges();
-            }
+            }*/
         }
     }
 }

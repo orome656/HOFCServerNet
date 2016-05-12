@@ -25,7 +25,12 @@ namespace HOFCServerParser.Parsers
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;
-            var lines = root.SelectSingleNode("//table[@class='tablo bordure ac']").Descendants().Where(n => n.Name == "tr" && n.ParentNode.Name == "table");
+            var rootNode = root.SelectSingleNode("//table[@class='tablo bordure ac']");
+            IEnumerable<HtmlNode> lines = null;
+            if (rootNode != null) {
+                lines = rootNode.Descendants()
+                                .Where(n => n.Name == "tr" && n.ParentNode.Name == "table");
+            }
             return lines;
         }
 
@@ -61,7 +66,16 @@ namespace HOFCServerParser.Parsers
         {
             using(var bddContext = new BddContext()) {
                 Competition competition = bddContext.Competitions.FirstOrDefault(c => c.Nom.Equals(this.CompetitionName) && c.Saison.Equals(SeasonTool.GetSeasonIndex()));
-                foreach(Classement classement in list)
+                if(competition == null)
+                {
+                    competition = new Competition()
+                    {
+                        Categorie = this.Categorie,
+                        Nom = this.CompetitionName,
+                        Saison = SeasonTool.GetSeasonIndex()
+                    };
+                }
+                foreach (Classement classement in list)
                 {
                     if (bddContext.Classements.Any(item => classement.Equipe.Equals(item.Equipe) && this.Categorie.Equals(item.Categorie)))
                     {
@@ -80,6 +94,7 @@ namespace HOFCServerParser.Parsers
                     }
                     else
                     {
+                        
                         classement.Competition = competition;
                         // New Element insert it
                         bddContext.Classements.Add(classement);

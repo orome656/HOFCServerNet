@@ -11,13 +11,17 @@ namespace HOFCServerParser.Parsers
             Console.WriteLine("Load Start");
 			var lines = GetLines();
 			var modelsToSave = new List<T>();
-            foreach(var line in lines)
+            if(lines != null)
             {
-                modelsToSave.Add(ParseLine(line));
+                foreach (var line in lines)
+                {
+                    modelsToSave.Add(ParseLine(line));
+                }
+                if (modelsToSave.Count > 0)
+                {
+                    SaveToBDD(modelsToSave);
+                }
             }
-			if(modelsToSave.Count > 0) {
-				SaveToBDD(modelsToSave);
-			}
             Console.WriteLine("Load End");
         }
 		

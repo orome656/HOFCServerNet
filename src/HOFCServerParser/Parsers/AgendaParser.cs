@@ -44,10 +44,15 @@ namespace HOFCServerParser.Parsers
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var root = document.DocumentNode;
-            var lines = root
-                .SelectSingleNode("//div[@id='refpop']")
-                .Descendants("div")
-                .Where(n => (n.GetAttributeValue("class", "").Equals("resultatmatch bgbleu rm")));
+            var rootNode = root.SelectSingleNode("//div[@id='refpop']");
+            IEnumerable<HtmlNode> lines = null;
+            if (rootNode != null)
+            {
+                lines = rootNode
+                    .Descendants("div")
+                    .Where(n => (n.GetAttributeValue("class", "").Equals("resultatmatch bgbleu rm")));
+
+            }
             return lines;
         }
 
