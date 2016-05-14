@@ -3,6 +3,8 @@ using HOFCServerNet.Data.Models;
 using HOFCServerNet.Utils.Common;
 using HOFCServerParser.Parsers;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using NLog;
 using System;
 
 namespace HOFCServerParser
@@ -10,14 +12,17 @@ namespace HOFCServerParser
     public class Program
     {
         public static IConfigurationRoot Configuration { get; set; }
+        private static Logger Logger = LogManager.GetCurrentClassLogger();
 
         public static void Main(string[] args)
         {
+            Logger.Info("Update Batch Starting");
+
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
-
+            
             string[] equipe = new string[] { "equipe1", "equipe2", "equipe3"};
 
             // Parsing classement
@@ -31,6 +36,8 @@ namespace HOFCServerParser
 
             // Parsing des pages par journées
             ParseJournees();
+
+            Logger.Info("Update Batch End");
         }
 
         private static void ParseCalendriers(string[] equipes)
