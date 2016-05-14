@@ -13,7 +13,7 @@ namespace HOFCServerParser.Parsers
 		public string Categorie;
         public string CompetitionName { get; set; }
 
-        public ClassementParser(string _category, string _competitionName) 
+        public ClassementParser(string _category, string _competitionName) : base()
         {
             this.Categorie = _category;
             this.CompetitionName = _competitionName;

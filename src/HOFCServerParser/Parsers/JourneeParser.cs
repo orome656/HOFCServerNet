@@ -18,7 +18,7 @@ namespace HOFCServerParser.Parsers
         private string Competition { get; }
         private string SeasonIndex { get; }
 
-        public JourneeParser(string categorie, int idJournee, string competition, string seasonIndex)
+        public JourneeParser(string categorie, int idJournee, string competition, string seasonIndex) : base()
         {
             Categorie = categorie;
             IdJournee = idJournee;

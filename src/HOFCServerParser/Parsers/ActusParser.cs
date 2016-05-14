@@ -23,7 +23,8 @@ namespace HOFCServerParser.Parsers
                 .SelectSingleNode("//div[@id='content']")
                 .Descendants("div")
                 .Where(n => (n.GetAttributeValue("class", "").Equals("post")));
-            
+
+            Logger.Info("Got " + lines.Count() + " lines");
             return lines;
         }
 
