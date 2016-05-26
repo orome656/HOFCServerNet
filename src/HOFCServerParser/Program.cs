@@ -2,16 +2,19 @@
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Utils.Common;
 using HOFCServerParser.Parsers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog;
 using System;
+using System.IO;
 
 namespace HOFCServerParser
 {
     public class Program
     {
         public static IConfigurationRoot Configuration { get; set; }
+        public static DbContextOptions<BddContext> Options { get; set; }
         private static Logger Logger = LogManager.GetCurrentClassLogger();
 
         public static void Main(string[] args)
@@ -19,10 +22,16 @@ namespace HOFCServerParser
             Logger.Info("Update Batch Starting");
 
             var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             
+            DbContextOptionsBuilder<BddContext> options = new DbContextOptionsBuilder<BddContext>();
+            options.UseSqlite(Program.Configuration["Data:DefaultConnection:ConnectionString"]);
+
+            Options = options.Options;
+
             string[] equipe = new string[] { "equipe1", "equipe2", "equipe3"};
 
             // Parsing classement

@@ -5,6 +5,7 @@ using System.Net.Http;
 using HtmlAgilityPack;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Utils.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace HOFCServerParser.Parsers
 {
@@ -64,7 +65,7 @@ namespace HOFCServerParser.Parsers
 
         protected override void SaveToBDD(List<Classement> list)
         {
-            using(var bddContext = new BddContext()) {
+            using (var bddContext = new BddContext(Program.Options)) {
                 Competition competition = bddContext.Competitions.FirstOrDefault(c => c.Nom.Equals(this.CompetitionName) && c.Saison.Equals(SeasonTool.GetSeasonIndex()));
                 if(competition == null)
                 {
@@ -90,7 +91,7 @@ namespace HOFCServerParser.Parsers
                         bddClassement.Bc = classement.Bc;
                         bddClassement.Difference = classement.Difference;
                         
-                        bddContext.Entry(bddClassement).State = Microsoft.Data.Entity.EntityState.Modified;
+                        bddContext.Entry(bddClassement).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     }
                     else
                     {

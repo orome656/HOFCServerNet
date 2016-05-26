@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using HOFCServerNet.Services;
 using HOFCServerNet.ViewModels.Vote;
 using System.Security.Claims;
 using HOFCServerNet.Data.Models;
-using Microsoft.AspNet.Authorization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,12 +19,14 @@ namespace HOFCServerNet.Controllers
         private VoteService VoteService { get; set; }
         private MatchService MatchService { get; set; }
         private JoueurService JoueurService { get; set; }
+        private UserManager<ApplicationUser> UserManager { get; set; }
 
-        public VoteController(VoteService _voteService, MatchService _matchService, JoueurService _joueurService)
+        public VoteController(VoteService _voteService, MatchService _matchService, JoueurService _joueurService, UserManager<ApplicationUser> _userManager)
         {
             VoteService = _voteService;
             MatchService = _matchService;
             JoueurService = _joueurService;
+            UserManager = _userManager;
         }
 
         // GET: /<controller>/
@@ -39,7 +42,7 @@ namespace HOFCServerNet.Controllers
         public IActionResult Details(int id)
         {
             VoteDetailsViewModel viewModel = new VoteDetailsViewModel();
-            viewModel.Votes = VoteService.GetForUserAndMatch(User.GetUserId(), id);
+            viewModel.Votes = VoteService.GetForUserAndMatch(UserManager.GetUserId(User), id);
             viewModel.Joueurs = JoueurService.GetAllForMatch(id);
             viewModel.MatchId = id;
             return View(viewModel);
@@ -49,7 +52,7 @@ namespace HOFCServerNet.Controllers
         [Authorize]
         public IActionResult Details(VoteDetailsViewModel viewModel)
         {
-            VoteService.SaveVotes(viewModel.Votes, viewModel.MatchId, User.GetUserId());
+            VoteService.SaveVotes(viewModel.Votes, viewModel.MatchId, UserManager.GetUserId(User));
 
             return RedirectToAction("Details");
         }

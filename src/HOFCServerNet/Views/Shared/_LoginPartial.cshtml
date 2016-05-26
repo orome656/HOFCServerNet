@@ -1,6 +1,9 @@
 ﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@using HOFCServerNet.Data.Models;
+@inject SignInManager<ApplicationUser> SignInManager
 
-@if (User.IsSignedIn())
+@if (SignInManager.IsSignedIn(User))
 {
     <li><a asp-controller="Profile" asp-action="Index">Profile</a></li>
     <li><a asp-controller="Account" asp-action="LogOff">Se déconnecter</a></li>

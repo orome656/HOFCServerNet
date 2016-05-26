@@ -1,8 +1,8 @@
-using System;
-using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Infrastructure;
-using Microsoft.Data.Entity.Metadata;
-using Microsoft.Data.Entity.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using HOFCServerNet.Data.Models;
 
 namespace HOFCServerNet.Data.Migrations
@@ -13,7 +13,7 @@ namespace HOFCServerNet.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348");
+                .HasAnnotation("ProductVersion", "1.0.0-rc2-20901");
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Actu", b =>
                 {
@@ -33,6 +33,8 @@ namespace HOFCServerNet.Data.Migrations
                     b.Property<string>("URL");
 
                     b.HasKey("Id");
+
+                    b.ToTable("Actus");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Classement", b =>
@@ -63,6 +65,10 @@ namespace HOFCServerNet.Data.Migrations
                     b.Property<int>("Victoire");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompetitionId");
+
+                    b.ToTable("Classements");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Competition", b =>
@@ -77,6 +83,8 @@ namespace HOFCServerNet.Data.Migrations
                     b.Property<string>("Saison");
 
                     b.HasKey("Id");
+
+                    b.ToTable("Competitions");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Composition", b =>
@@ -91,6 +99,14 @@ namespace HOFCServerNet.Data.Migrations
                     b.Property<int?>("PosteId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JoueurId");
+
+                    b.HasIndex("MatchId");
+
+                    b.HasIndex("PosteId");
+
+                    b.ToTable("Compositions");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Joueur", b =>
@@ -105,6 +121,8 @@ namespace HOFCServerNet.Data.Migrations
                     b.Property<string>("Prenom");
 
                     b.HasKey("Id");
+
+                    b.ToTable("Joueurs");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.JoueurPoste", b =>
@@ -114,6 +132,12 @@ namespace HOFCServerNet.Data.Migrations
                     b.Property<int>("IdPoste");
 
                     b.HasKey("IdJoueur", "IdPoste");
+
+                    b.HasIndex("IdJoueur");
+
+                    b.HasIndex("IdPoste");
+
+                    b.ToTable("JoueurPoste");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Match", b =>
@@ -140,6 +164,10 @@ namespace HOFCServerNet.Data.Migrations
                     b.Property<int>("VoteStatut");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompetitionId");
+
+                    b.ToTable("Matchs");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.NotificationClient", b =>
@@ -152,6 +180,8 @@ namespace HOFCServerNet.Data.Migrations
                     b.Property<string>("UUID");
 
                     b.HasKey("ID");
+
+                    b.ToTable("NotificationClients");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Poste", b =>
@@ -163,6 +193,8 @@ namespace HOFCServerNet.Data.Migrations
                         .HasAnnotation("MaxLength", 10);
 
                     b.HasKey("Id");
+
+                    b.ToTable("Postes");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Stat", b =>
@@ -179,6 +211,12 @@ namespace HOFCServerNet.Data.Migrations
                     b.Property<int>("TypeStat");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JoueurId");
+
+                    b.HasIndex("MatchId");
+
+                    b.ToTable("Stats");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Vote", b =>
@@ -191,11 +229,17 @@ namespace HOFCServerNet.Data.Migrations
                     b.Property<int>("MatchId");
 
                     b.Property<string>("TypeVoteString")
-                        .HasAnnotation("Relational:ColumnName", "TypeVote");
+                        .HasColumnName("TypeVote");
 
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JoueurId");
+
+                    b.HasIndex("MatchId");
+
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Classement", b =>
@@ -224,40 +268,47 @@ namespace HOFCServerNet.Data.Migrations
                 {
                     b.HasOne("HOFCServerNet.Data.Models.Joueur")
                         .WithMany()
-                        .HasForeignKey("IdJoueur");
+                        .HasForeignKey("IdJoueur")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("HOFCServerNet.Data.Models.Poste")
                         .WithMany()
-                        .HasForeignKey("IdPoste");
+                        .HasForeignKey("IdPoste")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Match", b =>
                 {
                     b.HasOne("HOFCServerNet.Data.Models.Competition")
                         .WithMany()
-                        .HasForeignKey("CompetitionId");
+                        .HasForeignKey("CompetitionId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Stat", b =>
                 {
                     b.HasOne("HOFCServerNet.Data.Models.Joueur")
                         .WithMany()
-                        .HasForeignKey("JoueurId");
+                        .HasForeignKey("JoueurId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("HOFCServerNet.Data.Models.Match")
                         .WithMany()
-                        .HasForeignKey("MatchId");
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Vote", b =>
                 {
                     b.HasOne("HOFCServerNet.Data.Models.Joueur")
                         .WithMany()
-                        .HasForeignKey("JoueurId");
+                        .HasForeignKey("JoueurId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("HOFCServerNet.Data.Models.Match")
                         .WithMany()
-                        .HasForeignKey("MatchId");
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

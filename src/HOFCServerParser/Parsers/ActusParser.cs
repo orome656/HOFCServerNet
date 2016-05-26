@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using HOFCServerParser.Utils;
 using System.Globalization;
 using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace HOFCServerParser.Parsers
 {
@@ -53,7 +54,8 @@ namespace HOFCServerParser.Parsers
         protected override void SaveToBDD(List<Actu> list)
         {
             AndroidGCMNotificationSender sender = new AndroidGCMNotificationSender();
-            using(var bddContext = new BddContext()) {
+            
+            using (var bddContext = new BddContext(Program.Options)) {
                 foreach(Actu actu in list)
                 {
                     if(bddContext.Actus.Any(item => item.PostId == actu.PostId))
@@ -66,7 +68,7 @@ namespace HOFCServerParser.Parsers
                         bddActu.URL = actu.URL;
                         bddActu.Date = actu.Date;
 
-                        bddContext.Entry(bddActu).State = Microsoft.Data.Entity.EntityState.Modified;
+                        bddContext.Entry(bddActu).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     }
                     else
                     {

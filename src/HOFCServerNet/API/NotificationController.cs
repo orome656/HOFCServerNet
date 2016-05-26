@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Services;
 
@@ -13,7 +13,6 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class NotificationController : Controller
     {
-        [FromServices]
         public NotificationService Service { get; set; }
 
         public NotificationController(NotificationService _service)

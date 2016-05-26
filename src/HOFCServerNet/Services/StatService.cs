@@ -4,112 +4,113 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HOFCServerNet.ViewModels.Stat;
-using Microsoft.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HOFCServerNet.Services
 {
     public class StatService
     {
+
+        public BddContext BddContext { get; set; }
+        public StatService(BddContext dbContext)
+        {
+            BddContext = dbContext;
+        }
+
         public List<Stat> GetSeasonStat()
         {
-            using(var bddContext = new BddContext())
+            var stats = BddContext.Stats
+                             .GroupBy(x => new { x.JoueurId, x.TypeStat })
+                             .Select(x => new Stat { JoueurId = x.Key.JoueurId, TypeStat = x.Key.TypeStat, Nombre = x.Count() })
+                             .ToList();
+            foreach (var stat in stats)
             {
-                var stats =  bddContext.Stats
-                                 .GroupBy(x => new { x.JoueurId, x.TypeStat })
-                                 .Select(x => new Stat { JoueurId = x.Key.JoueurId, TypeStat = x.Key.TypeStat, Nombre = x.Count() })
-                                 .ToList();
-                foreach(var stat in stats)
-                {
-                    stat.Joueur = bddContext.Joueurs.FirstOrDefault(j => j.Id == stat.JoueurId);
-                }
-                return stats;
+                stat.Joueur = BddContext.Joueurs.FirstOrDefault(j => j.Id == stat.JoueurId);
             }
+            return stats;
         }
 
         public List<StatViewModel> GetStatsForMatch(int matchId)
         {
-            using (var bddContext = new BddContext())
+            BddContext.ChangeTracker.AutoDetectChangesEnabled = false;
+            List<StatViewModel> results = new List<StatViewModel>();
+
+            /*
+            bddContext.Set<StatViewModel>().FromSql("select a.JoueurId, a.Nombre as Nombre, b.Nombre as NbPasse from "
+                                      + "(select * from Stat where TypeStat = 0) a "
+                                      + "full join "
+                                      + "(select * from Stat where TypeStat = 1) b "
+                                      + "on b.JoueurId = a.JoueurId; ").ToList();
+            */
+
+
+            var butRequest = (from s1 in BddContext.Stats
+                              where s1.MatchId == matchId && s1.TypeStat == (int)Data.Enums.TypeStat.BUT
+                              select s1).Include(s => s.Joueur).ToList();
+
+            var passRequest = (from s1 in BddContext.Stats
+                               where s1.MatchId == matchId && s1.TypeStat == (int)Data.Enums.TypeStat.PASSE
+                               select s1).Include(s => s.Joueur).ToList();
+
+            while (butRequest.Count > 0)
             {
-                bddContext.ChangeTracker.AutoDetectChangesEnabled = false;
-                List<StatViewModel> results = new List<StatViewModel>();
+                var butStat = butRequest.First();
 
-                /*
-                bddContext.Set<StatViewModel>().FromSql("select a.JoueurId, a.Nombre as Nombre, b.Nombre as NbPasse from "
-                                          + "(select * from Stat where TypeStat = 0) a "
-                                          + "full join "
-                                          + "(select * from Stat where TypeStat = 1) b "
-                                          + "on b.JoueurId = a.JoueurId; ").ToList();
-                */
+                StatViewModel statVm = new StatViewModel();
+                statVm.Joueur = butStat.Joueur;
+                statVm.NbBut = butStat.Nombre;
 
-
-                var butRequest = (from s1 in bddContext.Stats
-                                  where s1.MatchId == matchId && s1.TypeStat == (int)Data.Enums.TypeStat.BUT
-                                  select s1).Include(s => s.Joueur).ToList();
-
-                var passRequest = (from s1 in bddContext.Stats
-                                   where s1.MatchId == matchId && s1.TypeStat == (int)Data.Enums.TypeStat.PASSE
-                                   select s1).Include(s => s.Joueur).ToList();
-                
-                while (butRequest.Count > 0)
+                if (passRequest.Count > 0)
                 {
-                    var butStat = butRequest.First();
+                    var passStat = passRequest.Where(p => p.JoueurId == butStat.JoueurId).FirstOrDefault();
+                    if (passStat != null)
+                    {
+                        statVm.NbPasse = passStat.Nombre;
+                        passRequest.Remove(passStat);
+                    }
+
+                }
+                butRequest.Remove(butStat);
+                results.Add(statVm);
+            }
+
+            if (passRequest.Count > 0)
+            {
+                while (passRequest.Count > 0)
+                {
+                    var passeStat = passRequest.First();
 
                     StatViewModel statVm = new StatViewModel();
-                    statVm.Joueur = butStat.Joueur;
-                    statVm.NbBut = butStat.Nombre;
+                    statVm.Joueur = passeStat.Joueur;
+                    statVm.NbPasse = passeStat.Nombre;
 
-                    if(passRequest.Count > 0)
-                    {
-                        var passStat = passRequest.Where(p => p.JoueurId == butStat.JoueurId).FirstOrDefault();
-                        if (passStat != null)
-                        {
-                            statVm.NbPasse = passStat.Nombre;
-                            passRequest.Remove(passStat);
-                        }
-
-                    }
-                    butRequest.Remove(butStat);
+                    passRequest.Remove(passeStat);
                     results.Add(statVm);
                 }
-
-                if(passRequest.Count > 0)
-                {
-                    while (passRequest.Count > 0)
-                    {
-                        var passeStat = passRequest.First();
-
-                        StatViewModel statVm = new StatViewModel();
-                        statVm.Joueur = passeStat.Joueur;
-                        statVm.NbPasse = passeStat.Nombre;
-
-                        passRequest.Remove(passeStat);
-                        results.Add(statVm);
-                    }
-                }
-
-                /*
-                var test = from s1 in bddContext.Stats
-                where s1.MatchId == matchId && s1.TypeStatEnum == Data.Enums.TypeStat.BUT
-                join s2 in bddContext.Stats on s1.JoueurId equals s2.JoueurId
-                where s2.MatchId == matchId && s2.TypeStatEnum == Data.Enums.TypeStat.PASSE
-                select new StatViewModel() { Joueur = s1.Joueur, NbBut = s1.Nombre, NbPasse = s2.Nombre };
-                var result = test.ToList();
-                */
-                /*
-                bddContext.Stats.Where(x => x.Match.Id == matchId && x.TypeStatEnum == Data.Enums.TypeStat.BUT)
-                                .Join(bddContext.Stats.Where(x => x.Match.Id == matchId && x.TypeStatEnum == Data.Enums.TypeStat.PASSE), x => x.Joueur, y => y.Joueur, (x, y) => new StatViewModel() { Joueur = x.Joueur, NbBut = x.Nombre, NbPasse = y.Nombre })
-                                .ToList();*/
-                /*
-                List<StatViewModel> results =  bddContext.Stats
-                                 .Where(x => x.Match.Id == matchId && x.TypeStatEnum == Data.Enums.TypeStat.BUT)
-                                 .Include(x => x.Joueur)
-                                 .Join(bddContext.Stats, x => x.JoueurId, y => y.JoueurId, (x,y) =>  new { Joueur = x.Joueur, TypeY = y.TypeStatEnum, NbBut = x.Nombre, NbPasse = y.Nombre})
-                                 .Where(g => g.TypeY == Data.Enums.TypeStat.PASSE)
-                                 .Select(g => new StatViewModel() { Joueur = g.Joueur, NbBut = g.NbBut, NbPasse = g.NbPasse})
-                                 .ToList();
-                */
-                return results;
             }
+
+            /*
+            var test = from s1 in bddContext.Stats
+            where s1.MatchId == matchId && s1.TypeStatEnum == Data.Enums.TypeStat.BUT
+            join s2 in bddContext.Stats on s1.JoueurId equals s2.JoueurId
+            where s2.MatchId == matchId && s2.TypeStatEnum == Data.Enums.TypeStat.PASSE
+            select new StatViewModel() { Joueur = s1.Joueur, NbBut = s1.Nombre, NbPasse = s2.Nombre };
+            var result = test.ToList();
+            */
+            /*
+            bddContext.Stats.Where(x => x.Match.Id == matchId && x.TypeStatEnum == Data.Enums.TypeStat.BUT)
+                            .Join(bddContext.Stats.Where(x => x.Match.Id == matchId && x.TypeStatEnum == Data.Enums.TypeStat.PASSE), x => x.Joueur, y => y.Joueur, (x, y) => new StatViewModel() { Joueur = x.Joueur, NbBut = x.Nombre, NbPasse = y.Nombre })
+                            .ToList();*/
+            /*
+            List<StatViewModel> results =  bddContext.Stats
+                             .Where(x => x.Match.Id == matchId && x.TypeStatEnum == Data.Enums.TypeStat.BUT)
+                             .Include(x => x.Joueur)
+                             .Join(bddContext.Stats, x => x.JoueurId, y => y.JoueurId, (x,y) =>  new { Joueur = x.Joueur, TypeY = y.TypeStatEnum, NbBut = x.Nombre, NbPasse = y.Nombre})
+                             .Where(g => g.TypeY == Data.Enums.TypeStat.PASSE)
+                             .Select(g => new StatViewModel() { Joueur = g.Joueur, NbBut = g.NbBut, NbPasse = g.NbPasse})
+                             .ToList();
+            */
+            return results;
         }
 
         internal void SaveStat(MatchStatViewModel viewModel)
@@ -122,18 +123,14 @@ namespace HOFCServerNet.Services
                 Nombre = viewModel.Nombre
             };
 
-            using(var bddContext = new BddContext())
+            if (BddContext.Stats.Where(s => s.JoueurId == stat.JoueurId && s.MatchId == stat.MatchId && s.TypeStat == stat.TypeStat).Any())
             {
-                if(bddContext.Stats.Where(s => s.JoueurId == stat.JoueurId && s.MatchId == stat.MatchId && s.TypeStat == stat.TypeStat).Any())
-                {
-                    List<Stat> listStat = bddContext.Stats.Where(s => s.JoueurId == stat.JoueurId && s.MatchId == stat.MatchId && s.TypeStat == stat.TypeStat).ToList();
-                    foreach(Stat s in listStat)
-                        bddContext.Stats.Remove(s);
-                }
-                bddContext.Stats.Add(stat);
-                bddContext.SaveChanges();
+                List<Stat> listStat = BddContext.Stats.Where(s => s.JoueurId == stat.JoueurId && s.MatchId == stat.MatchId && s.TypeStat == stat.TypeStat).ToList();
+                foreach (Stat s in listStat)
+                    BddContext.Stats.Remove(s);
             }
-
+            BddContext.Stats.Add(stat);
+            BddContext.SaveChanges();
         }
     }
 }

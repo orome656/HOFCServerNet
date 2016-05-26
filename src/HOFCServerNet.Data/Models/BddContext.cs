@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace HOFCServerNet.Data.Models
@@ -16,15 +16,7 @@ namespace HOFCServerNet.Data.Models
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Stat> Stats { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile("appsettings.json");
-            configurationBuilder.AddEnvironmentVariables();
-            var configuration = configurationBuilder.Build();
-            
-            optionsBuilder.UseSqlite(configuration["Data:DefaultConnection:ConnectionString"]);
-        }
+        public BddContext(DbContextOptions<BddContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

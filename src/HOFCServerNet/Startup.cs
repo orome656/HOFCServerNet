@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using HOFCServerNet.Data.Models;
-using Microsoft.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using HOFCServerNet.Services;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Diagnostics.Entity;
-using Microsoft.AspNet.Authentication.Google;
-using Microsoft.AspNet.Authentication.Facebook;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.IO;
 
 namespace HOFCServerNet
 {
@@ -23,6 +18,7 @@ namespace HOFCServerNet
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -34,9 +30,9 @@ namespace HOFCServerNet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEntityFramework()
-                    .AddSqlite()
-                    .AddDbContext<BddContext>()
-                    .AddDbContext<ApplicationDbContext>();
+                    .AddEntityFrameworkSqlite()
+                    .AddDbContext<BddContext>(options => options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]))
+                    .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -82,10 +78,10 @@ namespace HOFCServerNet
                 app.UseDatabaseErrorPage();
             }
 
-            app.UseIISPlatformHandler(options =>
+            /*app.UseIISPlatformHandler(options =>
             {
                 options.AuthenticationDescriptions.Clear();
-            });
+            });*/
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -117,6 +113,17 @@ namespace HOFCServerNet
         }
 
         // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+        public static void Main(string[] args)
+        {
+            var host = new WebHostBuilder()
+                              .UseKestrel()
+                              .UseContentRoot(Directory.GetCurrentDirectory())
+                              .UseIISIntegration()
+                              .UseStartup<Startup>()
+                              .Build();
+
+            host.Run();
+            //WebApplication.Run<Startup>(args);
+        }
     }
 }

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using HOFCServerNet.Services;
 using HOFCServerNet.Data.Models;
-using Microsoft.AspNet.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using HOFCServerNet.ViewModels.Joueur;
 using HOFCServerNet.Constants;
 
@@ -61,7 +61,7 @@ namespace HOFCServerNet.API
             ServiceConstants.DELETE_STATUT statut = Service.Delete(id);
             if(ServiceConstants.DELETE_STATUT.INCONNU.Equals(statut))
             {
-                return HttpNotFound();
+                return NotFound();
             }
             else
             {

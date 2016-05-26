@@ -1,19 +1,19 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Microsoft.Data.Entity.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HOFCServerNet.Data.Migrations
 {
-    public partial class InitialBdd : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Actu",
+                name: "Actus",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Autoincrement", true),
                     Date = table.Column<DateTime>(nullable: false),
                     ImageURL = table.Column<string>(nullable: true),
                     PostId = table.Column<int>(nullable: false),
@@ -23,67 +23,72 @@ namespace HOFCServerNet.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Actu", x => x.Id);
+                    table.PrimaryKey("PK_Actus", x => x.Id);
                 });
+
             migrationBuilder.CreateTable(
-                name: "Competition",
+                name: "Competitions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Autoincrement", true),
                     Categorie = table.Column<string>(nullable: true),
                     Nom = table.Column<string>(nullable: true),
                     Saison = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Competition", x => x.Id);
+                    table.PrimaryKey("PK_Competitions", x => x.Id);
                 });
+
             migrationBuilder.CreateTable(
-                name: "Joueur",
+                name: "Joueurs",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Autoincrement", true),
                     Categorie = table.Column<string>(nullable: true),
                     Nom = table.Column<string>(nullable: true),
                     Prenom = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Joueur", x => x.Id);
+                    table.PrimaryKey("PK_Joueurs", x => x.Id);
                 });
+
             migrationBuilder.CreateTable(
-                name: "NotificationClient",
+                name: "NotificationClients",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Autoincrement", true),
                     NotificationID = table.Column<string>(nullable: true),
                     UUID = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NotificationClient", x => x.ID);
+                    table.PrimaryKey("PK_NotificationClients", x => x.ID);
                 });
+
             migrationBuilder.CreateTable(
-                name: "Poste",
+                name: "Postes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Autoincrement", true),
                     Nom = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Poste", x => x.Id);
+                    table.PrimaryKey("PK_Postes", x => x.Id);
                 });
+
             migrationBuilder.CreateTable(
-                name: "Classement",
+                name: "Classements",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Autoincrement", true),
                     Bc = table.Column<int>(nullable: false),
                     Bp = table.Column<int>(nullable: false),
                     Categorie = table.Column<string>(nullable: true),
@@ -98,20 +103,21 @@ namespace HOFCServerNet.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classement", x => x.Id);
+                    table.PrimaryKey("PK_Classements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Classement_Competition_CompetitionId",
+                        name: "FK_Classements_Competitions_CompetitionId",
                         column: x => x.CompetitionId,
-                        principalTable: "Competition",
+                        principalTable: "Competitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
             migrationBuilder.CreateTable(
-                name: "Match",
+                name: "Matchs",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Autoincrement", true),
                     CompetitionId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Equipe1 = table.Column<string>(nullable: true),
@@ -124,14 +130,15 @@ namespace HOFCServerNet.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Match", x => x.Id);
+                    table.PrimaryKey("PK_Matchs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Match_Competition_CompetitionId",
+                        name: "FK_Matchs_Competitions_CompetitionId",
                         column: x => x.CompetitionId,
-                        principalTable: "Competition",
+                        principalTable: "Competitions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
             migrationBuilder.CreateTable(
                 name: "JoueurPoste",
                 columns: table => new
@@ -143,56 +150,58 @@ namespace HOFCServerNet.Data.Migrations
                 {
                     table.PrimaryKey("PK_JoueurPoste", x => new { x.IdJoueur, x.IdPoste });
                     table.ForeignKey(
-                        name: "FK_JoueurPoste_Joueur_IdJoueur",
+                        name: "FK_JoueurPoste_Joueurs_IdJoueur",
                         column: x => x.IdJoueur,
-                        principalTable: "Joueur",
+                        principalTable: "Joueurs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_JoueurPoste_Poste_IdPoste",
+                        name: "FK_JoueurPoste_Postes_IdPoste",
                         column: x => x.IdPoste,
-                        principalTable: "Poste",
+                        principalTable: "Postes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
             migrationBuilder.CreateTable(
-                name: "Composition",
+                name: "Compositions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Autoincrement", true),
                     JoueurId = table.Column<int>(nullable: true),
                     MatchId = table.Column<int>(nullable: true),
                     PosteId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Composition", x => x.Id);
+                    table.PrimaryKey("PK_Compositions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Composition_Joueur_JoueurId",
+                        name: "FK_Compositions_Joueurs_JoueurId",
                         column: x => x.JoueurId,
-                        principalTable: "Joueur",
+                        principalTable: "Joueurs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Composition_Match_MatchId",
+                        name: "FK_Compositions_Matchs_MatchId",
                         column: x => x.MatchId,
-                        principalTable: "Match",
+                        principalTable: "Matchs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Composition_Poste_PosteId",
+                        name: "FK_Compositions_Postes_PosteId",
                         column: x => x.PosteId,
-                        principalTable: "Poste",
+                        principalTable: "Postes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
             migrationBuilder.CreateTable(
-                name: "Stat",
+                name: "Stats",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Autoincrement", true),
                     JoueurId = table.Column<int>(nullable: false),
                     MatchId = table.Column<int>(nullable: false),
                     Nombre = table.Column<int>(nullable: false),
@@ -200,26 +209,27 @@ namespace HOFCServerNet.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stat", x => x.Id);
+                    table.PrimaryKey("PK_Stats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Stat_Joueur_JoueurId",
+                        name: "FK_Stats_Joueurs_JoueurId",
                         column: x => x.JoueurId,
-                        principalTable: "Joueur",
+                        principalTable: "Joueurs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Stat_Match_MatchId",
+                        name: "FK_Stats_Matchs_MatchId",
                         column: x => x.MatchId,
-                        principalTable: "Match",
+                        principalTable: "Matchs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
             migrationBuilder.CreateTable(
-                name: "Vote",
+                name: "Votes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Autoincrement", true),
                     JoueurId = table.Column<int>(nullable: false),
                     MatchId = table.Column<int>(nullable: false),
                     TypeVote = table.Column<string>(nullable: true),
@@ -227,35 +237,111 @@ namespace HOFCServerNet.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vote", x => x.Id);
+                    table.PrimaryKey("PK_Votes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Vote_Joueur_JoueurId",
+                        name: "FK_Votes_Joueurs_JoueurId",
                         column: x => x.JoueurId,
-                        principalTable: "Joueur",
+                        principalTable: "Joueurs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Vote_Match_MatchId",
+                        name: "FK_Votes_Matchs_MatchId",
                         column: x => x.MatchId,
-                        principalTable: "Match",
+                        principalTable: "Matchs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classements_CompetitionId",
+                table: "Classements",
+                column: "CompetitionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Compositions_JoueurId",
+                table: "Compositions",
+                column: "JoueurId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Compositions_MatchId",
+                table: "Compositions",
+                column: "MatchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Compositions_PosteId",
+                table: "Compositions",
+                column: "PosteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JoueurPoste_IdJoueur",
+                table: "JoueurPoste",
+                column: "IdJoueur");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JoueurPoste_IdPoste",
+                table: "JoueurPoste",
+                column: "IdPoste");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matchs_CompetitionId",
+                table: "Matchs",
+                column: "CompetitionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stats_JoueurId",
+                table: "Stats",
+                column: "JoueurId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stats_MatchId",
+                table: "Stats",
+                column: "MatchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_JoueurId",
+                table: "Votes",
+                column: "JoueurId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_MatchId",
+                table: "Votes",
+                column: "MatchId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable("Actu");
-            migrationBuilder.DropTable("Classement");
-            migrationBuilder.DropTable("Composition");
-            migrationBuilder.DropTable("JoueurPoste");
-            migrationBuilder.DropTable("NotificationClient");
-            migrationBuilder.DropTable("Stat");
-            migrationBuilder.DropTable("Vote");
-            migrationBuilder.DropTable("Poste");
-            migrationBuilder.DropTable("Joueur");
-            migrationBuilder.DropTable("Match");
-            migrationBuilder.DropTable("Competition");
+            migrationBuilder.DropTable(
+                name: "Actus");
+
+            migrationBuilder.DropTable(
+                name: "Classements");
+
+            migrationBuilder.DropTable(
+                name: "Compositions");
+
+            migrationBuilder.DropTable(
+                name: "JoueurPoste");
+
+            migrationBuilder.DropTable(
+                name: "NotificationClients");
+
+            migrationBuilder.DropTable(
+                name: "Stats");
+
+            migrationBuilder.DropTable(
+                name: "Votes");
+
+            migrationBuilder.DropTable(
+                name: "Postes");
+
+            migrationBuilder.DropTable(
+                name: "Joueurs");
+
+            migrationBuilder.DropTable(
+                name: "Matchs");
+
+            migrationBuilder.DropTable(
+                name: "Competitions");
         }
     }
 }

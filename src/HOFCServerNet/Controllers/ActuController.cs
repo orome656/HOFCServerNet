@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using HOFCServerNet.Services;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.ViewModels.Actu;
@@ -48,7 +48,7 @@ namespace HOFCServerNet.Controllers
 
                 return View("Article", viewModel);
             }
-            return HttpNotFound();
+            return NotFound();
         }
     }
 }

@@ -8,12 +8,16 @@ namespace HOFCServerNet.Services
 {
     public class ActuService
     {
+        private BddContext BddContext { get; set; }
+
+        public ActuService(BddContext dbContext)
+        {
+            BddContext = dbContext;
+        }
+
         public List<Actu> GetAll()
         {
-            using(var dbContext = new BddContext())
-            {
-                return dbContext.Actus.OrderByDescending(item => item.Date).ToList();
-            }
+            return BddContext.Actus.OrderByDescending(item => item.Date).ToList();
         }
     }
 }

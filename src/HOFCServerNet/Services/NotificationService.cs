@@ -8,18 +8,21 @@ namespace HOFCServerNet.Services
 {
     public class NotificationService
     {
+        public BddContext BddContext { get; set; }
+        public NotificationService(BddContext dbContext)
+        {
+            BddContext = dbContext;
+        }
+
         public void AddNewClient(string uuid, string notificationId)
         {
-            using(var dbContext = new BddContext())
+            var notificationClient = new NotificationClient
             {
-                var notificationClient = new NotificationClient
-                {
-                    UUID = uuid,
-                    NotificationID = notificationId
-                };
-                dbContext.NotificationClients.Add(notificationClient);
-                dbContext.SaveChanges();
-            }
+                UUID = uuid,
+                NotificationID = notificationId
+            };
+            BddContext.NotificationClients.Add(notificationClient);
+            BddContext.SaveChanges();
         }
     }
 }

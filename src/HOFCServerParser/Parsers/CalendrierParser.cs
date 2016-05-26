@@ -142,7 +142,7 @@ namespace HOFCServerParser.Parsers
                         bddCalendrier.Score1 = calendrier.Score1;
                         bddCalendrier.Score2 = calendrier.Score2;
                         
-                        bddContext.Entry(bddCalendrier).State = Microsoft.Data.Entity.EntityState.Modified;
+                        bddContext.Entry(bddCalendrier).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     }
                     else
                     {

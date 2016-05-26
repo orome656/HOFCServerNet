@@ -31,5 +31,5 @@
 </nav>
 @foreach (Match match in matchs)
 {
-    @await Html.PartialAsync("~/Views/Match/Match", match);
+    @await Html.PartialAsync("~/Views/Match/Match.cshtml", match);
 }

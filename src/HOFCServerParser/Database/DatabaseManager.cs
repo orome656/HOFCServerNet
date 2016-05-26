@@ -1,4 +1,5 @@
 ﻿using HOFCServerNet.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace HOFCServerParser.Database
     {
         public void SaveMatchs(List<Match> matchs)
         {
-            using (var bddContext = new BddContext())
+            using (var bddContext = new BddContext(Program.Options))
             {
                 List<Competition> addedCompetitions = new List<Competition>();
                 foreach (Match calendrier in matchs)
@@ -23,18 +24,18 @@ namespace HOFCServerParser.Database
                         bddCalendrier.Date = calendrier.Date;
                         bddCalendrier.Score1 = calendrier.Score1;
                         bddCalendrier.Score2 = calendrier.Score2;
-                        if(calendrier.IdJournee != null)
+                        if (calendrier.IdJournee != null)
                         {
                             bddCalendrier.IdJournee = calendrier.IdJournee;
                         }
-                        bddContext.Entry(bddCalendrier).State = Microsoft.Data.Entity.EntityState.Modified;
+                        bddContext.Entry(bddCalendrier).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     }
                     else
                     {
                         if (!string.IsNullOrWhiteSpace(calendrier.Competition.Nom) && !addedCompetitions.Any(x => x.Nom == calendrier.Competition.Nom && x.Saison == calendrier.Competition.Saison))
                         {
                             var competitionBdd = bddContext.Competitions.FirstOrDefault(c => c.Nom == calendrier.Competition.Nom && c.Saison == calendrier.Competition.Saison);
-                            if(competitionBdd == null)
+                            if (competitionBdd == null)
                             {
                                 bddContext.Competitions.Add(calendrier.Competition);
                                 addedCompetitions.Add(calendrier.Competition);
@@ -44,7 +45,7 @@ namespace HOFCServerParser.Database
                                 if (string.IsNullOrEmpty(competitionBdd.Categorie))
                                 {
                                     competitionBdd.Categorie = calendrier.Competition.Categorie;
-                                    bddContext.Entry(competitionBdd).State = Microsoft.Data.Entity.EntityState.Modified;
+                                    bddContext.Entry(competitionBdd).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                                 }
                                 calendrier.Competition = competitionBdd;
                             }
