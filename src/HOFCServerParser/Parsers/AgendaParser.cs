@@ -32,7 +32,7 @@ namespace HOFCServerParser.Parsers
         // Date du début de la semaine au format DDMMYYYY : 04012016
         private string semaine = null;
 
-        public AgendaParser(string semaine)
+        public AgendaParser(string semaine): base()
         {
             this.semaine = semaine;
         }

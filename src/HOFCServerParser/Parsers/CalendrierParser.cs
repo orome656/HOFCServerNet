@@ -31,7 +31,7 @@ namespace HOFCServerParser.Parsers
         
         public string category;
 
-        public CalendrierParser(string category) 
+        public CalendrierParser(string category) : base()
         {
             this.category = category;
         }
