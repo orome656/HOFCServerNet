@@ -16,9 +16,11 @@ namespace HOFCServerParser.Parsers
 
 		public virtual void Parse()
         {
-            Console.WriteLine("Load Start");
-			var lines = GetLines();
-			var modelsToSave = new List<T>();
+            Logger.Info("Start Parsing " + this.GetType().Name);
+            Logger.Info("Start getting lines " + this.GetType().Name);
+            var lines = GetLines();
+            Logger.Info("End getting lines " + this.GetType().Name);
+            var modelsToSave = new List<T>();
             if(lines != null)
             {
                 foreach (var line in lines)
@@ -27,10 +29,15 @@ namespace HOFCServerParser.Parsers
                 }
                 if (modelsToSave.Count > 0)
                 {
+                    Logger.Info("Start saving to bdd " + this.GetType().Name);
                     SaveToBDD(modelsToSave);
+                    Logger.Info("End saving to bdd " + this.GetType().Name);
+                } else
+                {
+                    Logger.Info("Nothing to save for parser " + this.GetType().Name);
                 }
             }
-            Console.WriteLine("Load End");
+            Logger.Info("End Parsing" + this.GetType().Name);
         }
 		
 		protected abstract IEnumerable<HtmlNode> GetLines();
