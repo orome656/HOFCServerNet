@@ -83,5 +83,14 @@ namespace HOFCServerNet.Services
             return result;
         }
 
+        /// <summary>
+        /// Permet de supprimer les votes d'un match pour un utilisateur
+        /// </summary>
+        /// <param name="id">Identifiant du match</param>
+        /// <param name="v">Identifiant de l'utilisateur</param>
+        public void DeleteVotesForMatch(int id, string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

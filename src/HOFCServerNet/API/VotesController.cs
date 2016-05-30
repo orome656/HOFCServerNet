@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using HOFCServerNet.Services;
 using HOFCServerNet.ViewModels.Vote;
+using HOFCServerNet.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,10 +21,14 @@ namespace HOFCServerNet.API
     public class VotesController : Controller
     {
         private VoteService Service { get; set; }
+        private MatchService MatchService;
+        private UserManager<ApplicationUser> UserManager;
 
-        public VotesController(VoteService service)
+        public VotesController(VoteService service, MatchService mService, UserManager<ApplicationUser> userManager)
         {
             Service = service;
+            MatchService = mService;
+            UserManager = userManager;
         }
 
         /// <summary>
@@ -44,21 +50,24 @@ namespace HOFCServerNet.API
         /// <param name="value"></param>
         [HttpPost]
         [Authorize]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]List<Vote> value)
         {
-            // TODO not implemented
+            // TODO Add return code ?
+            Service.SaveVotes(value, value.First().MatchId, UserManager.GetUserId(User));
         }
 
         /// <summary>
-        /// Permet de mettre a jour un vote
+        /// Permet de mettre a jour un vote pour un match
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="value"></param>
+        /// <param name="id">Identifiant du match</param>
+        /// <param name="value">Liste des votes</param>
         [HttpPut("{id}")]
         [Authorize]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]List<Vote> value)
         {
             // TODO not implemented
+            // TODO User can only edit his vote
+            Service.SaveVotes(value, id, UserManager.GetUserId(User));
         }
 
         /// <summary>
@@ -70,6 +79,36 @@ namespace HOFCServerNet.API
         public void Delete(int id)
         {
             // TODO not implemented
+            Service.DeleteVotesForMatch(id, UserManager.GetUserId(User));
+        }
+
+
+        //-----------------------------------------------------------------------------
+        //------------------------ Administration -------------------------------------
+        //-----------------------------------------------------------------------------
+
+        /// <summary>
+        /// Permet d'ouvrir un vote
+        /// </summary>
+        /// <param name="idMatch">Indentifiant du match</param>
+        [Route("~/api/VotesAdmin/{idMatch}/Open")]
+        [Authorize(Roles = "Contributor")]
+        public void Open(int idMatch)
+        {
+            MatchService.ActivateVote(idMatch);
+            // TODO retourner 404 si idMatch pas bon
+        }
+
+        /// <summary>
+        /// Permet de fermer un vote
+        /// </summary>
+        /// <param name="idMatch"></param>
+        [Route("~/api/VotesAdmin/{idMatch}/Close")]
+        [Authorize(Roles = "Contributor")]
+        public void Close(int idMatch)
+        {
+            MatchService.CloseVote(idMatch);
+            // TODO retourner 404 si idMatch pas bon
         }
     }
 }
