@@ -112,11 +112,30 @@ namespace HOFCServerParser.Parsers
                     if (score.IndexOf("Report") != -1)
                         score = score.Substring(0, score.IndexOf("Report"));
 
+                    if (score.IndexOf("Arr") != -1)
+                        score = score.Substring(0, score.IndexOf("Arr"));
+
 
                     if (score.Length > 0) // On refait le check après la supression
                     {
-                        journee.Score1 = int.Parse(score.Split('-').ElementAt(0));
-                        journee.Score2 = int.Parse(score.Split('-').ElementAt(1));
+                        int result;
+                        if(int.TryParse(score.Split('-').ElementAt(0), out result))
+                        {
+                            journee.Score1 = result;
+                        }
+                        else
+                        {
+                            Logger.Info("Le score du match " + equipe1 + " - " + equipe2 + " du " + datetime.ToString() + " n'est pas un entier : " + score);
+                        }
+                        if(int.TryParse(score.Split('-').ElementAt(1), out result))
+                        {
+                            journee.Score2 = result;
+                        }
+                        else
+                        {
+                            
+                        }
+                        
                     }
                 }
                 journee.Equipe1 = equipe1;
