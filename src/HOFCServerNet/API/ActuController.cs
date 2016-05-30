@@ -16,7 +16,7 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class ActuController : Controller
     {
-        public ActuService Service { get; set; }
+        private ActuService Service { get; set; }
         
         public ActuController(ActuService _service)
         {

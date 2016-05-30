@@ -17,7 +17,7 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class CompositionController : Controller
     {
-        public CompositionService Service { get; set; }
+        private CompositionService Service { get; set; }
 
         public CompositionController(CompositionService _service)
         {
@@ -26,7 +26,7 @@ namespace HOFCServerNet.API
         /// <summary>
         ///     Permet de récupérer la composition d'un match
         /// </summary>
-        /// <param name="id">id du match</param>
+        /// <param name="idMatch">id du match</param>
         /// <returns>Liste des postes pour chaque joueur</returns>
         // GET api/values/5
         [HttpGet("{idMatch}")]

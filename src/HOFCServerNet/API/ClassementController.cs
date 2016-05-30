@@ -16,7 +16,7 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class ClassementController : Controller
     {
-        public ClassementService Service { get; set; }
+        private ClassementService Service { get; set; }
 
         public ClassementController(ClassementService _service)
         {

@@ -14,7 +14,7 @@ namespace HOFCServerNet.API
     [Obsolete("Should be remove", true)]
     public class JourneeController : Controller
     {
-        public MatchService Service { get; set; }
+        private MatchService Service { get; set; }
 
         public JourneeController(MatchService _service)
         {

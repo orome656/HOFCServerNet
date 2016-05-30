@@ -16,9 +16,12 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class MatchController : Controller
     {
-        public MatchService Service { get; set; }
-        // GET: api/values
-
+        private MatchService Service { get; set; }
+        
+        /// <summary>
+        /// Default constuctor
+        /// </summary>
+        /// <param name="_service"></param>
         public MatchController(MatchService _service)
         {
             Service = _service;

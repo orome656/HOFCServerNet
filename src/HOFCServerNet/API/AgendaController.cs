@@ -17,7 +17,7 @@ namespace HOFCServerNet.API
     [Obsolete("Should be remove", true)]
     public class AgendaController : Controller
     {
-        public MatchService Service { get; set; }
+        private MatchService Service { get; set; }
         
         public AgendaController(MatchService _service)
         {

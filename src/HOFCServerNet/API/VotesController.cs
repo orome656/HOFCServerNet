@@ -18,7 +18,7 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class VotesController : Controller
     {
-        public VoteService Service { get; set; }
+        private VoteService Service { get; set; }
 
         public VotesController(VoteService service)
         {

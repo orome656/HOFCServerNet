@@ -16,7 +16,7 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class NotificationController : Controller
     {
-        public NotificationService Service { get; set; }
+        private NotificationService Service { get; set; }
 
         public NotificationController(NotificationService _service)
         {

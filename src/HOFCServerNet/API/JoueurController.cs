@@ -19,7 +19,7 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class JoueurController : Controller
     {
-        public JoueurService Service { get; set; }
+        private JoueurService Service { get; set; }
 
         public JoueurController(JoueurService _service)
         {
