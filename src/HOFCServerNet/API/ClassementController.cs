@@ -10,6 +10,9 @@ using HOFCServerNet.Services;
 
 namespace HOFCServerNet.API
 {
+    /// <summary>
+    /// Permet de gérer les classements
+    /// </summary>
     [Route("api/[controller]")]
     public class ClassementController : Controller
     {
@@ -20,14 +23,21 @@ namespace HOFCServerNet.API
             Service = _service;
         }
 
-        // GET: api/Classement
+        /// <summary>
+        /// Retourne l'ensemble des classements
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<Classement> Get()
         {
             return Service.GetAll();
         }
         
-        // GET: api/values
+        /// <summary>
+        /// Permet de récupérer le classement d'une catégorie (Ex: equipe1, equipe2)
+        /// </summary>
+        /// <param name="categorie"></param>
+        /// <returns></returns>
         [HttpGet("{categorie}")]
         public IEnumerable<Classement> Get(string categorie)
         {

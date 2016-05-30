@@ -10,6 +10,9 @@ using HOFCServerNet.Services;
 
 namespace HOFCServerNet.API
 {
+    /// <summary>
+    /// Permet la gestion des matchs
+    /// </summary>
     [Route("api/[controller]")]
     public class MatchController : Controller
     {
@@ -21,13 +24,21 @@ namespace HOFCServerNet.API
             Service = _service;
         }
 
+        /// <summary>
+        /// Retourne la liste de l'ensemble des matchs
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<Match> Get()
         {
             return Service.GetAll();
         }
 
-        // GET api/values/5
+        /// <summary>
+        /// Permet de récupérer un match grâce a son identifiant
+        /// </summary>
+        /// <param name="id">Identifiant du match</param>
+        /// <returns>Liste de matchs</returns>
         [HttpGet("{id}")]
         public Match Get(int id)
         {

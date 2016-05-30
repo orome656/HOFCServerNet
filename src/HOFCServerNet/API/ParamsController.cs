@@ -10,10 +10,17 @@ using HOFCServerNet.Data.Constants;
 
 namespace HOFCServerNet.API
 {
+    /// <summary>
+    /// Permet de gérer les paramètres de l'application
+    /// </summary>
+    // TODO : Il faudrait externaliser les paramètres pour les stocker dans un fichier
     [Route("api/[controller]")]
     public class ParamsController : Controller
     {
-        // GET: api/values
+        /// <summary>
+        /// Retourne l'ensemble des paramètres de l'application
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public Params Get()
         {

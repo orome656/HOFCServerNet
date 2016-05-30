@@ -11,6 +11,7 @@ using HOFCServerNet.Services;
 namespace HOFCServerNet.API
 {
     [Route("api/[controller]")]
+    [Obsolete("Should be remove", true)]
     public class CalendrierController : Controller
     {
         public MatchService Service { get; set; }

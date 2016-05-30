@@ -13,6 +13,9 @@ using HOFCServerNet.Constants;
 
 namespace HOFCServerNet.API
 {
+    /// <summary>
+    /// Controlleur de gestion des joueurs
+    /// </summary>
     [Route("api/[controller]")]
     public class JoueurController : Controller
     {
@@ -23,21 +26,31 @@ namespace HOFCServerNet.API
             Service = _service;
         }
 
-        // GET: api/values
+        /// <summary>
+        /// Retourne l'ensemble des joueurs
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<JoueurDetailsViewModel> Get()
         {
             return Service.GetAll();
         }
 
-        // GET api/values/5
+        /// <summary>
+        /// Permet de récupérer un joueur par son identifiant
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public JoueurDetailsViewModel Get(int id)
         {
             return Service.GetById(id);
         }
 
-        // POST api/values
+        /// <summary>
+        /// Créer un nouveau joueur
+        /// </summary>
+        /// <param name="value">Détails du joueur</param>
         [HttpPost]
         [Authorize(Roles = "Contributor")]
         public void Post([FromBody]JoueurDetailsViewModel value)
@@ -45,7 +58,11 @@ namespace HOFCServerNet.API
             Service.Create(value);
         }
 
-        // PUT api/values/5
+        /// <summary>
+        /// Met a joueur les informations d'un joueur
+        /// </summary>
+        /// <param name="id">Identifiant du joueur</param>
+        /// <param name="value">Information sur le joueur</param>
         [HttpPut("{id}")]
         [Authorize(Roles = "Contributor")]
         public void Put(int id, [FromBody]JoueurDetailsViewModel value)
@@ -53,7 +70,11 @@ namespace HOFCServerNet.API
             Service.Update(value);
         }
 
-        // DELETE api/values/5
+        /// <summary>
+        /// Supprime un joueur grâce a son identifiant
+        /// </summary>
+        /// <param name="id">Identifiant du joueur</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         [Authorize(Roles = "Contributor")]
         public IActionResult Delete(int id)

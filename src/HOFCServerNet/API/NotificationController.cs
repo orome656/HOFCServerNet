@@ -10,6 +10,9 @@ using HOFCServerNet.Services;
 
 namespace HOFCServerNet.API
 {
+    /// <summary>
+    /// Permet de gérer les notification
+    /// </summary>
     [Route("api/[controller]")]
     public class NotificationController : Controller
     {
@@ -20,7 +23,11 @@ namespace HOFCServerNet.API
             Service = _service;
         }
 
-        // POST api/values
+        /// <summary>
+        /// Permet de s'enregistrer pour recevoir les notifications
+        /// </summary>
+        /// <param name="uuid"></param>
+        /// <param name="notification_id"></param>
         [HttpPost]
         public void Post(string uuid, string notification_id)
         {

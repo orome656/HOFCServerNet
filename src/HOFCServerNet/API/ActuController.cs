@@ -10,6 +10,9 @@ using HOFCServerNet.Services;
 
 namespace HOFCServerNet.API
 {
+    /// <summary>
+    /// Permet de gérer les actualités
+    /// </summary>
     [Route("api/[controller]")]
     public class ActuController : Controller
     {
@@ -20,7 +23,10 @@ namespace HOFCServerNet.API
             Service = _service;
         }
         
-        // GET: api/values
+        /// <summary>
+        /// Retourne l'ensemble des actualités
+        /// </summary>
+        /// <returns>Liste d'actualités</returns>
         [HttpGet]
         public IEnumerable<Actu> Get()
         {

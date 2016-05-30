@@ -10,10 +10,17 @@ using Newtonsoft.Json;
 
 namespace HOFCServerNet.API
 {
+    /// <summary>
+    /// Permet de parser les informations d'une page
+    /// </summary>
     [Route("api/[controller]")]
     public class ParsePageController : Controller
     {
-        // GET api/values/{url}
+        /// <summary>
+        /// Parse la page pointée par l'url passée en paramètre
+        /// </summary>
+        /// <param name="url">URL de la page a parser</param>
+        /// <returns>Les informations de la page sérialisées</returns>
         [HttpPost]
         public string Post([FromBody]string url)
         {

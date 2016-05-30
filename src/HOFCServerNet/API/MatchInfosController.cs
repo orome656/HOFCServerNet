@@ -12,10 +12,17 @@ using System.Net;
 
 namespace HOFCServerNet.API
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/[controller]")]
     public class MatchInfosController : Controller
     {
-        // GET api/values/17730846
+        /// <summary>
+        /// Permet de récupérer les informations sur un match par son identifiant(site district)
+        /// </summary>
+        /// <param name="id">Identifiant du match sur le site du district</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public MatchInfos Get(string id)
         {

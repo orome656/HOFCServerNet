@@ -10,7 +10,11 @@ using HOFCServerNet.Services;
 
 namespace HOFCServerNet.API
 {
+    /// <summary>
+    /// Permet de gérer les agendas
+    /// </summary>
     [Route("api/[controller]")]
+    [Obsolete("Should be remove", true)]
     public class AgendaController : Controller
     {
         public MatchService Service { get; set; }
