@@ -4,7 +4,8 @@
 
   "buildOptions": {
     "emitEntryPoint": true,
-    "preserveCompilationContext": true
+    "preserveCompilationContext": true,
+    "xmlDoc": true
   },
 
   "dependencies": {
@@ -36,6 +37,9 @@
 
     "HtmlAgilityPack.NetCore": "1.4.9.2",
     "System.Net.Http": "4.0.1-rc2-24027",
+
+    "Swashbuckle.SwaggerGen": "6.0.0-rc2-final",
+    "Swashbuckle.SwaggerUi": "6.0.0-rc2-final", 
 
     "HOFCServerNet.Data": "1.0.0-*",
 
