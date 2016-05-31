@@ -18,6 +18,10 @@ namespace HOFCServerNet.API
     {
         private NotificationService Service { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="_service"></param>
         public NotificationController(NotificationService _service)
         {
             Service = _service;

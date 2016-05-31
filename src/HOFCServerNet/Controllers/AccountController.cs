@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace HOFCServerNet.Controllers
 {
+    /// <summary>
+    /// Controlleur ASP.MVC de gestion de session de l'utilisateur
+    /// </summary>
     [Authorize]
     public class AccountController : Controller
     {
@@ -25,6 +28,12 @@ namespace HOFCServerNet.Controllers
         //private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="loggerFactory"></param>
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -39,8 +48,11 @@ namespace HOFCServerNet.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        //
-        // GET: /Account/Login
+        /// <summary>
+        /// Accés à l'écran de Login
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
@@ -49,8 +61,12 @@ namespace HOFCServerNet.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Login
+        /// <summary>
+        /// Permet à l'utilisateur de s'authentifier
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -127,8 +143,10 @@ namespace HOFCServerNet.Controllers
             return View(model);
         }
         */
-        //
-        // POST: /Account/LogOff
+        /// <summary>
+        /// Permet de se déconnecter
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> LogOff()
         {

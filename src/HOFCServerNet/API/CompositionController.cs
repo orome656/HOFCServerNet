@@ -19,6 +19,10 @@ namespace HOFCServerNet.API
     {
         private CompositionService Service { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="_service"></param>
         public CompositionController(CompositionService _service)
         {
             Service = _service;

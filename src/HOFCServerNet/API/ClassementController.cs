@@ -18,6 +18,10 @@ namespace HOFCServerNet.API
     {
         private ClassementService Service { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="_service"></param>
         public ClassementController(ClassementService _service)
         {
             Service = _service;

@@ -21,6 +21,10 @@ namespace HOFCServerNet.API
     {
         private JoueurService Service { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="_service"></param>
         public JoueurController(JoueurService _service)
         {
             Service = _service;

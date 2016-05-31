@@ -18,6 +18,10 @@ namespace HOFCServerNet.API
     {
         private ActuService Service { get; set; }
         
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="_service"></param>
         public ActuController(ActuService _service)
         {
             Service = _service;

@@ -24,6 +24,12 @@ namespace HOFCServerNet.API
         private MatchService MatchService;
         private UserManager<ApplicationUser> UserManager;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="mService"></param>
+        /// <param name="userManager"></param>
         public VotesController(VoteService service, MatchService mService, UserManager<ApplicationUser> userManager)
         {
             Service = service;

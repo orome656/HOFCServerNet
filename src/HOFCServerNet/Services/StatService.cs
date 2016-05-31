@@ -11,12 +11,16 @@ namespace HOFCServerNet.Services
     public class StatService
     {
 
-        public BddContext BddContext { get; set; }
+        private BddContext BddContext { get; set; }
         public StatService(BddContext dbContext)
         {
             BddContext = dbContext;
         }
 
+        /// <summary>
+        /// Retourne l'ensemble des stats de la saison courante
+        /// </summary>
+        /// <returns></returns>
         public List<Stat> GetSeasonStat()
         {
             var stats = BddContext.Stats
@@ -30,6 +34,11 @@ namespace HOFCServerNet.Services
             return stats;
         }
 
+        /// <summary>
+        /// Retourne les stats pour un match 
+        /// </summary>
+        /// <param name="matchId">Identifiant du match</param>
+        /// <returns></returns>
         public List<StatViewModel> GetStatsForMatch(int matchId)
         {
             BddContext.ChangeTracker.AutoDetectChangesEnabled = false;
@@ -113,6 +122,10 @@ namespace HOFCServerNet.Services
             return results;
         }
 
+        /// <summary>
+        /// Permet de sauvegarder des Stats
+        /// </summary>
+        /// <param name="viewModel"></param>
         internal void SaveStat(MatchStatViewModel viewModel)
         {
             Stat stat = new Stat()
