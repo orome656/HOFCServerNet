@@ -99,6 +99,7 @@ namespace HOFCServerNet.API
         /// <param name="idMatch">Indentifiant du match</param>
         [Route("~/api/VotesAdmin/{idMatch}/Open")]
         [Authorize(Roles = "Contributor")]
+        [HttpGet]
         public void Open(int idMatch)
         {
             MatchService.ActivateVote(idMatch);
@@ -111,6 +112,7 @@ namespace HOFCServerNet.API
         /// <param name="idMatch"></param>
         [Route("~/api/VotesAdmin/{idMatch}/Close")]
         [Authorize(Roles = "Contributor")]
+        [HttpGet]
         public void Close(int idMatch)
         {
             MatchService.CloseVote(idMatch);
