@@ -39,7 +39,7 @@
     "System.Net.Http": "4.0.1-rc2-24027",
 
     "Swashbuckle.SwaggerGen": "6.0.0-beta9",
-    "Swashbuckle.SwaggerUi": "6.0.0-beta9", 
+    "Swashbuckle.SwaggerUi": "6.0.0-beta9",
 
     "HOFCServerNet.Data": "1.0.0-*",
 
@@ -63,6 +63,14 @@
     }
   },
 
+  "runtimeOptions": {
+    "gcServer": true
+  },
+
+  "scripts": {
+    "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
+  },
+  
   "publishOptions": {
     "include": [
       "wwwroot",
