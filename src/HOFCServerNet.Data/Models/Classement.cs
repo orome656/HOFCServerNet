@@ -44,7 +44,7 @@ namespace HOFCServerNet.Data.Models
         [JsonIgnore]
         public string Categorie { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty(PropertyName = "competition")]
         public Competition Competition { get; set; }
 
         public override string ToString()

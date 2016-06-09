@@ -1,4 +1,5 @@
 ﻿using HOFCServerNet.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace HOFCServerNet.Services
         public List<Classement> GetAll()
         {
             return BddContext.Classements
+                         .Include(c => c.Competition)
                          .OrderByDescending(item => item.Points)
                          .ThenByDescending(item => item.Difference)
                          .ToList();
