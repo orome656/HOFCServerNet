@@ -75,6 +75,7 @@ namespace HOFCServerParser.Parsers
                         Nom = this.CompetitionName,
                         Saison = SeasonTool.GetSeasonIndex()
                     };
+                    bddContext.Competitions.Add(competition);
                 }
                 foreach (Classement classement in list)
                 {
@@ -90,6 +91,8 @@ namespace HOFCServerParser.Parsers
                         bddClassement.Bp = classement.Bp;
                         bddClassement.Bc = classement.Bc;
                         bddClassement.Difference = classement.Difference;
+                        if(bddClassement.Competition == null)
+                            bddClassement.Competition = competition;
                         
                         bddContext.Entry(bddClassement).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     }
