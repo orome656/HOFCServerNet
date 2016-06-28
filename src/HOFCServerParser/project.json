@@ -1,5 +1,4 @@
 {
-  "version": "1.0.0-*",
   "description": "HOFCServerParser Console Application",
   "authors": [ "Anthony" ],
 
@@ -9,22 +8,21 @@
 
   "dependencies": {
     "HtmlAgilityPack.NetCore": "1.4.9.2",
-    "System.Net.Http": "4.0.1-rc2-24027",
-    "runtime.win7.System.Runtime.Extensions": "4.0.11-beta-23516",
     "NLog": "4.4.0-beta5",
-    "NLog.Config": "4.3.3",
-    "Microsoft.CSharp": "4.0.1-rc2-24027",
-    "System.Collections": "4.0.11-rc2-24027",
-    "System.Console": "4.0.0-rc2-24027",
-    "System.Linq": "4.1.0-rc2-24027",
-    "System.Threading": "4.0.11-rc2-24027",
+    "HOFCServerNet.Data": "1.0.0-*",
+    "HOFCServerNet.Utils": "1.0.0-*",
+    "Microsoft.CSharp": "4.0.1",
     "Microsoft.NETCore.App": {
-      "version": "1.0.0-rc2-3002702",
+      "version": "1.0.0",
       "type": "platform"
     },
-
-    "HOFCServerNet.Data": "1.0.0-*",
-    "HOFCServerNet.Utils": "1.0.0-*"
+    "NLog.Config": "4.3.5",
+    "runtime.win7.System.Runtime.Extensions": "4.1.0-rc2-24027",
+    "System.Collections": "4.0.11",
+    "System.Console": "4.0.0",
+    "System.Linq": "4.1.0",
+    "System.Net.Http": "4.1.0",
+    "System.Threading": "4.0.11"
   },
 
   "commands": {

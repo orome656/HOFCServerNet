@@ -11,11 +11,11 @@ namespace HOFCServerNet.Data.Models
 {
     public class BddContextFactory : IDbContextFactory<BddContext>
     {
-        public BddContext Create()
+        public BddContext Create(DbContextFactoryOptions options)
         {
             var builder = new ConfigurationBuilder()
-                   .SetBasePath(Directory.GetCurrentDirectory())
-                   .AddJsonFile("appsettings.json");
+                      .SetBasePath(Directory.GetCurrentDirectory())
+                      .AddJsonFile("appsettings.json");
             var Configuration = builder.Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<BddContext>();

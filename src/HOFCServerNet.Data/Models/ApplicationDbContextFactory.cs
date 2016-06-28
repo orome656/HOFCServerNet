@@ -11,7 +11,7 @@ namespace HOFCServerNet.Data.Models
 {
     public class ApplicationDbContextFactory : IDbContextFactory<ApplicationDbContext>
     {
-        public ApplicationDbContext Create()
+        public ApplicationDbContext Create(DbContextFactoryOptions options)
         {
             var builder = new ConfigurationBuilder()
                    .SetBasePath(Directory.GetCurrentDirectory())

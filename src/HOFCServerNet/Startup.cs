@@ -53,7 +53,7 @@ namespace HOFCServerNet
             // Add framework services.
             services.AddMvc();
 
-            services.AddSwaggerGen();
+            //services.AddSwaggerGen();
         }
 
         /// <summary>
@@ -121,8 +121,9 @@ namespace HOFCServerNet
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseSwaggerGen();
-            app.UseSwaggerUi();
+            // TODO Re enable when nuget package is updated
+            //app.UseSwaggerGen();
+            //app.UseSwaggerUi();
         }
 
         /// <summary>
