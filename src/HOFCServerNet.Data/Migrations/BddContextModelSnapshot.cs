@@ -13,7 +13,7 @@ namespace HOFCServerNet.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rc2-20901");
+                .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Actu", b =>
                 {
@@ -177,7 +177,7 @@ namespace HOFCServerNet.Data.Migrations
 
                     b.Property<string>("NotificationID");
 
-                    b.Property<string>("UUID");
+                    b.Property<int>("Platform");
 
                     b.HasKey("ID");
 
@@ -244,42 +244,42 @@ namespace HOFCServerNet.Data.Migrations
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Classement", b =>
                 {
-                    b.HasOne("HOFCServerNet.Data.Models.Competition")
+                    b.HasOne("HOFCServerNet.Data.Models.Competition", "Competition")
                         .WithMany()
                         .HasForeignKey("CompetitionId");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Composition", b =>
                 {
-                    b.HasOne("HOFCServerNet.Data.Models.Joueur")
+                    b.HasOne("HOFCServerNet.Data.Models.Joueur", "Joueur")
                         .WithMany()
                         .HasForeignKey("JoueurId");
 
-                    b.HasOne("HOFCServerNet.Data.Models.Match")
+                    b.HasOne("HOFCServerNet.Data.Models.Match", "Match")
                         .WithMany()
                         .HasForeignKey("MatchId");
 
-                    b.HasOne("HOFCServerNet.Data.Models.Poste")
+                    b.HasOne("HOFCServerNet.Data.Models.Poste", "Poste")
                         .WithMany()
                         .HasForeignKey("PosteId");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.JoueurPoste", b =>
                 {
-                    b.HasOne("HOFCServerNet.Data.Models.Joueur")
-                        .WithMany()
+                    b.HasOne("HOFCServerNet.Data.Models.Joueur", "Joueur")
+                        .WithMany("JoueurPostes")
                         .HasForeignKey("IdJoueur")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("HOFCServerNet.Data.Models.Poste")
-                        .WithMany()
+                    b.HasOne("HOFCServerNet.Data.Models.Poste", "Poste")
+                        .WithMany("JoueurPostes")
                         .HasForeignKey("IdPoste")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Match", b =>
                 {
-                    b.HasOne("HOFCServerNet.Data.Models.Competition")
+                    b.HasOne("HOFCServerNet.Data.Models.Competition", "Competition")
                         .WithMany()
                         .HasForeignKey("CompetitionId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -287,12 +287,12 @@ namespace HOFCServerNet.Data.Migrations
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Stat", b =>
                 {
-                    b.HasOne("HOFCServerNet.Data.Models.Joueur")
+                    b.HasOne("HOFCServerNet.Data.Models.Joueur", "Joueur")
                         .WithMany()
                         .HasForeignKey("JoueurId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("HOFCServerNet.Data.Models.Match")
+                    b.HasOne("HOFCServerNet.Data.Models.Match", "Match")
                         .WithMany()
                         .HasForeignKey("MatchId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -300,12 +300,12 @@ namespace HOFCServerNet.Data.Migrations
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Vote", b =>
                 {
-                    b.HasOne("HOFCServerNet.Data.Models.Joueur")
+                    b.HasOne("HOFCServerNet.Data.Models.Joueur", "Joueur")
                         .WithMany()
                         .HasForeignKey("JoueurId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("HOFCServerNet.Data.Models.Match")
+                    b.HasOne("HOFCServerNet.Data.Models.Match", "Match")
                         .WithMany()
                         .HasForeignKey("MatchId")
                         .OnDelete(DeleteBehavior.Cascade);

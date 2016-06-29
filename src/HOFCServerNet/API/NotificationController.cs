@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Services;
+using HOFCServerNet.Data.Enums;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,14 +31,14 @@ namespace HOFCServerNet.API
         /// <summary>
         /// Permet de s'enregistrer pour recevoir les notifications
         /// </summary>
-        /// <param name="uuid"></param>
+        /// <param name="platform"></param>
         /// <param name="notification_id"></param>
         [HttpPost]
-        public void Post(string uuid, string notification_id)
+        public void Post(ClientPlatform platform, string notification_id)
         {
-            if(uuid != null && notification_id != null)
+            if(platform != 0 && notification_id != null)
             {
-                Service.AddNewClient(uuid, notification_id);
+                Service.AddNewClient(platform, notification_id);
             } else
             {
                 // TODO add logs here

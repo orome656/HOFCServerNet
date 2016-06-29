@@ -1,4 +1,5 @@
-﻿using HOFCServerNet.Data.Models;
+﻿using HOFCServerNet.Data.Enums;
+using HOFCServerNet.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,11 @@ namespace HOFCServerNet.Services
             BddContext = dbContext;
         }
 
-        public void AddNewClient(string uuid, string notificationId)
+        public void AddNewClient(ClientPlatform platform, string notificationId)
         {
             var notificationClient = new NotificationClient
             {
-                UUID = uuid,
+                Platform = platform,
                 NotificationID = notificationId
             };
             BddContext.NotificationClients.Add(notificationClient);

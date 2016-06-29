@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HOFCServerNet.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Platform : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -63,7 +63,7 @@ namespace HOFCServerNet.Data.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
                     NotificationID = table.Column<string>(nullable: true),
-                    UUID = table.Column<string>(nullable: true)
+                    Platform = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,7 +76,7 @@ namespace HOFCServerNet.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
-                    Nom = table.Column<string>(nullable: true)
+                    Nom = table.Column<string>(maxLength: 10, nullable: true)
                 },
                 constraints: table =>
                 {
