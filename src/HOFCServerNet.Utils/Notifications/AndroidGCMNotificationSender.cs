@@ -7,37 +7,30 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HOFCServerParser.Utils
+namespace HOFCServerNet.Utils.Notifications
 {
-    public class AndroidGCMNotificationSender
+    public class AndroidGCMNotificationSender: INotificationSender
     {
-        public void SendNotification(string titre, string message, string type, string urlParam, BddContext bddContext)
+        public async Task SendNotification(string titre, string message, NotificationClient client)
         {
             string URL = "https://android.googleapis.com/gcm/send";
             string SERVER_API_KEY = System.Environment.GetEnvironmentVariable("SERVER_API_KEY");
             var value = message;
-            HttpClient client = new HttpClient();
+            HttpClient httpClient = new HttpClient();
 
-            client.BaseAddress = new Uri(URL);
-            client.DefaultRequestHeaders
+            httpClient.BaseAddress = new Uri(URL);
+            httpClient.DefaultRequestHeaders
                     .Accept
                     .Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
-            client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", string.Format("key={0}", SERVER_API_KEY));
-            foreach(NotificationClient nClient in bddContext.NotificationClients.ToList())
-            {
-                string deviceId = nClient.NotificationID;
-                string postData = "collapse_key=score_update&time_to_live=108&delay_while_idle=1&data.title=" + titre + "&data.message=" + value + "&data.time=" + System.DateTime.Now.ToString() + "&registration_id=" + deviceId + "";
-                postData += "&data.TYPE=" + type;
-                if(urlParam != null)
-                {
-                    postData += "&data.URL=" + urlParam;
-                }
-                var content = new StringContent(postData,
-                                                    Encoding.UTF8,
-                                                    "application/x-www-form-urlencoded");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", string.Format("key={0}", SERVER_API_KEY));
+            string deviceId = client.NotificationID;
+            string postData = "collapse_key=score_update&time_to_live=108&delay_while_idle=1&data.title=" + titre + "&data.message=" + value + "&data.time=" + System.DateTime.Now.ToString() + "&registration_id=" + deviceId + "";
+                
+            var content = new StringContent(postData,
+                                                Encoding.UTF8,
+                                                "application/x-www-form-urlencoded");
 
-                HttpResponseMessage response = client.PostAsync(URL, content).Result;
-            }
+            HttpResponseMessage response = await httpClient.PostAsync(URL, content);
             //return sResponseFromServer;
         }
     }
