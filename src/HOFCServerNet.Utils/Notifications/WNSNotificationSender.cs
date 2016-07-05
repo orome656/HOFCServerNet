@@ -33,10 +33,14 @@ namespace HOFCServerNet.Utils.Notifications
             string ClientSecret = Environment.GetEnvironmentVariable("WNS_CLIENT_SECRET");
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, ACCESS_TOKEN_URL_PATH);
-
-            request.Content = new StringContent(String.Format("grant_type=client_credentials&client_id={0}&client_secret={1}&scope=notify.windows.com", ClientId, ClientSecret));
-            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+            parameters.Add(new KeyValuePair<string, string>("grant_type", "client_credentials"));
+            parameters.Add(new KeyValuePair<string, string>("client_id", ClientId));
+            parameters.Add(new KeyValuePair<string, string>("client_secret", ClientSecret));
+            parameters.Add(new KeyValuePair<string, string>("scope", "notify.windows.com"));
+            
+            request.Content = new FormUrlEncodedContent(parameters);
+            
             HttpResponseMessage response = await client.SendAsync(request);
             string responseContent = await response.Content.ReadAsStringAsync();
 
@@ -48,13 +52,15 @@ namespace HOFCServerNet.Utils.Notifications
         private async void CallNotificationSending(string url, string titre, string message)
         {
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", String.Format("Bearer {0}", ACCESS_TOKEN));
-            client.DefaultRequestHeaders.Add("X-WNS-Type", "wns/toast");
-            client.DefaultRequestHeaders.Add("Content-Type", "text/xml");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
+            request.Headers.Add("Authorization", String.Format("Bearer {0}", ACCESS_TOKEN));
+            request.Headers.Add("X-WNS-Type", "wns/toast");
 
-            string xml = String.Format("<toast><visual><binding template='ToastGeneric'><text>{0}</text>{1}<text></text></binding></visual></toast>", titre, message);
-            HttpContent content = new StringContent(xml);
-            await client.PostAsync(url, content);
+            string xml = String.Format("<toast><visual><binding template='ToastGeneric'><text>{0}</text><text>{1}</text></binding></visual></toast>", titre, message);
+            request.Content = new StringContent(xml);
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("text/xml");
+
+            var response = await client.SendAsync(request);
         }
     }
 }
