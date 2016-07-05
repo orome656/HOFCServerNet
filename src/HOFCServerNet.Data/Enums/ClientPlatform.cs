@@ -9,6 +9,6 @@ namespace HOFCServerNet.Data.Enums
     {
         Android = 1,
         iOS = 2,
-        UWP = 4
+        Windows = 4
     }
 }
