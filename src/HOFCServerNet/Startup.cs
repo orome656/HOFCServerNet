@@ -9,6 +9,9 @@ using HOFCServerNet.Services;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.IO;
+using NLog.Extensions.Logging;
+using NLog.Web;
+using NLog;
 
 namespace HOFCServerNet
 {
@@ -65,8 +68,7 @@ namespace HOFCServerNet
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
+            loggerFactory.AddNLog();
 
             try
             {
@@ -124,6 +126,8 @@ namespace HOFCServerNet
             // TODO Re enable when nuget package is updated
             //app.UseSwaggerGen();
             //app.UseSwaggerUi();
+
+            app.AddNLogWeb();
         }
 
         /// <summary>

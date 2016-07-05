@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Services;
+using NLog;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,6 +17,7 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class ActuController : Controller
     {
+        private static Logger Logger = LogManager.GetLogger("HOFCServerNet.API.ActuController");
         private ActuService Service { get; set; }
         
         /// <summary>
@@ -34,7 +36,10 @@ namespace HOFCServerNet.API
         [HttpGet]
         public IEnumerable<Actu> Get()
         {
-            return Service.GetAll();
+            Logger.Info("Start Calling Actu Web API");
+            List<Actu> actus = Service.GetAll();
+            Logger.Info("End Calling Actu Web API");
+            return actus;
         }
     }
 }
