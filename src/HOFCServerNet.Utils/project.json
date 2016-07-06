@@ -5,16 +5,12 @@
 
 
   "dependencies": {
-    "System.Net.Http": "4.1.0",
     "HOFCServerNet.Data": "1.0.0-*",
-    "System.Text.RegularExpressions": "4.1.0"
+    "System.Net.Http": "4.1.0",
+    "System.Text.RegularExpressions": "4.1.0",
+    "NETStandard.Library": "1.6.0"
   },
   "frameworks": {
-    "netcoreapp1.0": {
-      "imports": [
-        "dnxcore50",
-        "portable-net45+win8"
-      ]
-    }
+    "netstandard1.6": {}
   }
 }

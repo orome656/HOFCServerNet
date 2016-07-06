@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using HOFCServerNet.Data.Models;
 using HtmlAgilityPack;
-using HOFCServerParser.Utils;
 using System.Globalization;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +14,7 @@ namespace HOFCServerParser.Parsers
     {
         protected override IEnumerable<HtmlNode> GetLines()
         {
-            var httpClient = new HttpClient();
+            var httpClient = GetHttpClient();
             string html = httpClient.GetStringAsync(Program.Configuration["Parser:ActuURL"]).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
@@ -54,7 +53,7 @@ namespace HOFCServerParser.Parsers
 
         protected override void SaveToBDD(List<Actu> list)
         {
-            AndroidGCMNotificationSender sender = new AndroidGCMNotificationSender();
+            //AndroidGCMNotificationSender sender = new AndroidGCMNotificationSender();
             
             using (var bddContext = new BddContext(Program.Options)) {
                 foreach(Actu actu in list)

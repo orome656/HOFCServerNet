@@ -6,6 +6,7 @@ using HtmlAgilityPack;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Utils.Common;
 using Microsoft.EntityFrameworkCore;
+using HOFCServerParser.Net;
 
 namespace HOFCServerParser.Parsers
 {
@@ -21,7 +22,7 @@ namespace HOFCServerParser.Parsers
         }
         protected override IEnumerable<HtmlNode> GetLines()
         {
-            var httpClient = new HttpClient();
+            var httpClient = GetHttpClient();
             string html = httpClient.GetStringAsync(Program.Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":" + Categorie + ":ClassementURL"]).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);

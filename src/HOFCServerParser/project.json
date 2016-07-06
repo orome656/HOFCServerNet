@@ -7,17 +7,16 @@
   },
 
   "dependencies": {
+    "HOFCServerNet.Data": "1.0.*",
+    "HOFCServerNet.Utils": "1.0.*",
     "HtmlAgilityPack.NetCore": "1.4.9.2",
-    "NLog": "4.4.0-beta5",
-    "HOFCServerNet.Data": "1.0.0-*",
-    "HOFCServerNet.Utils": "1.0.0-*",
+    "NLog": "4.4.0-beta13",
+    "runtime.win7.System.Runtime.Extensions": "4.1.0-rc2-24027",
     "Microsoft.CSharp": "4.0.1",
     "Microsoft.NETCore.App": {
       "version": "1.0.0",
       "type": "platform"
     },
-    "NLog.Config": "4.3.5",
-    "runtime.win7.System.Runtime.Extensions": "4.1.0-rc2-24027",
     "System.Collections": "4.0.11",
     "System.Console": "4.0.0",
     "System.Linq": "4.1.0",
@@ -25,16 +24,9 @@
     "System.Threading": "4.0.11"
   },
 
-  "commands": {
-    "run": "run"
-  },
-
   "frameworks": {
     "netcoreapp1.0": {
-      "imports": [
-        "dnxcore50",
-        "portable-net45+win8"
-      ]
+      "imports": "dnxcore50"
     }
   },
 

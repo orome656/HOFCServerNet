@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using HtmlAgilityPack;
 using NLog;
+using System.Net.Http;
+using HOFCServerParser.Net;
 
 namespace HOFCServerParser.Parsers
 {
@@ -39,7 +41,17 @@ namespace HOFCServerParser.Parsers
             }
             Logger.Info("End Parsing" + this.GetType().Name);
         }
-		
+
+        public HttpClient GetHttpClient()
+        {
+            HttpClientHandler clientHandler = new HttpClientHandler()
+            {
+                Proxy = new WebProxy()
+            };
+
+            return new HttpClient(clientHandler);
+        }
+
 		protected abstract IEnumerable<HtmlNode> GetLines();
 		
 		protected abstract T ParseLine(HtmlNode line);
