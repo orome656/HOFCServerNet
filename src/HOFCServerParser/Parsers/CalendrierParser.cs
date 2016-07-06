@@ -37,11 +37,7 @@ namespace HOFCServerParser.Parsers
 
         protected override IEnumerable<HtmlNode> GetLines()
         {
-            var httpClient = GetHttpClient();
-            string html = httpClient.GetStringAsync(Program.Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":" + category + ":CalendrierURL"]).Result;
-            HtmlDocument document = new HtmlDocument();
-            document.LoadHtml(html);
-            var root = document.DocumentNode;
+            var root = GetHtml("Parser:" + SeasonTool.GetSeasonIndex() + ":" + category + ":CalendrierURL");
             var lines = root
                 .SelectSingleNode("//div[@id='refpop']")
                 .Descendants("div")

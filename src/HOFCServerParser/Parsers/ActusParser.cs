@@ -14,17 +14,13 @@ namespace HOFCServerParser.Parsers
     {
         protected override IEnumerable<HtmlNode> GetLines()
         {
-            var httpClient = GetHttpClient();
-            string html = httpClient.GetStringAsync(Program.Configuration["Parser:ActuURL"]).Result;
-            HtmlDocument document = new HtmlDocument();
-            document.LoadHtml(html);
-            var root = document.DocumentNode;
+            var root = GetHtml("Parser:ActuURL");
+
             var lines = root
                 .SelectSingleNode("//div[@id='content']")
                 .Descendants("div")
                 .Where(n => (n.GetAttributeValue("class", "").Equals("post")));
-
-            Logger.Info("Got " + lines.Count() + " lines");
+            
             return lines;
         }
 

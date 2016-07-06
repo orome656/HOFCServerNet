@@ -22,11 +22,7 @@ namespace HOFCServerParser.Parsers
         }
         protected override IEnumerable<HtmlNode> GetLines()
         {
-            var httpClient = GetHttpClient();
-            string html = httpClient.GetStringAsync(Program.Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":" + Categorie + ":ClassementURL"]).Result;
-            HtmlDocument document = new HtmlDocument();
-            document.LoadHtml(html);
-            var root = document.DocumentNode;
+            var root = GetHtml("Parser:" + SeasonTool.GetSeasonIndex() + ":" + Categorie + ":ClassementURL");
             var rootNode = root.SelectSingleNode("//table[@class='tablo bordure ac']");
             IEnumerable<HtmlNode> lines = null;
             if (rootNode != null) {

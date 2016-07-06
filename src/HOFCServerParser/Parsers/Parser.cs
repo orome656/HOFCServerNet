@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HtmlAgilityPack;
 using NLog;
 using System.Net.Http;
@@ -20,10 +21,15 @@ namespace HOFCServerParser.Parsers
         {
             Logger.Info("Start Parsing " + this.GetType().Name);
             Logger.Info("Start getting lines " + this.GetType().Name);
+
             var lines = GetLines();
+
+            Logger.Info("Got " + lines.Count() + " lines");
             Logger.Info("End getting lines " + this.GetType().Name);
+
             var modelsToSave = new List<T>();
-            if(lines != null)
+
+            if (lines != null)
             {
                 foreach (var line in lines)
                 {
@@ -50,6 +56,24 @@ namespace HOFCServerParser.Parsers
             };
 
             return new HttpClient(clientHandler);
+        }
+
+        public HtmlNode GetHtml(string configPath, string additionalParam = "")
+        {
+            var httpClient = GetHttpClient();
+            string url = Program.Configuration[configPath];
+            if(string.IsNullOrEmpty(url))
+            {
+                Logger.Error("URL not exist for parameter : " + configPath);
+                return null;
+            }
+            else
+            {
+                string html = httpClient.GetStringAsync(Program.Configuration[configPath] + additionalParam).Result;
+                HtmlDocument document = new HtmlDocument();
+                document.LoadHtml(html);
+                return document.DocumentNode;
+            }
         }
 
 		protected abstract IEnumerable<HtmlNode> GetLines();
