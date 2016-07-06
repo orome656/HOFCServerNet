@@ -69,6 +69,8 @@ namespace HOFCServerParser.Parsers
             }
             else
             {
+                Logger.Info(string.Format(string.IsNullOrEmpty(additionalParam)?"Calling URL : {0}, With Parameter : {1}": "Calling URL : {0}", url, additionalParam));
+
                 string html = httpClient.GetStringAsync(Program.Configuration[configPath] + additionalParam).Result;
                 HtmlDocument document = new HtmlDocument();
                 document.LoadHtml(html);
