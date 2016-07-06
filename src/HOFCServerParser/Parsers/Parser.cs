@@ -50,12 +50,21 @@ namespace HOFCServerParser.Parsers
 
         public HttpClient GetHttpClient()
         {
-            HttpClientHandler clientHandler = new HttpClientHandler()
-            {
-                Proxy = new WebProxy()
-            };
 
-            return new HttpClient(clientHandler);
+            if (Program.Configuration["HTTP_PROXY"] != null)
+            {
+                HttpClientHandler clientHandler = new HttpClientHandler()
+                {
+                    Proxy = new WebProxy()
+                };
+
+                return new HttpClient(clientHandler);
+            }
+            else
+            {
+                return new HttpClient();
+            }
+
         }
 
         public HtmlNode GetHtml(string configPath, string additionalParam = "")
