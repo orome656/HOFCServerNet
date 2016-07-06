@@ -11,6 +11,8 @@ namespace HOFCServerParser.Parsers
 	public abstract class Parser<T>
 	{
         protected Logger Logger;
+        protected string ConfigPath;
+        protected string AdditionalParam = "";
 
         public Parser()
         {
@@ -20,30 +22,46 @@ namespace HOFCServerParser.Parsers
 		public virtual void Parse()
         {
             Logger.Info("Start Parsing " + this.GetType().Name);
-            Logger.Info("Start getting lines " + this.GetType().Name);
-
-            var lines = GetLines();
-
-            Logger.Info("Got " + lines.Count() + " lines");
-            Logger.Info("End getting lines " + this.GetType().Name);
-
-            var modelsToSave = new List<T>();
-
-            if (lines != null)
+            try
             {
-                foreach (var line in lines)
+                Logger.Info("Start getting lines " + this.GetType().Name);
+
+                var root = GetHtml(ConfigPath, AdditionalParam);
+                IEnumerable<HtmlNode> lines = null;
+                if(root != null)
                 {
-                    modelsToSave.Add(ParseLine(line));
+                    lines = FilterLines(root);
+                    Logger.Info("Got " + lines.Count() + " lines");
                 }
-                if (modelsToSave.Count > 0)
+                else
                 {
-                    Logger.Info("Start saving to bdd " + this.GetType().Name);
-                    SaveToBDD(modelsToSave);
-                    Logger.Info("End saving to bdd " + this.GetType().Name);
-                } else
-                {
-                    Logger.Info("Nothing to save for parser " + this.GetType().Name);
+                    Logger.Info("Nothing to get");
                 }
+                
+                Logger.Info("End getting lines " + this.GetType().Name);
+
+                var modelsToSave = new List<T>();
+
+                if (lines != null)
+                {
+                    foreach (var line in lines)
+                    {
+                        modelsToSave.Add(ParseLine(line));
+                    }
+                    if (modelsToSave.Count > 0)
+                    {
+                        Logger.Info("Start saving to bdd " + this.GetType().Name);
+                        SaveToBDD(modelsToSave);
+                        Logger.Info("End saving to bdd " + this.GetType().Name);
+                    }
+                    else
+                    {
+                        Logger.Info("Nothing to save for parser " + this.GetType().Name);
+                    }
+                }
+            } catch (Exception e)
+            {
+                Logger.Error(e, "Error with " + this.GetType().Name);
             }
             Logger.Info("End Parsing" + this.GetType().Name);
         }
@@ -78,7 +96,7 @@ namespace HOFCServerParser.Parsers
             }
             else
             {
-                Logger.Info(string.Format(string.IsNullOrEmpty(additionalParam)?"Calling URL : {0}, With Parameter : {1}": "Calling URL : {0}", url, additionalParam));
+                Logger.Info(string.Format(!string.IsNullOrEmpty(additionalParam)?"Calling URL : {0}, With Parameter : {1}": "Calling URL : {0}", url, additionalParam));
 
                 string html = httpClient.GetStringAsync(Program.Configuration[configPath] + additionalParam).Result;
                 HtmlDocument document = new HtmlDocument();
@@ -87,7 +105,7 @@ namespace HOFCServerParser.Parsers
             }
         }
 
-		protected abstract IEnumerable<HtmlNode> GetLines();
+		protected abstract IEnumerable<HtmlNode> FilterLines(HtmlNode root);
 		
 		protected abstract T ParseLine(HtmlNode line);
 		

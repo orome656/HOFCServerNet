@@ -24,6 +24,9 @@ namespace HOFCServerParser.Parsers
             IdJournee = idJournee;
             Competition = competition;
             SeasonIndex = seasonIndex;
+
+            ConfigPath = "Parser:" + SeasonTool.GetSeasonIndex() + ":" + Categorie + ":JourneeURL";
+            AdditionalParam = idJournee + "";
         }
 
         private static Dictionary<string, string> moisTransform = new Dictionary<string, string>
@@ -42,9 +45,8 @@ namespace HOFCServerParser.Parsers
             {"decembre", "12" }
         };
         
-        protected override IEnumerable<HtmlNode> GetLines()
+        protected override IEnumerable<HtmlNode> FilterLines(HtmlNode root)
         {
-            var root = GetHtml("Parser:" + SeasonTool.GetSeasonIndex() + ":" + Categorie + ":JourneeURL", IdJournee + "");
             var rootNode = root.SelectSingleNode("//div[@id='refpop']");
             IEnumerable<HtmlNode> lines = null;
             if(rootNode != null)
@@ -63,7 +65,7 @@ namespace HOFCServerParser.Parsers
             var now = DateTime.Now;
             if (childs.Count() != 6)
             {
-                Console.WriteLine("Something changed ...");
+                Logger.Warn("Something changed here ...");
             }
             else
             {

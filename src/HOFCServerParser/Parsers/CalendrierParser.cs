@@ -32,17 +32,16 @@ namespace HOFCServerParser.Parsers
 
         public CalendrierParser(string category) : base()
         {
+            ConfigPath = "Parser:" + SeasonTool.GetSeasonIndex() + ":" + category + ":CalendrierURL";
             this.category = category;
         }
 
-        protected override IEnumerable<HtmlNode> GetLines()
+        protected override IEnumerable<HtmlNode> FilterLines(HtmlNode root)
         {
-            var root = GetHtml("Parser:" + SeasonTool.GetSeasonIndex() + ":" + category + ":CalendrierURL");
-            var lines = root
+            return root
                 .SelectSingleNode("//div[@id='refpop']")
                 .Descendants("div")
                 .Where(n => (n.GetAttributeValue("class", "").Equals("resultatmatch bgbleu rm")));
-            return lines;
         }
 
         protected override Match ParseLine(HtmlNode node)

@@ -19,10 +19,11 @@ namespace HOFCServerParser.Parsers
         {
             this.Categorie = _category;
             this.CompetitionName = _competitionName;
+
+            ConfigPath = "Parser:" + SeasonTool.GetSeasonIndex() + ":" + Categorie + ":ClassementURL";
         }
-        protected override IEnumerable<HtmlNode> GetLines()
+        protected override IEnumerable<HtmlNode> FilterLines(HtmlNode root)
         {
-            var root = GetHtml("Parser:" + SeasonTool.GetSeasonIndex() + ":" + Categorie + ":ClassementURL");
             var rootNode = root.SelectSingleNode("//table[@class='tablo bordure ac']");
             IEnumerable<HtmlNode> lines = null;
             if (rootNode != null) {

@@ -34,12 +34,13 @@ namespace HOFCServerParser.Parsers
 
         public AgendaParser(string semaine): base()
         {
+            ConfigPath = "Parser:" + SeasonTool.GetSeasonIndex() + ":AgendaURL";
+            AdditionalParam = semaine;
             this.semaine = semaine;
         }
 
-        protected override IEnumerable<HtmlNode> GetLines()
+        protected override IEnumerable<HtmlNode> FilterLines(HtmlNode root)
         {
-            var root = GetHtml("Parser:" + SeasonTool.GetSeasonIndex() + ":AgendaURL", semaine);
             var rootNode = root.SelectSingleNode("//div[@id='refpop']");
             IEnumerable<HtmlNode> lines = null;
             if (rootNode != null)

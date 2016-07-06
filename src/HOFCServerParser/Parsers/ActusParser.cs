@@ -12,16 +12,19 @@ namespace HOFCServerParser.Parsers
 {
     public class ActusParser : Parser<Actu>
     {
-        protected override IEnumerable<HtmlNode> GetLines()
-        {
-            var root = GetHtml("Parser:ActuURL");
 
-            var lines = root
+
+        public ActusParser() : base()
+        {
+            ConfigPath = "Parser:ActuURL";
+        }
+
+        protected override IEnumerable<HtmlNode> FilterLines(HtmlNode root)
+        {
+            return root
                 .SelectSingleNode("//div[@id='content']")
                 .Descendants("div")
                 .Where(n => (n.GetAttributeValue("class", "").Equals("post")));
-            
-            return lines;
         }
 
         protected override Actu ParseLine(HtmlNode line)
