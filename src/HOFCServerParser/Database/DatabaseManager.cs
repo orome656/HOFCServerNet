@@ -51,7 +51,7 @@ namespace HOFCServerParser.Database
                                 notifMessage = "Match nul entre le HOFC et " + ((calendrier.Equipe1.Contains(AppConstants.HOFC_NAME)) ? calendrier.Equipe2 : calendrier.Equipe1);
                             }
                             NotificationHub notif = new NotificationHub(bddContext);
-                            notif.NotifyAll(titre, notifMessage);
+                            notif.NotifyAll(titre, notifMessage).Wait();
                         }
 
                         bddCalendrier.Date = calendrier.Date;

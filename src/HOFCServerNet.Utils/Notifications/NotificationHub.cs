@@ -17,7 +17,7 @@ namespace HOFCServerNet.Utils.Notifications
             BddContext = bddContext;
         }
 
-        public async void NotifyAll(string titre, string message)
+        public async Task NotifyAll(string titre, string message)
         {
             foreach(NotificationClient client in BddContext.NotificationClients.ToList())
             {
