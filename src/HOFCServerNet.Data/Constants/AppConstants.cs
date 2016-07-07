@@ -10,5 +10,8 @@ namespace HOFCServerNet.Data.Constants
         public static int NbMatchEquipe1 = 22;
         public static int NbMatchEquipe2 = 22;
         public static int NbMatchEquipe3 = 26;
+
+        public static readonly string HOFC_NAME = "HORGUES ODOS F.C.";
     }
+
 }

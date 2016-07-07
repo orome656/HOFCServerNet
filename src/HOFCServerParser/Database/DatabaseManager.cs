@@ -1,4 +1,6 @@
-﻿using HOFCServerNet.Data.Models;
+﻿using HOFCServerNet.Data.Constants;
+using HOFCServerNet.Data.Models;
+using HOFCServerNet.Utils.Notifications;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,37 @@ namespace HOFCServerParser.Database
                                                                                         && item.Competition.Nom == calendrier.Competition.Nom);
                     if (bddCalendrier != null)
                     {
+                        if(!bddCalendrier.Score1.HasValue && !bddCalendrier.Score2.HasValue
+                            && calendrier.Score1.HasValue && calendrier.Score2.HasValue
+                            && (calendrier.Equipe1.Contains(AppConstants.HOFC_NAME)
+                                || calendrier.Equipe2.Contains(AppConstants.HOFC_NAME))) 
+                        {
+                            string titre = string.Format("Nouveau Résultat {0}", calendrier.Competition.Categorie);
+                            string notifMessage = null;
+                            if (calendrier.Equipe1.Contains(AppConstants.HOFC_NAME) && calendrier.Score1 > calendrier.Score2)
+                            {
+                                notifMessage = "Victoire du HOFC (" + calendrier.Score1 + '-' + calendrier.Score2 + ") face à " + calendrier.Equipe2;
+                            }
+                            else if (calendrier.Equipe2.Contains(AppConstants.HOFC_NAME) && calendrier.Score2 > calendrier.Score1)
+                            {
+                                notifMessage = "Victoire du HOFC (" + calendrier.Score1 + '-' + calendrier.Score2 + ") face à " + calendrier.Equipe1;
+                            }
+                            else if (calendrier.Equipe1.Contains(AppConstants.HOFC_NAME) && calendrier.Score1 < calendrier.Score2)
+                            {
+                                notifMessage = "Défaite du HOFC (" + calendrier.Score1 + '-' + calendrier.Score2 + ") face à " + calendrier.Equipe2;
+                            }
+                            else if (calendrier.Equipe2.Contains(AppConstants.HOFC_NAME) && calendrier.Score2 < calendrier.Score1)
+                            {
+                                notifMessage = "Défaite du HOFC (" + calendrier.Score1 + '-' + calendrier.Score2 + ") face à " + calendrier.Equipe1;
+                            }
+                            else
+                            {
+                                notifMessage = "Match nul entre le HOFC et " + ((calendrier.Equipe1.Contains(AppConstants.HOFC_NAME)) ? calendrier.Equipe2 : calendrier.Equipe1);
+                            }
+                            NotificationHub notif = new NotificationHub(bddContext);
+                            notif.NotifyAll(titre, notifMessage);
+                        }
+
                         bddCalendrier.Date = calendrier.Date;
                         bddCalendrier.Score1 = calendrier.Score1;
                         bddCalendrier.Score2 = calendrier.Score2;
@@ -55,8 +88,7 @@ namespace HOFCServerParser.Database
                         {
                             calendrier.Competition = addedCompetitions.First(x => x.Nom == calendrier.Competition.Nom && x.Saison == calendrier.Competition.Saison);
                         }
-
-                        // New Element insert it and send notification
+                        
                         bddContext.Matchs.Add(calendrier);
                     }
                 }

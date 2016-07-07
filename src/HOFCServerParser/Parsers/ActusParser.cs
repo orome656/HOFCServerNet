@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using HOFCServerNet.Utils.Notifications;
 
 namespace HOFCServerParser.Parsers
 {
@@ -61,8 +62,6 @@ namespace HOFCServerParser.Parsers
 
         protected override void SaveToBDD(List<Actu> list)
         {
-            //AndroidGCMNotificationSender sender = new AndroidGCMNotificationSender();
-            
             using (var bddContext = new BddContext(Program.Options)) {
                 foreach(Actu actu in list)
                 {
@@ -82,7 +81,9 @@ namespace HOFCServerParser.Parsers
                     {
                         // New Element insert it and send notification
                         bddContext.Actus.Add(actu);
-                        //sender.SendNotification("Nouvelle Actualité", actu.Titre);
+                        NotificationHub notif = new NotificationHub(bddContext);
+                        notif.NotifyAll("Nouvelle Actualité", actu.Titre);
+                        
                     }
                 }
                 bddContext.SaveChanges();
