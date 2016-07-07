@@ -84,14 +84,12 @@ namespace HOFCServerParser.Parsers
                                        .Where(n => n.GetAttributeValue("class", "").Equals("team t2"))
                                        .First()
                                        .FirstChild
-                                       .FirstChild
                                        .InnerText
                                        .Trim().ToUpper());
 
                 var equipe2 = HtmlEntity.DeEntitize(matchLine.Descendants("td")
                                        .Where(n => n.GetAttributeValue("class", "").Equals("team ar tv2"))
                                        .First()
-                                       .FirstChild
                                        .FirstChild
                                        .InnerText
                                        .Trim().ToUpper());
