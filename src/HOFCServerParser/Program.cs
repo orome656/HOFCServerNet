@@ -48,16 +48,7 @@ namespace HOFCServerParser
 
             Logger.Info("Update Batch End");
         }
-
-        private static void ParseCalendriers(string[] equipes)
-        {
-            foreach (string name in equipes)
-            {
-                var calendrierParser = new CalendrierParser(name);
-                calendrierParser.Parse();
-            }
-        }
-
+        
         private static void ParseActus()
         {
             var actusParser = new ActusParser();
