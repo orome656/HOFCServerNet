@@ -16,6 +16,8 @@ namespace HOFCServerParser.Parsers
 
         public ActusParser() : base()
         {
+            Logger.Info("Init Actus Parser.");
+
             ConfigPath = "Parser:ActuURL";
         }
 
@@ -41,7 +43,9 @@ namespace HOFCServerParser.Parsers
             actu.ImageURL = actu.ImageURL.Replace("amp;", "");
             var dateString = line.Descendants("div").Where(n => n.GetAttributeValue("class", "").Equals("postmeta")).First().InnerText.Trim();
             actu.Date = ParseDate(dateString);
-            
+
+            Logger.Debug(actu.ToString());
+
             return actu;
         }
 

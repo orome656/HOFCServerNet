@@ -32,6 +32,8 @@ namespace HOFCServerParser.Parsers
 
         public CalendrierParser(string category) : base()
         {
+            Logger.Info("Init CalendrierParser. Category : " + category);
+
             ConfigPath = "Parser:" + SeasonTool.GetSeasonIndex() + ":" + category + ":CalendrierURL";
             this.category = category;
         }
@@ -51,7 +53,7 @@ namespace HOFCServerParser.Parsers
             var now = DateTime.Now;
             if(childs.Count() != 6)
             {
-                Console.WriteLine("Something changed ...");
+                Logger.Warn("Something changed here ...");
             }
             else
             {
@@ -93,6 +95,8 @@ namespace HOFCServerParser.Parsers
                 calendrier.Equipe1 = equipe1;
                 calendrier.Equipe2 = equipe2;
                 calendrier.Date = datetime;
+
+                Logger.Debug(calendrier.ToString());
             }
             return calendrier;
 

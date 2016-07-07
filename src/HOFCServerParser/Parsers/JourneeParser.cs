@@ -20,6 +20,8 @@ namespace HOFCServerParser.Parsers
 
         public JourneeParser(string categorie, int idJournee, string competition, string seasonIndex) : base()
         {
+            Logger.Info("Init Journee Parser. Category : " + categorie + ", IdJournee : " + idJournee + ", CompetitionName : " + competition + ", SeasonIndex : " + seasonIndex);
+
             Categorie = categorie;
             IdJournee = idJournee;
             Competition = competition;
@@ -144,6 +146,8 @@ namespace HOFCServerParser.Parsers
 
                 System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"det_match\(this,'([0-9]+)");
                 journee.InfosId = regex.Match(childs.Last().InnerHtml).Groups[1].Value;
+
+                Logger.Debug(journee.ToString());
             }
             return journee;
         }

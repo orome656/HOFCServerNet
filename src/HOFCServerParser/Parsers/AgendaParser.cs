@@ -34,6 +34,8 @@ namespace HOFCServerParser.Parsers
 
         public AgendaParser(string semaine): base()
         {
+            Logger.Info("Init Agenda Parser. Semaine : " + semaine);
+
             ConfigPath = "Parser:" + SeasonTool.GetSeasonIndex() + ":AgendaURL";
             AdditionalParam = semaine;
             this.semaine = semaine;
@@ -60,7 +62,7 @@ namespace HOFCServerParser.Parsers
             var now = DateTime.Now;
             if (childs.Count() != 6)
             {
-                Console.WriteLine("Something changed ...");
+                Logger.Warn("Something changed here ...");
             }
             else
             {
@@ -131,6 +133,8 @@ namespace HOFCServerParser.Parsers
                 agenda.Date = datetime;
                 System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"det_match\(this,'([0-9]+)");
                 agenda.InfosId = regex.Match(childs.Last().InnerHtml).Groups[1].Value;
+
+                Logger.Debug(agenda);
             }
             return agenda;
         }
