@@ -46,6 +46,8 @@ namespace HOFCServerNet.Data.Models
         [JsonIgnore]
         public int CompetitionId { get; set; }
 
+        public string Message { get; set; }
+
         public override string ToString()
         {
             return "|" + Equipe1 + "|" + Score1 + "|" + Score2 + "|" + Equipe2 + "|" + Date + "|";

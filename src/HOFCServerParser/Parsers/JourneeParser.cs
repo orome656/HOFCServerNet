@@ -101,19 +101,33 @@ namespace HOFCServerParser.Parsers
                                        .First()
                                        .InnerText
                                        .Trim();
+                string message = null;
+
                 if (score != null && score.Length > 0)
                 {
                     if (score.IndexOf("Prolongation") != -1)
-                        score = score.Substring(0, score.IndexOf("Prolongation")); // Il faudrait ajouter un champ message pour gérer ce cas
+                    {
+                        score = score.Substring(0, score.IndexOf("Prolongation"));
+                        message = "Prolongation";
+                    }
 
                     if (score.IndexOf("Non jou") != -1)
+                    {
                         score = score.Substring(0, score.IndexOf("Non jou"));
+                        message = "Non joué";
+                    }
 
                     if (score.IndexOf("Report") != -1)
+                    {
                         score = score.Substring(0, score.IndexOf("Report"));
+                        message = "Reporté";
+                    }
 
                     if (score.IndexOf("Arr") != -1)
+                    {
                         score = score.Substring(0, score.IndexOf("Arr"));
+                        message = "Arrêté";
+                    }
 
 
                     if (score.Length > 0) // On refait le check après la supression
@@ -133,7 +147,7 @@ namespace HOFCServerParser.Parsers
                         }
                         else
                         {
-                            
+                            Logger.Info("Le score du match " + equipe1 + " - " + equipe2 + " du " + datetime.ToString() + " n'est pas un entier : " + score);
                         }
                         
                     }
@@ -143,6 +157,7 @@ namespace HOFCServerParser.Parsers
                 journee.Date = datetime;
                 journee.IdJournee = this.IdJournee;
                 journee.Competition = new Competition() { Nom = this.Competition, Saison = this.SeasonIndex, Categorie = this.Categorie };
+                journee.Message = message;
 
                 System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"det_match\(this,'([0-9]+)");
                 journee.InfosId = regex.Match(childs.Last().InnerHtml).Groups[1].Value;

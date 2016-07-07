@@ -28,6 +28,8 @@ namespace HOFCServerParser.Database
                         {
                             bddCalendrier.IdJournee = calendrier.IdJournee;
                         }
+                        bddCalendrier.Message = calendrier.Message;
+
                         bddContext.Entry(bddCalendrier).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     }
                     else

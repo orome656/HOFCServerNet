@@ -8,9 +8,12 @@
     "HOFCServerNet.Data": "1.0.0-*",
     "System.Net.Http": "4.1.0",
     "System.Text.RegularExpressions": "4.1.0",
-    "NETStandard.Library": "1.6.0"
+    "Microsoft.NETCore.App": {
+      "version": "1.0.0",
+      "type": "platform"
+    }
   },
   "frameworks": {
-    "netstandard1.6": {}
+    "netcoreapp1.0": {}
   }
 }

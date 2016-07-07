@@ -8,9 +8,10 @@ using HOFCServerNet.Data.Models;
 namespace HOFCServerNet.Data.Migrations
 {
     [DbContext(typeof(BddContext))]
-    partial class BddContextModelSnapshot : ModelSnapshot
+    [Migration("20160707095912_Add message in match")]
+    partial class Addmessageinmatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
