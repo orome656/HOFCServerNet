@@ -120,7 +120,7 @@ namespace HOFCServerNet
                     template: "Journee/Detail/{url}", defaults: new { controller = "Journee", action = "Index", equipe = "equipe1", idJournee = 1 });
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Actu}/{action=Index}/{id?}");
             });
 
             // TODO Re enable when nuget package is updated
