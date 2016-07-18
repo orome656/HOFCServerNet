@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.IO;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using NLog;
 
 namespace HOFCServerNet
 {
@@ -40,10 +39,14 @@ namespace HOFCServerNet
                     .AddDbContext<BddContext>(options => options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]))
                     .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>()
-                    .AddDefaultTokenProviders();
-
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+                options.Cookies.ApplicationCookie.AutomaticAuthenticate = true;
+                options.Cookies.ApplicationCookie.AutomaticChallenge = false;
+                options.Cookies.ApplicationCookie.AuthenticationScheme = "ApplicationCookie";
+                options.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+              .AddDefaultTokenProviders();
+            
             services.AddTransient<MatchService>();
             services.AddTransient<ActuService>();
             services.AddTransient<JoueurService>();
@@ -120,7 +123,7 @@ namespace HOFCServerNet
                     template: "Journee/Detail/{url}", defaults: new { controller = "Journee", action = "Index", equipe = "equipe1", idJournee = 1 });
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Actu}/{action=Index}/{id?}");
             });
 
             // TODO Re enable when nuget package is updated
