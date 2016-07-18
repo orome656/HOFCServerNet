@@ -54,7 +54,7 @@ namespace HOFCServerNet.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Contributor")]
+        [Authorize(Roles = "Contributor", ActiveAuthenticationSchemes = "ApplicationCookie")]
         public IActionResult Details(DetailsCompoViewModel viewModel)
         {
             CompoService.SaveComposition(viewModel.Match.Id,viewModel.Compositions);
@@ -63,7 +63,7 @@ namespace HOFCServerNet.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Contributor")]
+        [Authorize(Roles = "Contributor", ActiveAuthenticationSchemes = "ApplicationCookie")]
         public IActionResult Remove(int id)
         {
             CompoService.DeleteMatchComposition(id);

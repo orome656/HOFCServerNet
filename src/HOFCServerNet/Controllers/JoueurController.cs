@@ -45,7 +45,7 @@ namespace HOFCServerNet.Controllers
             return View(viewModel);
         }
 
-        [Authorize(Roles = "Contributor")]
+        [Authorize(Roles = "Contributor", ActiveAuthenticationSchemes = "ApplicationCookie")]
         [HttpPost]
         public IActionResult Details(JoueurDetailsViewModel JoueurDetails)
         {
@@ -62,7 +62,7 @@ namespace HOFCServerNet.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Contributor")]
+        [Authorize(Roles = "Contributor", ActiveAuthenticationSchemes = "ApplicationCookie")]
         public IActionResult Remove(int id)
         {
             Service.Delete(id);
