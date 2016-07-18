@@ -43,6 +43,7 @@ namespace HOFCServerNet
                 options.Cookies.ApplicationCookie.AutomaticAuthenticate = true;
                 options.Cookies.ApplicationCookie.AutomaticChallenge = false;
                 options.Cookies.ApplicationCookie.AuthenticationScheme = "ApplicationCookie";
+                options.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
             }).AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
             
