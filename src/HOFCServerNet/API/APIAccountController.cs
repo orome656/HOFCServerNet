@@ -63,7 +63,7 @@ namespace HOFCServerNet.API
         //[HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
         [AllowAnonymous]
         [Route("ExternalLogin", Name = "ExternalLogin")]
-        public async Task<IActionResult> GetExternalLogin(string provider, string returnUrl = null)
+        public async Task<ChallengeResult> GetExternalLogin(string provider, string returnUrl = null)
         {
             var redirectUrl = Url.Action("ExternalLoginCallback", "APIAccount", new { ReturnUrl = returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
@@ -71,18 +71,19 @@ namespace HOFCServerNet.API
         }
 
         [AllowAnonymous]
-        public async Task ExternalLoginCallback(string returnUrl = null)
+        public async Task<StatusCodeResult> ExternalLoginCallback(string returnUrl = null)
         {
             var infos = await _signInManager.GetExternalLoginInfoAsync();
             if (infos == null)
             {
-                // Pas normal, il faut rediriger vers Login ...
+                return BadRequest();
             }
 
             var result = await _signInManager.ExternalLoginSignInAsync(infos.LoginProvider, infos.ProviderKey, isPersistent: false);
             if(result.Succeeded)
             {
-                // L'authentification a réussie
+                // Il faudra peut etre retourner le token
+                return Ok();
             }
             else
             {
@@ -93,7 +94,7 @@ namespace HOFCServerNet.API
                 var info = await _signInManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
-                    // Probleme !!
+                    return StatusCode(502);
                 }
                 var user = new ApplicationUser() { UserName = email, Email = email };
                 var resultCreate = await _userManager.CreateAsync(user);
@@ -104,16 +105,16 @@ namespace HOFCServerNet.API
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         Logger.Info("User created an account using {Name} provider.", info.LoginProvider);
-                        // OK everything is done !
+                        return Ok();
                     }
                     else
                     {
-                        // Oh oh !
+                        return StatusCode(500);
                     }
                 }
                 else
                 {
-                    // Something went wrong
+                    return StatusCode(500);
                 }
             }
         }
