@@ -9,6 +9,7 @@ using HOFCServerNet.Services;
 using HOFCServerNet.ViewModels.Vote;
 using HOFCServerNet.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using NLog;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,9 +21,10 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class VotesController : Controller
     {
-        private VoteService Service { get; set; }
-        private MatchService MatchService;
-        private UserManager<ApplicationUser> UserManager;
+        private VoteService _service { get; set; }
+        private MatchService _matchService;
+        private UserManager<ApplicationUser> _userManager;
+        private Logger _logger = LogManager.GetLogger("HOFCServerNet.API.VotesController");
 
         /// <summary>
         /// Constructor
@@ -32,9 +34,9 @@ namespace HOFCServerNet.API
         /// <param name="userManager"></param>
         public VotesController(VoteService service, MatchService mService, UserManager<ApplicationUser> userManager)
         {
-            Service = service;
-            MatchService = mService;
-            UserManager = userManager;
+            _service = service;
+            _matchService = mService;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace HOFCServerNet.API
         [Authorize]
         public List<VoteSum> Get(int id)
         {
-            return Service.GetResultsForMatch(id);
+            return _service.GetResultsForMatch(id);
         }
 
         /// <summary>
@@ -56,10 +58,18 @@ namespace HOFCServerNet.API
         /// <param name="value"></param>
         [HttpPost]
         [Authorize]
-        public void Post([FromBody]List<Vote> value)
+        public StatusCodeResult Post([FromBody]List<Vote> value)
         {
-            // TODO Add return code ?
-            Service.SaveVotes(value, value.First().MatchId, UserManager.GetUserId(User));
+            try
+            {
+                _service.SaveVotes(value, value.First().MatchId, _userManager.GetUserId(User));
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                _logger.Error(e, "Error while inserting vote data");
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -69,11 +79,21 @@ namespace HOFCServerNet.API
         /// <param name="value">Liste des votes</param>
         [HttpPut("{id}")]
         [Authorize]
-        public void Put(int id, [FromBody]List<Vote> value)
+        public StatusCodeResult Put(int id, [FromBody]List<Vote> value)
         {
             // TODO not implemented
             // TODO User can only edit his vote
-            Service.SaveVotes(value, id, UserManager.GetUserId(User));
+            try
+            {
+                // Add not found code
+                _service.SaveVotes(value, id, _userManager.GetUserId(User));
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Error while updating vote data");
+                return StatusCode(500);
+            }
         }
 
         /// <summary>
@@ -85,7 +105,7 @@ namespace HOFCServerNet.API
         public void Delete(int id)
         {
             // TODO not implemented
-            Service.DeleteVotesForMatch(id, UserManager.GetUserId(User));
+            _service.DeleteVotesForMatch(id, _userManager.GetUserId(User));
         }
 
 
@@ -102,7 +122,7 @@ namespace HOFCServerNet.API
         [HttpGet]
         public void Open(int idMatch)
         {
-            MatchService.ActivateVote(idMatch);
+            _matchService.ActivateVote(idMatch);
             // TODO retourner 404 si idMatch pas bon
         }
 
@@ -115,7 +135,7 @@ namespace HOFCServerNet.API
         [HttpGet]
         public void Close(int idMatch)
         {
-            MatchService.CloseVote(idMatch);
+            _matchService.CloseVote(idMatch);
             // TODO retourner 404 si idMatch pas bon
         }
     }
