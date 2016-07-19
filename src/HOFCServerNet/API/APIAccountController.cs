@@ -62,6 +62,7 @@ namespace HOFCServerNet.API
         //[OverrideAuthentication]
         //[HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
         [AllowAnonymous]
+        [HttpGet]
         [Route("ExternalLogin", Name = "ExternalLogin")]
         public async Task<ChallengeResult> GetExternalLogin(string provider, string returnUrl = null)
         {
@@ -71,6 +72,7 @@ namespace HOFCServerNet.API
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public async Task<StatusCodeResult> ExternalLoginCallback(string returnUrl = null)
         {
             var infos = await _signInManager.GetExternalLoginInfoAsync();
