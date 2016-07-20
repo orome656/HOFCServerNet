@@ -59,7 +59,7 @@ namespace HOFCServerNet
             // Add framework services.
             services.AddMvc();
 
-            //services.AddSwaggerGen();
+            services.AddSwaggerGen();
         }
 
         /// <summary>
@@ -127,8 +127,8 @@ namespace HOFCServerNet
             });
 
             // TODO Re enable when nuget package is updated
-            //app.UseSwaggerGen();
-            //app.UseSwaggerUi();
+            app.UseSwagger();
+            app.UseSwaggerUi();
 
             app.AddNLogWeb();
         }
