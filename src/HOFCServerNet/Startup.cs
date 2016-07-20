@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.IO;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using HOFCServerNet.Middlewares;
 
 namespace HOFCServerNet
 {
@@ -114,6 +115,8 @@ namespace HOFCServerNet
                 AppId = Configuration["FACEBOOK_APP_ID"],
                 AppSecret = Configuration["FACEBOOK_SECRET_ID"]
             });
+
+            app.UseMiddleware<WebAPILoggerMiddleware>();
 
             app.UseMvc(routes =>
             {

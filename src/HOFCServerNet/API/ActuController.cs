@@ -36,10 +36,7 @@ namespace HOFCServerNet.API
         [HttpGet]
         public IEnumerable<Actu> Get()
         {
-            Logger.Info("Start Calling Actu Web API");
-            List<Actu> actus = _service.GetAll();
-            Logger.Info("End Calling Actu Web API");
-            return actus;
+            return _service.GetAll();
         }
     }
 }
