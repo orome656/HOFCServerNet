@@ -16,15 +16,15 @@ namespace HOFCServerNet.API
     [Route("api/classements")]
     public class ClassementController : Controller
     {
-        private ClassementService Service { get; set; }
+        private ClassementService _classementService { get; set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="_service"></param>
-        public ClassementController(ClassementService _service)
+        /// <param name="classementService"></param>
+        public ClassementController(ClassementService classementService)
         {
-            Service = _service;
+            _classementService = classementService;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace HOFCServerNet.API
         [HttpGet]
         public IEnumerable<Classement> Get()
         {
-            return Service.GetAll();
+            return _classementService.GetAll();
         }
         
         /// <summary>
@@ -45,7 +45,7 @@ namespace HOFCServerNet.API
         [HttpGet("{categorie}")]
         public IEnumerable<Classement> Get(string categorie)
         {
-            return Service.GetByCategory(categorie);
+            return _classementService.GetByCategory(categorie);
         }
     }
 }

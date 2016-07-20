@@ -19,15 +19,15 @@ namespace HOFCServerNet.API
     [Route("api/joueurs")]
     public class JoueurController : Controller
     {
-        private JoueurService Service { get; set; }
+        private JoueurService _joueurService { get; set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="_service"></param>
-        public JoueurController(JoueurService _service)
+        /// <param name="service"></param>
+        public JoueurController(JoueurService service)
         {
-            Service = _service;
+            _joueurService = service;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace HOFCServerNet.API
         [HttpGet]
         public List<JoueurDetailsViewModel> Get()
         {
-            return Service.GetAll();
+            return _joueurService.GetAll();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace HOFCServerNet.API
         public JoueurDetailsViewModel Get(int id)
         {
             // TODO ajouter le code retour not found si nécessaire
-            return Service.GetById(id);
+            return _joueurService.GetById(id);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace HOFCServerNet.API
         public void Post([FromBody]JoueurDetailsViewModel value)
         {
             // TODO ajouter les codes retours
-            Service.Create(value);
+            _joueurService.Create(value);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace HOFCServerNet.API
         public void Put(int id, [FromBody]JoueurDetailsViewModel value)
         {
             // TODO ajouter les code retours
-            Service.Update(value);
+            _joueurService.Update(value);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace HOFCServerNet.API
         [Authorize(Roles = "Contributor")]
         public IActionResult Delete(int id)
         {
-            ServiceConstants.DELETE_STATUT statut = Service.Delete(id);
+            ServiceConstants.DELETE_STATUT statut = _joueurService.Delete(id);
             if(ServiceConstants.DELETE_STATUT.INCONNU.Equals(statut))
             {
                 return NotFound();

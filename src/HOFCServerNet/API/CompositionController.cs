@@ -17,15 +17,15 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class CompositionController : Controller
     {
-        private CompositionService Service { get; set; }
+        private CompositionService _compoService { get; set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="_service"></param>
-        public CompositionController(CompositionService _service)
+        /// <param name="compoService"></param>
+        public CompositionController(CompositionService compoService)
         {
-            Service = _service;
+            _compoService = compoService;
         }
         /// <summary>
         ///     Permet de récupérer la composition d'un match
@@ -36,7 +36,7 @@ namespace HOFCServerNet.API
         [HttpGet("{idMatch}")]
         public List<CompositionViewModel> Get(int idMatch)
         {
-            return Service.GetForMatch(idMatch);
+            return _compoService.GetForMatch(idMatch);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace HOFCServerNet.API
         [Authorize(Roles = "Contributor")]
         public void Post([FromBody]List<CompositionViewModel> value)
         {
-            Service.SaveComposition(value);
+            _compoService.SaveComposition(value);
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace HOFCServerNet.API
         [Authorize(Roles = "Contributor")]
         public void Delete(int id)
         {
-            Service.DeleteMatchComposition(id);
+            _compoService.DeleteMatchComposition(id);
         }
     }
 }

@@ -17,15 +17,15 @@ namespace HOFCServerNet.API
     [Route("api/[controller]")]
     public class NotificationController : Controller
     {
-        private NotificationService Service { get; set; }
+        private NotificationService _notificationService { get; set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="_service"></param>
-        public NotificationController(NotificationService _service)
+        /// <param name="notificationService"></param>
+        public NotificationController(NotificationService notificationService)
         {
-            Service = _service;
+            _notificationService = notificationService;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace HOFCServerNet.API
         {
             if(platform != 0 && notification_id != null)
             {
-                Service.AddNewClient(platform, notification_id);
+                _notificationService.AddNewClient(platform, notification_id);
             } else
             {
                 // TODO add logs here

@@ -19,7 +19,7 @@ namespace HOFCServerNet.API
     [Route("api/account")]
     public class APIAccountController : Controller
     {
-        private static Logger Logger = LogManager.GetLogger("HOFCServerNet.API.APIAccountController");
+        private static Logger _logger = LogManager.GetLogger("HOFCServerNet.API.APIAccountController");
         private SignInManager<ApplicationUser> _signInManager;
         private UserManager<ApplicationUser> _userManager;
 
@@ -106,7 +106,7 @@ namespace HOFCServerNet.API
                     if (resultLogin.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        Logger.Info("User created an account using {Name} provider.", info.LoginProvider);
+                        _logger.Info("User created an account using {Name} provider.", info.LoginProvider);
                         return Ok();
                     }
                     else

@@ -18,15 +18,15 @@ namespace HOFCServerNet.API
     public class ActuController : Controller
     {
         private static Logger Logger = LogManager.GetLogger("HOFCServerNet.API.ActuController");
-        private ActuService Service { get; set; }
+        private ActuService _service;
         
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="_service"></param>
-        public ActuController(ActuService _service)
+        /// <param name="service"></param>
+        public ActuController(ActuService service)
         {
-            Service = _service;
+            _service = service;
         }
         
         /// <summary>
@@ -37,7 +37,7 @@ namespace HOFCServerNet.API
         public IEnumerable<Actu> Get()
         {
             Logger.Info("Start Calling Actu Web API");
-            List<Actu> actus = Service.GetAll();
+            List<Actu> actus = _service.GetAll();
             Logger.Info("End Calling Actu Web API");
             return actus;
         }
