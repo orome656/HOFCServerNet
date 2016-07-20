@@ -34,7 +34,7 @@ namespace HOFCServerNet.API
             } 
             else
             {
-                return MatchInfosParser.Parse(id);
+                return infos;
             }
         }
     }

@@ -14,7 +14,7 @@ namespace HOFCServerNet.API
     /// <summary>
     /// Permet de gérer les actualités
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/actus")]
     public class ActuController : Controller
     {
         private static Logger Logger = LogManager.GetLogger("HOFCServerNet.API.ActuController");

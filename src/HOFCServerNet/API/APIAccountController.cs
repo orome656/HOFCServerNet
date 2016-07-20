@@ -16,7 +16,7 @@ using NLog;
 
 namespace HOFCServerNet.API
 {
-    [Route("api/[controller]")]
+    [Route("api/account")]
     public class APIAccountController : Controller
     {
         private static Logger Logger = LogManager.GetLogger("HOFCServerNet.API.APIAccountController");

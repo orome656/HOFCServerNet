@@ -13,7 +13,7 @@ namespace HOFCServerNet.API
     /// <summary>
     /// Permet de gérer les classements
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/classements")]
     public class ClassementController : Controller
     {
         private ClassementService Service { get; set; }

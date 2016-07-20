@@ -16,7 +16,7 @@ namespace HOFCServerNet.API
     /// <summary>
     /// Controlleur de gestion des joueurs
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/joueurs")]
     public class JoueurController : Controller
     {
         private JoueurService Service { get; set; }
@@ -48,6 +48,7 @@ namespace HOFCServerNet.API
         [HttpGet("{id}")]
         public JoueurDetailsViewModel Get(int id)
         {
+            // TODO ajouter le code retour not found si nécessaire
             return Service.GetById(id);
         }
 
@@ -59,6 +60,7 @@ namespace HOFCServerNet.API
         [Authorize(Roles = "Contributor")]
         public void Post([FromBody]JoueurDetailsViewModel value)
         {
+            // TODO ajouter les codes retours
             Service.Create(value);
         }
 
@@ -71,6 +73,7 @@ namespace HOFCServerNet.API
         [Authorize(Roles = "Contributor")]
         public void Put(int id, [FromBody]JoueurDetailsViewModel value)
         {
+            // TODO ajouter les code retours
             Service.Update(value);
         }
 
@@ -90,7 +93,7 @@ namespace HOFCServerNet.API
             }
             else
             {
-                return Ok();
+                return NoContent();
             }
         }
     }

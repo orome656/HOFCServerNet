@@ -13,18 +13,21 @@ namespace HOFCServerNet.API
     /// <summary>
     /// Permet la gestion des matchs
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/matchs")]
     public class MatchController : Controller
     {
-        private MatchService Service { get; set; }
+        private MatchService _matchService;
+        private CompositionService _compoService;
         
         /// <summary>
         /// Default constuctor
         /// </summary>
-        /// <param name="_service"></param>
-        public MatchController(MatchService _service)
+        /// <param name="service"></param>
+        /// <param name="compoService"></param>
+        public MatchController(MatchService service, CompositionService compoService)
         {
-            Service = _service;
+            _matchService = service;
+            _compoService = compoService;
         }
 
         /// <summary>
@@ -34,7 +37,7 @@ namespace HOFCServerNet.API
         [HttpGet]
         public IEnumerable<Match> Get()
         {
-            return Service.GetAll();
+            return _matchService.GetAll();
         }
 
         /// <summary>
@@ -45,7 +48,28 @@ namespace HOFCServerNet.API
         [HttpGet("{id}")]
         public Match Get(int id)
         {
-            return Service.GetMatchById(id);
+            return _matchService.GetMatchById(id);
+        }
+
+        /// <summary>
+        /// Permet de mettre a jour le statut du vote pour ce match
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpPatch]
+        [Route("{id}/vote-status")]
+        public void OpenVote(int id)
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Permet d'ajouter une nouvelle compo sur un match
+        /// </summary>
+        [HttpPost]
+        [Route("{id}/compos")]
+        public void CreateCompo()
+        {
+            // TODO
         }
     }
 }
