@@ -47,7 +47,16 @@ namespace HOFCServerNet
                 options.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
             }).AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
-            
+
+            services.AddOpenIddict<ApplicationUser, ApplicationDbContext>()
+                    .EnableTokenEndpoint("/connect/token")
+                    .EnableAuthorizationEndpoint("/connect/authorize")
+                    .AllowPasswordFlow()
+                    .AllowAuthorizationCodeFlow()
+                    .DisableHttpsRequirement()
+                    .AddEphemeralSigningKey();
+
+
             services.AddTransient<MatchService>();
             services.AddTransient<ActuService>();
             services.AddTransient<JoueurService>();
@@ -93,17 +102,17 @@ namespace HOFCServerNet
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
-
-            /*app.UseIISPlatformHandler(options =>
-            {
-                options.AuthenticationDescriptions.Clear();
-            });*/
+            
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseIdentity();
 
+            app.UseOAuthValidation();
+
+            app.UseOpenIddict();
+            
             app.UseGoogleAuthentication(new GoogleOptions()
             {
                 ClientId = Configuration["GOOGLE_CLIENT_ID"],
@@ -115,7 +124,7 @@ namespace HOFCServerNet
                 AppId = Configuration["FACEBOOK_APP_ID"],
                 AppSecret = Configuration["FACEBOOK_SECRET_ID"]
             });
-
+            
             app.UseMiddleware<WebAPILoggerMiddleware>();
 
             app.UseMvc(routes =>
@@ -128,8 +137,7 @@ namespace HOFCServerNet
                     name: "default",
                     template: "{controller=Actu}/{action=Index}/{id?}");
             });
-
-            // TODO Re enable when nuget package is updated
+            
             app.UseSwagger();
             app.UseSwaggerUi();
 

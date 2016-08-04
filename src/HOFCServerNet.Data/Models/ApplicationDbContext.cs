@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HOFCServerNet.Data.Models
 {
-    public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext: OpenIddict.OpenIddictDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder)
