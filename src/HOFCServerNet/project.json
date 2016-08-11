@@ -17,7 +17,6 @@
       "type": "build"
     },
     "Microsoft.Extensions.Configuration.FileProviderExtensions": "1.0.0-rc1-final",
-    "HtmlAgilityPack.NetCore": "1.4.9.2",
     "Swashbuckle.SwaggerGen": "6.0.0-beta901",
     "Swashbuckle.SwaggerUi": "6.0.0-beta901",
     "HOFCServerNet.Data": "1.0.0-*",
@@ -40,10 +39,10 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "System.Net.Http": "4.1.0",
     "NLog.Web.AspNetCore": "4.2.4",
-    "NLog.Extensions.Logging": "1.0.0-rtm-alpha2",
-
     "AspNet.Security.OAuth.Validation": "1.0.0-*",
-    "OpenIddict": "1.0.0-*"
+    "OpenIddict": "1.0.0-*",
+    "HtmlAgilityPack.NetCore": "1.5.0.1",
+    "NLog.Extensions.Logging": "1.0.0-rtm-alpha4"
   },
 
   "tools": {
