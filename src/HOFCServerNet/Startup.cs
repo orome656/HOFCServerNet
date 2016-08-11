@@ -12,6 +12,9 @@ using System.IO;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using HOFCServerNet.Middlewares;
+using System.Linq;
+using OpenIddict;
+using System;
 
 namespace HOFCServerNet
 {
@@ -112,7 +115,7 @@ namespace HOFCServerNet
             app.UseOAuthValidation();
 
             app.UseOpenIddict();
-            
+
             app.UseGoogleAuthentication(new GoogleOptions()
             {
                 ClientId = Configuration["GOOGLE_CLIENT_ID"],
@@ -142,6 +145,53 @@ namespace HOFCServerNet
             app.UseSwaggerUi();
 
             app.AddNLogWeb();
+
+            using (var context = new ApplicationDbContext(app.ApplicationServices.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
+            {
+                context.Database.EnsureCreated();
+                // Add Mvc.Client to the known applications.
+                if (!context.Applications.Any())
+                {
+                    // Note: when using the introspection middleware, your resource server
+                    // MUST be registered as an OAuth2 client and have valid credentials.
+                    // 
+                    // context.Applications.Add(new OpenIddictApplication {
+                    //     Id = "resource_server",
+                    //     DisplayName = "Main resource server",
+                    //     Secret = Crypto.HashPassword("secret_secret_secret"),
+                    //     Type = OpenIddictConstants.ClientTypes.Confidential
+                    // });
+                    /*
+                    context.Applications.Add(new OpenIddictApplication<Guid>
+                    {
+                        ClientId = "myClient",
+                        ClientSecret = Crypto.HashPassword("secret_secret_secret"),
+                        DisplayName = "My client application",
+                        LogoutRedirectUri = "http://localhost:53507/",
+                        RedirectUri = "http://localhost:53507/signin-oidc",
+                        Type = OpenIddictConstants.ClientTypes.Confidential
+                    });
+                    */
+                    // To test this sample with Postman, use the following settings:
+                    // 
+                    // * Authorization URL: http://localhost:54540/connect/authorize
+                    // * Access token URL: http://localhost:54540/connect/token
+                    // * Client ID: postman
+                    // * Client secret: [blank] (not used with public clients)
+                    // * Scope: openid email profile roles
+                    // * Grant type: authorization code
+                    // * Request access token locally: yes
+                    context.Applications.Add(new OpenIddictApplication
+                    {
+                        ClientId = "postman",
+                        DisplayName = "Postman",
+                        RedirectUri = "https://www.getpostman.com/oauth2/callback",
+                        Type = OpenIddictConstants.ClientTypes.Public
+                    });
+
+                    context.SaveChanges();
+                }
+            }
         }
 
         /// <summary>
