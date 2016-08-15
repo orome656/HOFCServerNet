@@ -22,7 +22,7 @@ namespace HOFCServerNet.API
         /// <param name="url">URL de la page a parser</param>
         /// <returns>Les informations de la page sérialisées</returns>
         [HttpPost]
-        public string Post([FromBody]string url)
+        public string Post(string url)
         {
             if(!string.IsNullOrWhiteSpace(url) && url.Contains("en-image"))
             {
