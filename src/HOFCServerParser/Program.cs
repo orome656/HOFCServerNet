@@ -98,17 +98,17 @@ namespace HOFCServerParser
             string seasonIndex = SeasonTool.GetSeasonIndex();
             for (var i = 1; i <= nbJourneesEquipe1; i++)
             {
-                JourneeParser parser = new JourneeParser("equipe1", i, "EXCELLENCE POULE UNIQUE", seasonIndex);
+                JourneeParser parser = new JourneeParser("equipe1", i, Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":equipe1:NomCompetition"], seasonIndex);
                 parser.Parse();
             }
             for (var i = 1; i <= nbJourneesEquipe2; i++)
             {
-                JourneeParser parser = new JourneeParser("equipe2", i, "PREMIERE DIVISION POULE UNIQUE", seasonIndex);
+                JourneeParser parser = new JourneeParser("equipe2", i, Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":equipe2:NomCompetition"], seasonIndex);
                 parser.Parse();
             }
             for (var i = 1; i <= nbJourneesEquipe3; i++)
             {
-                JourneeParser parser = new JourneeParser("equipe3", i, "PROMOTION 1ERE DIVISION POULE A", seasonIndex);
+                JourneeParser parser = new JourneeParser("equipe3", i, Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":equipe3:NomCompetition"], seasonIndex);
                 parser.Parse();
             }
         }
