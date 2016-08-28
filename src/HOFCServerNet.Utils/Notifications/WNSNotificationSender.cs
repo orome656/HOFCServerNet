@@ -22,7 +22,7 @@ namespace HOFCServerNet.Utils.Notifications
             if (ACCESS_TOKEN == null)
                 await GetAccessToken();
             
-            CallNotificationSending(client.NotificationID, titre, message);
+            await CallNotificationSending(client.NotificationID, titre, message);
         }
 
         private async Task<string> GetAccessToken()
@@ -49,7 +49,7 @@ namespace HOFCServerNet.Utils.Notifications
             return ACCESS_TOKEN;
         }
 
-        private async void CallNotificationSending(string url, string titre, string message)
+        private async Task CallNotificationSending(string url, string titre, string message)
         {
             HttpClient client = new HttpClient();
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);

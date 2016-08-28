@@ -60,7 +60,7 @@ namespace HOFCServerParser.Parsers
             return DateTime.Parse(dateString, infos);
         }
 
-        protected override void SaveToBDD(List<Actu> list)
+        protected async override void SaveToBDD(List<Actu> list)
         {
             using (var bddContext = new BddContext(Program.Options)) {
                 foreach(Actu actu in list)
@@ -82,7 +82,7 @@ namespace HOFCServerParser.Parsers
                         // New Element insert it and send notification
                         bddContext.Actus.Add(actu);
                         NotificationHub notif = new NotificationHub(bddContext);
-                        notif.NotifyAll("Nouvelle Actualité", actu.Titre);
+                        await notif.NotifyAll("Nouvelle Actualité", actu.Titre);
                         
                     }
                 }
