@@ -32,7 +32,8 @@
 
   "publishOptions": {
     "include": [
-      "appsettings.json"
+      "appsettings.json",
+      "NLog.config"
     ]
   }
 }

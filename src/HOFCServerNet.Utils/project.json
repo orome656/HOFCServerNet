@@ -11,7 +11,8 @@
     "Microsoft.NETCore.App": {
       "version": "1.0.0",
       "type": "platform"
-    }
+    },
+    "NLog.Extensions.Logging": "1.0.0-rtm-alpha4"
   },
   "frameworks": {
     "netcoreapp1.0": {}

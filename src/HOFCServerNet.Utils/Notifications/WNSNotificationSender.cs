@@ -6,6 +6,7 @@ using HOFCServerNet.Data.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
+using NLog;
 
 namespace HOFCServerNet.Utils.Notifications
 {
@@ -16,6 +17,7 @@ namespace HOFCServerNet.Utils.Notifications
 
         private static string ACCESS_TOKEN;
 
+        private static readonly Logger _logger = LogManager.GetLogger("HOFCServerNet.Utils.Notifications.WNSNotificationSender");
 
         public async Task SendNotification(string titre, string message, NotificationClient client)
         {
@@ -61,6 +63,11 @@ namespace HOFCServerNet.Utils.Notifications
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("text/xml");
 
             var response = await client.SendAsync(request);
+            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                var contentString = await response.Content.ReadAsStringAsync();
+                _logger.Error("Error while sending windows notification. Status Code is " + response.StatusCode + ". Content is " + contentString);
+            }
         }
     }
 }
