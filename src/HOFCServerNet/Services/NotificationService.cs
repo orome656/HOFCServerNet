@@ -17,13 +17,16 @@ namespace HOFCServerNet.Services
 
         public void AddNewClient(ClientPlatform platform, string notificationId)
         {
-            var notificationClient = new NotificationClient
+            if(!BddContext.NotificationClients.Any(c => notificationId.Equals(c.NotificationID)))
             {
-                Platform = platform,
-                NotificationID = notificationId
-            };
-            BddContext.NotificationClients.Add(notificationClient);
-            BddContext.SaveChanges();
+                var notificationClient = new NotificationClient
+                {
+                    Platform = platform,
+                    NotificationID = notificationId
+                };
+                BddContext.NotificationClients.Add(notificationClient);
+                BddContext.SaveChanges();
+            }
         }
     }
 }
