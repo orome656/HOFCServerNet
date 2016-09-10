@@ -38,7 +38,7 @@ namespace HOFCServerNet.Controllers
         }
 
         [HttpGet]
-        [Authorize(ActiveAuthenticationSchemes = "ApplicationCookie")]
+        [Authorize]
         public IActionResult Details(int id)
         {
             VoteDetailsViewModel viewModel = new VoteDetailsViewModel();
@@ -49,7 +49,7 @@ namespace HOFCServerNet.Controllers
         }
 
         [HttpPost]
-        [Authorize(ActiveAuthenticationSchemes = "ApplicationCookie")]
+        [Authorize]
         public IActionResult Details(VoteDetailsViewModel viewModel)
         {
             VoteService.SaveVotes(viewModel.Votes, viewModel.MatchId, UserManager.GetUserId(User));
@@ -65,7 +65,7 @@ namespace HOFCServerNet.Controllers
             return View(viewModel);
         }
 
-        [Authorize(Roles = "Contributor", ActiveAuthenticationSchemes = "ApplicationCookie")]
+        [Authorize(Roles = "Contributor")]
         public IActionResult Add(int id)
         {
             MatchService.ActivateVote(id);
@@ -73,7 +73,7 @@ namespace HOFCServerNet.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Contributor", ActiveAuthenticationSchemes = "ApplicationCookie")]
+        [Authorize(Roles = "Contributor")]
         public IActionResult Close(int id)
         {
             MatchService.CloseVote(id);

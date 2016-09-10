@@ -12,17 +12,18 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict;
 using HOFCServerNet.Data.Models;
+using HOFCServerNet.ViewModels.Account;
 
 namespace HOFCServerNet.API
 {
     public class AuthorizationController: Controller
     {
-        private readonly OpenIddictApplicationManager<OpenIddictApplication<Guid>> _applicationManager;
+        private readonly OpenIddictApplicationManager<OpenIddictApplication> _applicationManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly OpenIddictUserManager<ApplicationUser> _userManager;
 
         public AuthorizationController(
-            OpenIddictApplicationManager<OpenIddictApplication<Guid>> applicationManager,
+            OpenIddictApplicationManager<OpenIddictApplication> applicationManager,
             SignInManager<ApplicationUser> signInManager,
             OpenIddictUserManager<ApplicationUser> userManager)
         {
@@ -53,13 +54,12 @@ namespace HOFCServerNet.API
 
             // Flow the request_id to allow OpenIddict to restore
             // the original authorization request from the cache.
-            /*return View(new AuthorizeViewModel
+            return View(new AuthorizeViewModel
             {
                 ApplicationName = application.DisplayName,
                 RequestId = request.RequestId,
                 Scope = request.Scope
-            });*/
-            return Ok();
+            });
         }
 
         [Authorize, HttpPost("~/connect/authorize/accept"), ValidateAntiForgeryToken]

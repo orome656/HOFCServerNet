@@ -15,6 +15,7 @@ using HOFCServerNet.Middlewares;
 using System.Linq;
 using OpenIddict;
 using System;
+using CryptoHelper;
 
 namespace HOFCServerNet
 {
@@ -43,19 +44,16 @@ namespace HOFCServerNet
                     .AddDbContext<BddContext>(options => options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]))
                     .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
-                options.Cookies.ApplicationCookie.AutomaticAuthenticate = true;
-                options.Cookies.ApplicationCookie.AutomaticChallenge = false;
-                options.Cookies.ApplicationCookie.AuthenticationScheme = "ApplicationCookie";
-                options.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
-            }).AddEntityFrameworkStores<ApplicationDbContext>()
-              .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
 
             services.AddOpenIddict<ApplicationUser, ApplicationDbContext>()
                     .EnableTokenEndpoint("/connect/token")
                     .EnableAuthorizationEndpoint("/connect/authorize")
-                    .AllowPasswordFlow()
                     .AllowAuthorizationCodeFlow()
+                    .AllowRefreshTokenFlow()
+                    .AllowImplicitFlow()
                     .DisableHttpsRequirement()
                     .AddEphemeralSigningKey();
 
@@ -161,17 +159,17 @@ namespace HOFCServerNet
                     //     Secret = Crypto.HashPassword("secret_secret_secret"),
                     //     Type = OpenIddictConstants.ClientTypes.Confidential
                     // });
-                    /*
-                    context.Applications.Add(new OpenIddictApplication<Guid>
+                    
+                    context.Applications.Add(new OpenIddictApplication
                     {
-                        ClientId = "myClient",
-                        ClientSecret = Crypto.HashPassword("secret_secret_secret"),
-                        DisplayName = "My client application",
-                        LogoutRedirectUri = "http://localhost:53507/",
-                        RedirectUri = "http://localhost:53507/signin-oidc",
+                        ClientId = "xamarin-auth",
+                        ClientSecret = Crypto.HashPassword("test"),
+                        DisplayName = "HOFC",
+                        LogoutRedirectUri = "http://local.webhofc.fr:49360/",
+                        RedirectUri = "urn:ietf:wg:oauth:2.0:oob",
                         Type = OpenIddictConstants.ClientTypes.Confidential
                     });
-                    */
+                    
                     // To test this sample with Postman, use the following settings:
                     // 
                     // * Authorization URL: http://localhost:54540/connect/authorize

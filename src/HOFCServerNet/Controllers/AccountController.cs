@@ -19,7 +19,7 @@ namespace HOFCServerNet.Controllers
     /// <summary>
     /// Controlleur ASP.MVC de gestion de session de l'utilisateur
     /// </summary>
-    [Authorize(ActiveAuthenticationSchemes = "ApplicationCookie")]
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

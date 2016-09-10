@@ -51,7 +51,7 @@ namespace HOFCServerNet.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Contributor", ActiveAuthenticationSchemes = "ApplicationCookie")]
+        [Authorize(Roles = "Contributor")]
         public IActionResult Match(MatchStatViewModel viewModel)
         {
             StatService.SaveStat(viewModel);
