@@ -11,7 +11,7 @@ namespace HOFCServerParser.Database
 {
     public class DatabaseManager
     {
-        public void SaveMatchs(List<Match> matchs)
+        public async void SaveMatchs(List<Match> matchs)
         {
             using (var bddContext = new BddContext(Program.Options))
             {
@@ -23,10 +23,10 @@ namespace HOFCServerParser.Database
                                                                                         && item.Competition.Nom == calendrier.Competition.Nom);
                     if (bddCalendrier != null)
                     {
-                        if(!bddCalendrier.Score1.HasValue && !bddCalendrier.Score2.HasValue
+                        if (!bddCalendrier.Score1.HasValue && !bddCalendrier.Score2.HasValue
                             && calendrier.Score1.HasValue && calendrier.Score2.HasValue
                             && (calendrier.Equipe1.Contains(AppConstants.HOFC_NAME)
-                                || calendrier.Equipe2.Contains(AppConstants.HOFC_NAME))) 
+                                || calendrier.Equipe2.Contains(AppConstants.HOFC_NAME)))
                         {
                             string titre = string.Format("Nouveau Résultat {0}", calendrier.Competition.Categorie);
                             string notifMessage = null;
@@ -51,7 +51,7 @@ namespace HOFCServerParser.Database
                                 notifMessage = "Match nul entre le HOFC et " + ((calendrier.Equipe1.Contains(AppConstants.HOFC_NAME)) ? calendrier.Equipe2 : calendrier.Equipe1);
                             }
                             NotificationHub notif = new NotificationHub(bddContext);
-                            notif.NotifyAll(titre, notifMessage).Wait();
+                            await notif.NotifyAll(titre, notifMessage);
                         }
 
                         bddCalendrier.Date = calendrier.Date;
@@ -84,11 +84,12 @@ namespace HOFCServerParser.Database
                                 }
                                 calendrier.Competition = competitionBdd;
                             }
-                        } else if (addedCompetitions.Any(x => x.Nom == calendrier.Competition.Nom && x.Saison == calendrier.Competition.Saison))
+                        }
+                        else if (addedCompetitions.Any(x => x.Nom == calendrier.Competition.Nom && x.Saison == calendrier.Competition.Saison))
                         {
                             calendrier.Competition = addedCompetitions.First(x => x.Nom == calendrier.Competition.Nom && x.Saison == calendrier.Competition.Saison);
                         }
-                        
+
                         bddContext.Matchs.Add(calendrier);
                     }
                 }

@@ -1,4 +1,5 @@
 ﻿using HOFCServerNet.Data.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace HOFCServerNet.Utils.Notifications
 {
     public class NotificationHub
     {
+        private static readonly Logger _logger = LogManager.GetLogger("HOFCServerNet.Utils.Notifications.AndroidGCMNotificationSender");
+
         private AndroidGCMNotificationSender AndroidNotif = new AndroidGCMNotificationSender();
         private WNSNotificationSender WindowsNotif = new WNSNotificationSender();
         private BddContext BddContext;
@@ -19,6 +22,7 @@ namespace HOFCServerNet.Utils.Notifications
 
         public async Task NotifyAll(string titre, string message)
         {
+            _logger.Info("Start sending notification. Title : {0}, Message : {1}", titre, message);
             foreach(NotificationClient client in BddContext.NotificationClients.ToList())
             {
                 switch(client.Platform)
@@ -31,6 +35,7 @@ namespace HOFCServerNet.Utils.Notifications
                         break;
                 }
             }
+            _logger.Info("End sending notification.", titre, message);
         }
     }
 }
