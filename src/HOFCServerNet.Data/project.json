@@ -17,7 +17,7 @@
       "type": "platform"
     },
     "Newtonsoft.Json": "9.0.1",
-    "OpenIddict": "1.0.0-alpha2-0432"
+    "OpenIddict": "1.0.0-alpha2-0437"
   },
 
   "tools": {

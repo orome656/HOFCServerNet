@@ -39,8 +39,8 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "System.Net.Http": "4.1.0",
     "NLog.Web.AspNetCore": "4.2.4",
-    "AspNet.Security.OAuth.Validation": "1.0.0-alpha3-0185",
-    "OpenIddict": "1.0.0-alpha2-0432",
+    "AspNet.Security.OAuth.Validation": "1.0.0-alpha3-0187",
+    "OpenIddict": "1.0.0-alpha2-0437",
     "HtmlAgilityPack.NetCore": "1.5.0.1",
     "NLog.Extensions.Logging": "1.0.0-rtm-alpha4"
   },
