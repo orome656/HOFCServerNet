@@ -164,7 +164,7 @@ namespace HOFCServerNet
                     context.Applications.Add(new OpenIddictApplication
                     {
                         ClientId = "xamarin-auth",
-                        ClientSecret = Crypto.HashPassword("test"),
+                        ClientSecret = Crypto.HashPassword(Configuration["OPENIDDICT_CLIENT_SECRET"]),
                         DisplayName = "HOFC",
                         LogoutRedirectUri = "http://local.webhofc.fr:49360/",
                         RedirectUri = "urn:ietf:wg:oauth:2.0:oob",
