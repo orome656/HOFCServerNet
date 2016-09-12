@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Services;
 using HOFCServerNet.Data.Enums;
+using NLog;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,6 +19,7 @@ namespace HOFCServerNet.API
     public class NotificationController : Controller
     {
         private NotificationService _notificationService { get; set; }
+        private Logger _logger = LogManager.GetLogger("HOFCServerNet.API.NotificationController");
 
         /// <summary>
         /// Constructor
@@ -41,7 +43,7 @@ namespace HOFCServerNet.API
                 _notificationService.AddNewClient(platform, notification_id);
             } else
             {
-                // TODO add logs here
+                _logger.Warn("Notification registering called. Missing parameter");
             }
         }
     }
