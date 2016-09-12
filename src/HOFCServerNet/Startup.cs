@@ -51,6 +51,7 @@ namespace HOFCServerNet
             services.AddOpenIddict<ApplicationUser, ApplicationDbContext>()
                     .EnableTokenEndpoint("/connect/token")
                     .EnableAuthorizationEndpoint("/connect/authorize")
+                    .EnableUserinfoEndpoint("/connect/userinfo")
                     .AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
                     .AllowImplicitFlow()
