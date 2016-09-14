@@ -8,10 +8,6 @@
   },
 
   "dependencies": {
-    "Microsoft.NETCore.App": {
-      "version": "1.0.0",
-      "type": "platform"
-    },
     "Microsoft.EntityFrameworkCore.Tools": {
       "version": "1.0.0-preview2-final",
       "type": "build"
@@ -26,13 +22,8 @@
     "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.0.0",
     "Microsoft.AspNetCore.Hosting": "1.0.0",
     "Microsoft.AspNetCore.Identity": "1.0.0",
-    "Microsoft.AspNetCore.Mvc": "1.0.0",
-    "Microsoft.AspNetCore.Mvc.TagHelpers": "1.0.0",
-    "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
     "Microsoft.AspNetCore.StaticFiles": "1.0.0",
-    "Microsoft.EntityFrameworkCore": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.Extensions.Logging": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
@@ -42,7 +33,16 @@
     "AspNet.Security.OAuth.Validation": "1.0.0-alpha3-0187",
     "OpenIddict": "1.0.0-alpha2-0437",
     "HtmlAgilityPack.NetCore": "1.5.0.1",
-    "NLog.Extensions.Logging": "1.0.0-rtm-alpha4"
+    "NLog.Extensions.Logging": "1.0.0-rtm-alpha4",
+    "Microsoft.AspNetCore.Mvc": "1.0.1",
+    "Microsoft.AspNetCore.Mvc.TagHelpers": "1.0.1",
+    "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.1",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
+    "Microsoft.EntityFrameworkCore": "1.0.1",
+    "Microsoft.NETCore.App": {
+      "version": "1.0.1",
+      "type": "platform"
+    }
   },
 
   "tools": {
@@ -55,14 +55,14 @@
       "ef": "Microsoft.EntityFrameworkCore.Tools"
     },
 
-    "frameworks": {
-      "netcoreapp1.0": {
-        "imports": [
-          "dotnet5.6",
-          "portable-net45+win8"
-        ]
-      }
-    },
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
+    }
+  },
 
     "runtimeOptions": {
       "gcServer": true

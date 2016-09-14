@@ -8,11 +8,11 @@
     "HOFCServerNet.Data": "1.0.0-*",
     "System.Net.Http": "4.1.0",
     "System.Text.RegularExpressions": "4.1.0",
+    "NLog.Extensions.Logging": "1.0.0-rtm-alpha4",
     "Microsoft.NETCore.App": {
-      "version": "1.0.0",
+      "version": "1.0.1",
       "type": "platform"
-    },
-    "NLog.Extensions.Logging": "1.0.0-rtm-alpha4"
+    }
   },
   "frameworks": {
     "netcoreapp1.0": {}
