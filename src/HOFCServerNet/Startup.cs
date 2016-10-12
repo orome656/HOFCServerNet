@@ -55,7 +55,6 @@ namespace HOFCServerNet
                     .AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
                     .AllowImplicitFlow()
-                    .DisableHttpsRequirement()
                     .AddEphemeralSigningKey();
 
 
@@ -144,7 +143,7 @@ namespace HOFCServerNet
             app.UseSwaggerUi();
 
             app.AddNLogWeb();
-
+            
             using (var context = new ApplicationDbContext(app.ApplicationServices.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
                 context.Database.EnsureCreated();
@@ -160,13 +159,13 @@ namespace HOFCServerNet
                     //     Secret = Crypto.HashPassword("secret_secret_secret"),
                     //     Type = OpenIddictConstants.ClientTypes.Confidential
                     // });
-                    
+
                     context.Applications.Add(new OpenIddictApplication
                     {
                         ClientId = "xamarin-auth",
                         ClientSecret = Crypto.HashPassword(Configuration["OPENIDDICT_CLIENT_SECRET"]),
                         DisplayName = "HOFC",
-                        LogoutRedirectUri = "http://local.webhofc.fr:49360/",
+                        LogoutRedirectUri = "https://local.webhofc.fr/",
                         RedirectUri = "urn:ietf:wg:oauth:2.0:oob",
                         Type = OpenIddictConstants.ClientTypes.Confidential
                     });
@@ -204,11 +203,16 @@ namespace HOFCServerNet
             var config = new ConfigurationBuilder()
                             .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile("hosting.json", optional: true)
+                            .AddEnvironmentVariables()
                             .Build();
 
             var host = new WebHostBuilder()
                               .UseConfiguration(config)
-                              .UseKestrel()
+                              .UseKestrel(options => {
+                                  options.NoDelay = true;
+                                  options.UseHttps("", "");
+                                  options.UseConnectionLogging();
+                              })
                               .UseContentRoot(Directory.GetCurrentDirectory())
                               .UseIISIntegration()
                               .UseStartup<Startup>()

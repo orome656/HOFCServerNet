@@ -42,7 +42,8 @@
     "Microsoft.NETCore.App": {
       "version": "1.0.1",
       "type": "platform"
-    }
+    },
+    "Microsoft.AspNetCore.Server.Kestrel.Https": "1.0.1"
   },
 
   "tools": {
