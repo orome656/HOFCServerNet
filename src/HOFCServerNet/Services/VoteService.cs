@@ -46,7 +46,8 @@ namespace HOFCServerNet.Services
         {
 
             BddContext.Votes.RemoveRange(BddContext.Votes.Where(vo => vo.UserId == userId && vo.Match.Id == matchId).ToList());
-
+            var match = new Match() { Id = matchId };
+            BddContext.Matchs.Attach(match);
             foreach (var v in votes)
             {
 
@@ -57,10 +58,11 @@ namespace HOFCServerNet.Services
                 Vote vote = new Vote()
                 {
                     Joueur = new Joueur() { Id = joueurId },
-                    Match = new Match() { Id = matchId },
+                    Match = match,
                     TypeVote = type,
                     UserId = userId
                 };
+                BddContext.Joueurs.Attach(vote.Joueur);
                 BddContext.Votes.Add(vote);
                 BddContext.SaveChanges();
             }

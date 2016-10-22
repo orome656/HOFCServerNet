@@ -18,7 +18,7 @@ namespace HOFCServerNet.API
     /// <summary>
     /// Permet de gérer les votes 
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/votes")]
     public class VotesController : Controller
     {
         private VoteService _service { get; set; }
@@ -40,14 +40,26 @@ namespace HOFCServerNet.API
         }
 
         /// <summary>
+        /// Permet de récupérer les votes d'un utilisateur pour un certain match
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [Authorize]
+        public List<Vote> Get(int id)
+        {
+            return _service.GetForUserAndMatch(_userManager.GetUserId(User), id);
+        }
+
+        /// <summary>
         /// Permet de récupérer le résultat des votes pour un match
         /// </summary>
         /// <param name="id">id du match</param>
         /// <returns></returns>
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}/results")]
         [Authorize]
-        public List<VoteSum> Get(int id)
+        public List<VoteSum> GetResults(int id)
         {
             return _service.GetResultsForMatch(id);
         }

@@ -120,15 +120,19 @@ namespace HOFCServerNet.Services
                 {
                     BddContext.Compositions.RemoveRange(BddContext.Compositions.Where(c => c.Match.Id == idMatch));
                 }
+                var Match = new Data.Models.Match()
+                {
+                    Id = idMatch
+                };
+                BddContext.Matchs.Attach(Match);
                 foreach (Models.Composition compo in compos)
                 {
                     if(compo.Match == null)
                     {
-                        compo.Match = new Data.Models.Match()
-                        {
-                            Id = idMatch
-                        };
+                        compo.Match = Match;
                     }
+                    BddContext.Joueurs.Attach(compo.Joueur);
+                    BddContext.Postes.Attach(compo.Poste);
                     BddContext.Compositions.Add(compo);
                 }
                 BddContext.SaveChanges();

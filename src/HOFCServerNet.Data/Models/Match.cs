@@ -36,11 +36,11 @@ namespace HOFCServerNet.Data.Models
         
         [JsonProperty(PropertyName = "competition")]
         public Competition Competition { get; set; }
-
-        [JsonIgnore]
+        
         public int VoteStatut { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public Enums.StatutVote VoteStatutEnum { get { return (Enums.StatutVote)VoteStatut; } }
 
         [JsonIgnore]
