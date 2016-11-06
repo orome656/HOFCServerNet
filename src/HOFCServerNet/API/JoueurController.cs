@@ -53,6 +53,18 @@ namespace HOFCServerNet.API
         }
 
         /// <summary>
+        /// Permet de récupérer les joueurs présent lors d'un match
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("match/{id}")]
+        public List<Joueur> GetMatch(int id)
+        {
+            // TODO ajouter le code retour not found si nécessaire
+            return _joueurService.GetAllForMatch(id);
+        }
+
+        /// <summary>
         /// Créer un nouveau joueur
         /// </summary>
         /// <param name="value">Détails du joueur</param>
