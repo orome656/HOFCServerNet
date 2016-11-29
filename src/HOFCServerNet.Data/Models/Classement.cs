@@ -11,7 +11,7 @@ namespace HOFCServerNet.Data.Models
     
     public class Classement: IModel
     {
-        [JsonIgnore]
+        [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
         
         [JsonProperty(PropertyName = "nom")]
