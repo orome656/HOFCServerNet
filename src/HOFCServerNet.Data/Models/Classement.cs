@@ -23,13 +23,13 @@ namespace HOFCServerNet.Data.Models
         [JsonProperty(PropertyName = "points")]
         public int Points { get; set; }
 
-        [JsonProperty(PropertyName = "gagne")]
+        [JsonProperty(PropertyName = "victoire")]
         public int Victoire { get; set; }
 
         [JsonProperty(PropertyName = "nul")]
         public int Nul { get; set; }
 
-        [JsonProperty(PropertyName = "perdu")]
+        [JsonProperty(PropertyName = "defaite")]
         public int Defaite { get; set; }
 
         [JsonProperty(PropertyName = "bp")]
