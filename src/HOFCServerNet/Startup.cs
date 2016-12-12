@@ -48,7 +48,7 @@ namespace HOFCServerNet
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
 
-            services.AddOpenIddict<ApplicationUser, ApplicationDbContext>()
+            services.AddOpenIddict<ApplicationDbContext>()
                     .EnableTokenEndpoint("/connect/token")
                     .EnableAuthorizationEndpoint("/connect/authorize")
                     .EnableUserinfoEndpoint("/connect/userinfo")
@@ -210,7 +210,7 @@ namespace HOFCServerNet
                               .UseConfiguration(config)
                               .UseKestrel(options => {
                                   options.NoDelay = true;
-                                  options.UseHttps("", "");
+                                  //options.UseHttps("", "");
                                   options.UseConnectionLogging();
                               })
                               .UseContentRoot(Directory.GetCurrentDirectory())

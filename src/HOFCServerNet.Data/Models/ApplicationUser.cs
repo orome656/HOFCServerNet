@@ -3,7 +3,7 @@ using OpenIddict;
 
 namespace HOFCServerNet.Data.Models
 {
-    public class ApplicationUser: OpenIddictUser
+    public class ApplicationUser: IdentityUser
     {
     }
 }

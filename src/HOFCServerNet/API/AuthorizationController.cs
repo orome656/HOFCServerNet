@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using OpenIddict;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.ViewModels.Account;
+using AspNet.Security.OpenIdConnect.Primitives;
+using System.Linq;
 
 namespace HOFCServerNet.API
 {
@@ -20,36 +22,31 @@ namespace HOFCServerNet.API
     {
         private readonly OpenIddictApplicationManager<OpenIddictApplication> _applicationManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly OpenIddictUserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public AuthorizationController(
             OpenIddictApplicationManager<OpenIddictApplication> applicationManager,
             SignInManager<ApplicationUser> signInManager,
-            OpenIddictUserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager)
         {
             _applicationManager = applicationManager;
             _signInManager = signInManager;
             _userManager = userManager;
         }
 
-        [Authorize, HttpGet, Route("~/connect/authorize")]
-        public async Task<IActionResult> Authorize()
+        [Authorize, HttpGet("~/connect/authorize")]
+        public async Task<IActionResult> Authorize(OpenIdConnectRequest request)
         {
-            // Extract the authorization request from the ASP.NET environment.
-            var request = HttpContext.GetOpenIdConnectRequest();
-
             // Retrieve the application details from the database.
             var application = await _applicationManager.FindByClientIdAsync(request.ClientId);
             if (application == null)
             {
-                /*
-                return View("Error", new ErrorViewModel
+                return View();
+                /*return View("Error", new ErrorViewModel
                 {
                     Error = OpenIdConnectConstants.Errors.InvalidClient,
                     ErrorDescription = "Details concerning the calling client application cannot be found in the database"
-                });
-                */
-                return NotFound();
+                });*/
             }
 
             // Flow the request_id to allow OpenIddict to restore
@@ -62,16 +59,15 @@ namespace HOFCServerNet.API
             });
         }
 
-        [Authorize, HttpPost("~/connect/authorize/accept"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> Accept()
+        [Authorize/*, FormValueRequired("submit.Accept")*/]
+        [HttpPost("~/connect/authorize"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> Accept(OpenIdConnectRequest request)
         {
-            // Extract the authorization request from the ASP.NET environment.
-            var request = HttpContext.GetOpenIdConnectRequest();
-
             // Retrieve the profile of the logged in user.
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
+                return View();
                 /*
                 return View("Error", new ErrorViewModel
                 {
@@ -79,27 +75,17 @@ namespace HOFCServerNet.API
                     ErrorDescription = "An internal error has occurred"
                 });
                 */
-                return NotFound();
             }
 
-            // Create a new ClaimsIdentity containing the claims that
-            // will be used to create an id_token, a token or a code.
-            var identity = await _userManager.CreateIdentityAsync(user, request.GetScopes());
-
-            // Create a new authentication ticket holding the user identity.
-            var ticket = new AuthenticationTicket(
-                new ClaimsPrincipal(identity),
-                new AuthenticationProperties(),
-                OpenIdConnectServerDefaults.AuthenticationScheme);
-
-            ticket.SetResources(request.GetResources());
-            ticket.SetScopes(request.GetScopes());
+            // Create a new authentication ticket.
+            var ticket = await CreateTicketAsync(request, user);
 
             // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
             return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
         }
 
-        [Authorize, HttpPost("~/connect/authorize/deny"), ValidateAntiForgeryToken]
+        [Authorize/*, FormValueRequired("submit.Deny")*/]
+        [HttpPost("~/connect/authorize"), ValidateAntiForgeryToken]
         public IActionResult Deny()
         {
             // Notify OpenIddict that the authorization grant has been denied by the resource owner
@@ -107,25 +93,20 @@ namespace HOFCServerNet.API
             return Forbid(OpenIdConnectServerDefaults.AuthenticationScheme);
         }
 
-        //[HttpGet("~/connect/logout")]
-        public IActionResult Logout()
+        [HttpGet("~/connect/logout")]
+        public IActionResult Logout(OpenIdConnectRequest request)
         {
-            // Extract the authorization request from the ASP.NET environment.
-            var request = HttpContext.GetOpenIdConnectRequest();
-
             // Flow the request_id to allow OpenIddict to restore
             // the original logout request from the distributed cache.
-            /*
-            return View(new LogoutViewModel
+            return View();
+            /*return View(new LogoutViewModel
             {
-                RequestId = request.RequestId
-            });
-            */
-            return Ok();
+                RequestId = request.RequestId,
+            });*/
         }
 
         [HttpPost("~/connect/logout"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+        public async Task<IActionResult> Logout()
         {
             // Ask ASP.NET Core Identity to delete the local and external cookies created
             // when the user agent is redirected from the external identity provider
@@ -136,5 +117,41 @@ namespace HOFCServerNet.API
             // to the post_logout_redirect_uri specified by the client application.
             return SignOut(OpenIdConnectServerDefaults.AuthenticationScheme);
         }
+
+        private async Task<AuthenticationTicket> CreateTicketAsync(OpenIdConnectRequest request, ApplicationUser user)
+        {
+            // Create a new ClaimsPrincipal containing the claims that
+            // will be used to create an id_token, a token or a code.
+            var principal = await _signInManager.CreateUserPrincipalAsync(user);
+
+            // Note: by default, claims are NOT automatically included in the access and identity tokens.
+            // To allow OpenIddict to serialize them, you must attach them a destination, that specifies
+            // whether they should be included in access tokens, in identity tokens or in both.
+
+            foreach (var claim in principal.Claims)
+            {
+                // In this sample, every claim is serialized in both the access and the identity tokens.
+                // In a real world application, you'd probably want to exclude confidential claims
+                // or apply a claims policy based on the scopes requested by the client application.
+                claim.SetDestinations(OpenIdConnectConstants.Destinations.AccessToken,
+                                      OpenIdConnectConstants.Destinations.IdentityToken);
+            }
+
+            // Create a new authentication ticket holding the user identity.
+            var ticket = new AuthenticationTicket(
+                principal, new AuthenticationProperties(),
+                OpenIdConnectServerDefaults.AuthenticationScheme);
+
+            // Set the list of scopes granted to the client application.
+            ticket.SetScopes(new[] {
+                OpenIdConnectConstants.Scopes.OpenId,
+                OpenIdConnectConstants.Scopes.Email,
+                OpenIdConnectConstants.Scopes.Profile,
+                OpenIddictConstants.Scopes.Roles
+            }.Intersect(request.GetScopes()));
+
+            return ticket;
+        }
+
     }
 }
