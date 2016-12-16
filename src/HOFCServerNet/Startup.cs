@@ -147,8 +147,10 @@ namespace HOFCServerNet
             using (var context = new ApplicationDbContext(app.ApplicationServices.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
                 context.Database.EnsureCreated();
+
+                var applications = context.Set<OpenIddictApplication>();
                 // Add Mvc.Client to the known applications.
-                if (!context.Applications.Any())
+                if (!applications.Any())
                 {
                     // Note: when using the introspection middleware, your resource server
                     // MUST be registered as an OAuth2 client and have valid credentials.
@@ -160,7 +162,7 @@ namespace HOFCServerNet
                     //     Type = OpenIddictConstants.ClientTypes.Confidential
                     // });
 
-                    context.Applications.Add(new OpenIddictApplication
+                    applications.Add(new OpenIddictApplication
                     {
                         ClientId = "xamarin-auth",
                         ClientSecret = Crypto.HashPassword(Configuration["OPENIDDICT_CLIENT_SECRET"]),
@@ -180,7 +182,7 @@ namespace HOFCServerNet
                         // * Scope: openid email profile roles
                         // * Grant type: authorization code
                         // * Request access token locally: yes
-                        context.Applications.Add(new OpenIddictApplication
+                        applications.Add(new OpenIddictApplication
                         {
                             ClientId = "postman",
                             DisplayName = "Postman",
