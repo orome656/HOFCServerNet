@@ -212,7 +212,8 @@ namespace HOFCServerNet
                               .UseConfiguration(config)
                               .UseKestrel(options => {
                                   options.NoDelay = true;
-                                  //options.UseHttps("", "");
+                                  if(!string.IsNullOrWhiteSpace(config["HOFC_SSL_CERT_PATH"]))
+                                      options.UseHttps(config["HOFC_SSL_CERT_PATH"]);
                                   options.UseConnectionLogging();
                               })
                               .UseContentRoot(Directory.GetCurrentDirectory())
