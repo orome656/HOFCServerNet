@@ -16,6 +16,7 @@ using System.Linq;
 using OpenIddict;
 using System;
 using CryptoHelper;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace HOFCServerNet
 {
@@ -107,6 +108,11 @@ namespace HOFCServerNet
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseIdentity();
 
