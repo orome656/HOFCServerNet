@@ -198,3 +198,4 @@ FakesAssemblies/
 
 project.lock.json
 /src/HOFCServerNet.Data/appsettings.json
+/src/HOFCServerNet/secret.json

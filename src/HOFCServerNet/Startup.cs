@@ -17,6 +17,10 @@ using OpenIddict;
 using System;
 using CryptoHelper;
 using Microsoft.AspNetCore.HttpOverrides;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HOFCServerNet
 {
@@ -48,6 +52,8 @@ namespace HOFCServerNet
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
+            
+            RSAParameters rsaParams = JsonConvert.DeserializeObject<RSAParameters>(File.ReadAllText("secret.json"));
 
             services.AddOpenIddict<ApplicationDbContext>()
                     .EnableTokenEndpoint("/connect/token")
@@ -56,7 +62,7 @@ namespace HOFCServerNet
                     .AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
                     .AllowImplicitFlow()
-                    .AddEphemeralSigningKey();
+                    .AddSigningKey(new RsaSecurityKey(rsaParams));
 
 
             services.AddTransient<MatchService>();
