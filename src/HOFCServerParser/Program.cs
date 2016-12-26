@@ -21,9 +21,12 @@ namespace HOFCServerParser
         {
             Logger.Info("Update Batch Starting");
 
+            string env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{env}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             
