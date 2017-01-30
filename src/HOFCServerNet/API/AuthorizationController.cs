@@ -15,6 +15,8 @@ using HOFCServerNet.Data.Models;
 using HOFCServerNet.ViewModels.Account;
 using AspNet.Security.OpenIdConnect.Primitives;
 using System.Linq;
+using OpenIddict.Core;
+using OpenIddict.Models;
 
 namespace HOFCServerNet.API
 {
@@ -38,7 +40,7 @@ namespace HOFCServerNet.API
         public async Task<IActionResult> Authorize(OpenIdConnectRequest request)
         {
             // Retrieve the application details from the database.
-            var application = await _applicationManager.FindByClientIdAsync(request.ClientId);
+            var application = await _applicationManager.FindByClientIdAsync(request.ClientId, HttpContext.RequestAborted);
             if (application == null)
             {
                 return View();

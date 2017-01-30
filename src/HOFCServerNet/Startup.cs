@@ -13,7 +13,8 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using HOFCServerNet.Middlewares;
 using System.Linq;
-using OpenIddict;
+using OpenIddict.Core;
+using OpenIddict.Models;
 using System;
 using CryptoHelper;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -21,6 +22,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace HOFCServerNet
 {
@@ -48,22 +51,33 @@ namespace HOFCServerNet
             services.AddEntityFramework()
                     .AddEntityFrameworkSqlite()
                     .AddDbContext<BddContext>(options => options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]))
-                    .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]));
+                    .AddDbContext<ApplicationDbContext>(options => {
+                        options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]);
+                        options.UseOpenIddict();
+                    });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
-            
-            RSAParameters rsaParams = JsonConvert.DeserializeObject<RSAParameters>(File.ReadAllText("secret.json"));
 
-            services.AddOpenIddict<ApplicationDbContext>()
+            var builder = services.AddOpenIddict()
+                    .AddEntityFrameworkCoreStores<ApplicationDbContext>()
+                    .AddMvcBinders()
                     .EnableTokenEndpoint("/connect/token")
                     .EnableAuthorizationEndpoint("/connect/authorize")
                     .EnableUserinfoEndpoint("/connect/userinfo")
                     .AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
-                    .AllowImplicitFlow()
-                    .AddSigningKey(new RsaSecurityKey(rsaParams));
+                    .AllowImplicitFlow();
+            try
+            {
+                RSAParameters rsaParams = JsonConvert.DeserializeObject<RSAParameters>(File.ReadAllText("secret.json"));
+                builder.AddSigningKey(new RsaSecurityKey(rsaParams));
+            } catch(Exception e)
+            {
+                // TODO add log
+                builder.AddEphemeralSigningKey();
+            }
 
 
             services.AddTransient<MatchService>();
@@ -157,54 +171,52 @@ namespace HOFCServerNet
 
             app.AddNLogWeb();
             
-            using (var context = new ApplicationDbContext(app.ApplicationServices.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
+            InitializeAsync(app.ApplicationServices, CancellationToken.None).GetAwaiter().GetResult();
+        }
+
+        private async Task InitializeAsync(IServiceProvider services, CancellationToken cancellationToken) {
+
+            using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                context.Database.EnsureCreated();
 
-                var applications = context.Set<OpenIddictApplication>();
-                // Add Mvc.Client to the known applications.
-                if (!applications.Any())
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                await context.Database.EnsureCreatedAsync();
+                var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication>>();
+
+
+                if (await manager.FindByClientIdAsync("xamarin-auth", cancellationToken) == null)
                 {
-                    // Note: when using the introspection middleware, your resource server
-                    // MUST be registered as an OAuth2 client and have valid credentials.
-                    // 
-                    // context.Applications.Add(new OpenIddictApplication {
-                    //     Id = "resource_server",
-                    //     DisplayName = "Main resource server",
-                    //     Secret = Crypto.HashPassword("secret_secret_secret"),
-                    //     Type = OpenIddictConstants.ClientTypes.Confidential
-                    // });
-
-                    applications.Add(new OpenIddictApplication
+                    var application = new OpenIddictApplication
                     {
                         ClientId = "xamarin-auth",
-                        ClientSecret = Crypto.HashPassword(Configuration["OPENIDDICT_CLIENT_SECRET"]),
                         DisplayName = "HOFC",
                         LogoutRedirectUri = "https://local.webhofc.fr/",
                         RedirectUri = "urn:ietf:wg:oauth:2.0:oob",
                         Type = OpenIddictConstants.ClientTypes.Confidential
-                    });
-                    if(env.IsDevelopment())
-                    {
-                        // To test this sample with Postman, use the following settings:
-                        // 
-                        // * Authorization URL: http://localhost:54540/connect/authorize
-                        // * Access token URL: http://localhost:54540/connect/token
-                        // * Client ID: postman
-                        // * Client secret: [blank] (not used with public clients)
-                        // * Scope: openid email profile roles
-                        // * Grant type: authorization code
-                        // * Request access token locally: yes
-                        applications.Add(new OpenIddictApplication
-                        {
-                            ClientId = "postman",
-                            DisplayName = "Postman",
-                            RedirectUri = "https://www.getpostman.com/oauth2/callback",
-                            Type = OpenIddictConstants.ClientTypes.Public
-                        });
+                    };
 
-                    }
-                    context.SaveChanges();
+                    await manager.CreateAsync(application, Crypto.HashPassword(Configuration["OPENIDDICT_CLIENT_SECRET"]), cancellationToken);
+                }
+
+                // To test this sample with Postman, use the following settings:
+                //
+                // * Authorization URL: http://localhost:54540/connect/authorize
+                // * Access token URL: http://localhost:54540/connect/token
+                // * Client ID: postman
+                // * Client secret: [blank] (not used with public clients)
+                // * Scope: openid email profile roles
+                // * Grant type: authorization code
+                // * Request access token locally: yes
+                if (await manager.FindByClientIdAsync("postman", cancellationToken) == null)
+                {
+                    var application = new OpenIddictApplication
+                    {
+                        ClientId = "postman",
+                        DisplayName = "Postman",
+                        RedirectUri = "https://www.getpostman.com/oauth2/callback"
+                    };
+
+                    await manager.CreateAsync(application, cancellationToken);
                 }
             }
         }
