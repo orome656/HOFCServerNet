@@ -24,6 +24,7 @@ using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 using System.Threading;
+using NLog;
 
 namespace HOFCServerNet
 {
@@ -75,7 +76,7 @@ namespace HOFCServerNet
                 builder.AddSigningKey(new RsaSecurityKey(rsaParams));
             } catch(Exception e)
             {
-                // TODO add log
+                LogManager.GetCurrentClassLogger().Error(e, "Erreur lors de la récupération des paramétre de sécurité");
                 builder.AddEphemeralSigningKey();
             }
 
