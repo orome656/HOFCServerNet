@@ -69,7 +69,7 @@ namespace HOFCServerNet
                     .EnableUserinfoEndpoint("/connect/userinfo")
                     .AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
-                    .AllowImplicitFlow();
+                    .EnableRequestCaching();
             try
             {
                 RSAParameters rsaParams = JsonConvert.DeserializeObject<RSAParameters>(File.ReadAllText("secret.json"));
@@ -183,7 +183,7 @@ namespace HOFCServerNet
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 await context.Database.EnsureCreatedAsync();
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication>>();
-
+                
 
                 if (await manager.FindByClientIdAsync("xamarin-auth", cancellationToken) == null)
                 {
@@ -196,7 +196,7 @@ namespace HOFCServerNet
                         Type = OpenIddictConstants.ClientTypes.Confidential
                     };
 
-                    await manager.CreateAsync(application, Crypto.HashPassword(Configuration["OPENIDDICT_CLIENT_SECRET"]), cancellationToken);
+                    await manager.CreateAsync(application, Configuration["OPENIDDICT_CLIENT_SECRET"], cancellationToken);
                 }
 
                 // To test this sample with Postman, use the following settings:

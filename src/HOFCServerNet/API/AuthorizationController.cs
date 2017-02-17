@@ -17,6 +17,8 @@ using AspNet.Security.OpenIdConnect.Primitives;
 using System.Linq;
 using OpenIddict.Core;
 using OpenIddict.Models;
+using HOFCServerNet.Helpers;
+using System.Diagnostics;
 
 namespace HOFCServerNet.API
 {
@@ -61,7 +63,7 @@ namespace HOFCServerNet.API
             });
         }
 
-        [Authorize/*, FormValueRequired("submit.Accept")*/]
+        [Authorize, FormValueRequired("submit.Accept")]
         [HttpPost("~/connect/authorize"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Accept(OpenIdConnectRequest request)
         {
@@ -86,7 +88,7 @@ namespace HOFCServerNet.API
             return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
         }
 
-        [Authorize/*, FormValueRequired("submit.Deny")*/]
+        [Authorize, FormValueRequired("submit.Deny")]
         [HttpPost("~/connect/authorize"), ValidateAntiForgeryToken]
         public IActionResult Deny()
         {
@@ -120,7 +122,123 @@ namespace HOFCServerNet.API
             return SignOut(OpenIdConnectServerDefaults.AuthenticationScheme);
         }
 
-        private async Task<AuthenticationTicket> CreateTicketAsync(OpenIdConnectRequest request, ApplicationUser user)
+        [HttpPost("~/connect/token"), Produces("application/json")]
+        public async Task<IActionResult> Exchange(OpenIdConnectRequest request)
+        {
+            Debug.Assert(request.IsTokenRequest(),
+                "The OpenIddict binder for ASP.NET Core MVC is not registered. " +
+                "Make sure services.AddOpenIddict().AddMvcBinders() is correctly called.");
+
+            if (request.IsPasswordGrantType())
+            {
+                var user = await _userManager.FindByNameAsync(request.Username);
+                if (user == null)
+                {
+                    return BadRequest(new OpenIdConnectResponse
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The username/password couple is invalid."
+                    });
+                }
+
+                // Ensure the user is allowed to sign in.
+                if (!await _signInManager.CanSignInAsync(user))
+                {
+                    return BadRequest(new OpenIdConnectResponse
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The specified user is not allowed to sign in."
+                    });
+                }
+
+                // Reject the token request if two-factor authentication has been enabled by the user.
+                if (_userManager.SupportsUserTwoFactor && await _userManager.GetTwoFactorEnabledAsync(user))
+                {
+                    return BadRequest(new OpenIdConnectResponse
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The specified user is not allowed to sign in."
+                    });
+                }
+
+                // Ensure the user is not already locked out.
+                if (_userManager.SupportsUserLockout && await _userManager.IsLockedOutAsync(user))
+                {
+                    return BadRequest(new OpenIdConnectResponse
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The username/password couple is invalid."
+                    });
+                }
+
+                // Ensure the password is valid.
+                if (!await _userManager.CheckPasswordAsync(user, request.Password))
+                {
+                    if (_userManager.SupportsUserLockout)
+                    {
+                        await _userManager.AccessFailedAsync(user);
+                    }
+
+                    return BadRequest(new OpenIdConnectResponse
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The username/password couple is invalid."
+                    });
+                }
+
+                if (_userManager.SupportsUserLockout)
+                {
+                    await _userManager.ResetAccessFailedCountAsync(user);
+                }
+
+                // Create a new authentication ticket.
+                var ticket = await CreateTicketAsync(request, user);
+
+                return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+            }
+
+            else if (request.IsAuthorizationCodeGrantType() || request.IsRefreshTokenGrantType())
+            {
+                // Retrieve the claims principal stored in the authorization code/refresh token.
+                var info = await HttpContext.Authentication.GetAuthenticateInfoAsync(
+                    OpenIdConnectServerDefaults.AuthenticationScheme);
+
+                // Retrieve the user profile corresponding to the authorization code/refresh token.
+                var user = await _userManager.GetUserAsync(info.Principal);
+                if (user == null)
+                {
+                    return BadRequest(new OpenIdConnectResponse
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The token is no longer valid."
+                    });
+                }
+
+                // Ensure the user is still allowed to sign in.
+                if (!await _signInManager.CanSignInAsync(user))
+                {
+                    return BadRequest(new OpenIdConnectResponse
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The user is no longer allowed to sign in."
+                    });
+                }
+
+                // Create a new authentication ticket, but reuse the properties stored in the
+                // authorization code/refresh token, including the scopes originally granted.
+                var ticket = await CreateTicketAsync(request, user, info.Properties);
+
+                return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+            }
+
+            return BadRequest(new OpenIdConnectResponse
+            {
+                Error = OpenIdConnectConstants.Errors.UnsupportedGrantType,
+                ErrorDescription = "The specified grant type is not supported."
+            });
+        }
+
+        private async Task<AuthenticationTicket> CreateTicketAsync(OpenIdConnectRequest request, ApplicationUser user, AuthenticationProperties properties = null)
         {
             // Create a new ClaimsPrincipal containing the claims that
             // will be used to create an id_token, a token or a code.
@@ -149,7 +267,8 @@ namespace HOFCServerNet.API
                 OpenIdConnectConstants.Scopes.OpenId,
                 OpenIdConnectConstants.Scopes.Email,
                 OpenIdConnectConstants.Scopes.Profile,
-                OpenIddictConstants.Scopes.Roles
+                OpenIddictConstants.Scopes.Roles,
+                OpenIdConnectConstants.Scopes.OfflineAccess
             }.Intersect(request.GetScopes()));
 
             return ticket;
