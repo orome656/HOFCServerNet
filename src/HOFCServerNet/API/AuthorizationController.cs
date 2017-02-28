@@ -19,6 +19,7 @@ using OpenIddict.Core;
 using OpenIddict.Models;
 using HOFCServerNet.Helpers;
 using System.Diagnostics;
+using HOFCServerNet.ViewModels.Shared;
 
 namespace HOFCServerNet.API
 {
@@ -38,19 +39,26 @@ namespace HOFCServerNet.API
             _userManager = userManager;
         }
 
+        #region Authorization code, implicit and implicit flows
+        // Note: to support interactive flows like the code flow,
+        // you must provide your own authorization endpoint action:
+
         [Authorize, HttpGet("~/connect/authorize")]
         public async Task<IActionResult> Authorize(OpenIdConnectRequest request)
         {
+            Debug.Assert(request.IsAuthorizationRequest(),
+                "The OpenIddict binder for ASP.NET Core MVC is not registered. " +
+                "Make sure services.AddOpenIddict().AddMvcBinders() is correctly called.");
+
             // Retrieve the application details from the database.
             var application = await _applicationManager.FindByClientIdAsync(request.ClientId, HttpContext.RequestAborted);
             if (application == null)
             {
-                return View();
-                /*return View("Error", new ErrorViewModel
+                return View("Error", new ErrorViewModel
                 {
                     Error = OpenIdConnectConstants.Errors.InvalidClient,
                     ErrorDescription = "Details concerning the calling client application cannot be found in the database"
-                });*/
+                });
             }
 
             // Flow the request_id to allow OpenIddict to restore
@@ -67,18 +75,19 @@ namespace HOFCServerNet.API
         [HttpPost("~/connect/authorize"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Accept(OpenIdConnectRequest request)
         {
+            Debug.Assert(request.IsAuthorizationRequest(),
+                "The OpenIddict binder for ASP.NET Core MVC is not registered. " +
+                "Make sure services.AddOpenIddict().AddMvcBinders() is correctly called.");
+
             // Retrieve the profile of the logged in user.
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return View();
-                /*
                 return View("Error", new ErrorViewModel
                 {
                     Error = OpenIdConnectConstants.Errors.ServerError,
                     ErrorDescription = "An internal error has occurred"
                 });
-                */
             }
 
             // Create a new authentication ticket.
@@ -97,16 +106,22 @@ namespace HOFCServerNet.API
             return Forbid(OpenIdConnectServerDefaults.AuthenticationScheme);
         }
 
+        // Note: the logout action is only useful when implementing interactive
+        // flows like the authorization code flow or the implicit flow.
+
         [HttpGet("~/connect/logout")]
         public IActionResult Logout(OpenIdConnectRequest request)
         {
+            Debug.Assert(request.IsLogoutRequest(),
+                "The OpenIddict binder for ASP.NET Core MVC is not registered. " +
+                "Make sure services.AddOpenIddict().AddMvcBinders() is correctly called.");
+
             // Flow the request_id to allow OpenIddict to restore
             // the original logout request from the distributed cache.
-            return View();
-            /*return View(new LogoutViewModel
+            return View(new LogoutViewModel
             {
-                RequestId = request.RequestId,
-            });*/
+                RequestId = request.RequestId
+            });
         }
 
         [HttpPost("~/connect/logout"), ValidateAntiForgeryToken]
@@ -121,6 +136,11 @@ namespace HOFCServerNet.API
             // to the post_logout_redirect_uri specified by the client application.
             return SignOut(OpenIdConnectServerDefaults.AuthenticationScheme);
         }
+        #endregion
+
+        #region Password, authorization code and refresh token flows
+        // Note: to support non-interactive flows like password,
+        // you must provide your own token endpoint action:
 
         [HttpPost("~/connect/token"), Produces("application/json")]
         public async Task<IActionResult> Exchange(OpenIdConnectRequest request)
@@ -237,8 +257,11 @@ namespace HOFCServerNet.API
                 ErrorDescription = "The specified grant type is not supported."
             });
         }
+        #endregion
 
-        private async Task<AuthenticationTicket> CreateTicketAsync(OpenIdConnectRequest request, ApplicationUser user, AuthenticationProperties properties = null)
+        private async Task<AuthenticationTicket> CreateTicketAsync(
+            OpenIdConnectRequest request, ApplicationUser user,
+            AuthenticationProperties properties = null)
         {
             // Create a new ClaimsPrincipal containing the claims that
             // will be used to create an id_token, a token or a code.
@@ -258,18 +281,23 @@ namespace HOFCServerNet.API
             }
 
             // Create a new authentication ticket holding the user identity.
-            var ticket = new AuthenticationTicket(
-                principal, new AuthenticationProperties(),
+            var ticket = new AuthenticationTicket(principal, properties,
                 OpenIdConnectServerDefaults.AuthenticationScheme);
 
-            // Set the list of scopes granted to the client application.
-            ticket.SetScopes(new[] {
-                OpenIdConnectConstants.Scopes.OpenId,
-                OpenIdConnectConstants.Scopes.Email,
-                OpenIdConnectConstants.Scopes.Profile,
-                OpenIddictConstants.Scopes.Roles,
-                OpenIdConnectConstants.Scopes.OfflineAccess
-            }.Intersect(request.GetScopes()));
+            if (!request.IsAuthorizationCodeGrantType() && !request.IsRefreshTokenGrantType())
+            {
+                // Set the list of scopes granted to the client application.
+                // Note: the offline_access scope must be granted
+                // to allow OpenIddict to return a refresh token.
+                ticket.SetScopes(new[]
+                {
+                    OpenIdConnectConstants.Scopes.OpenId,
+                    OpenIdConnectConstants.Scopes.Email,
+                    OpenIdConnectConstants.Scopes.Profile,
+                    OpenIdConnectConstants.Scopes.OfflineAccess,
+                    OpenIddictConstants.Scopes.Roles
+                }.Intersect(request.GetScopes()));
+            }
 
             return ticket;
         }

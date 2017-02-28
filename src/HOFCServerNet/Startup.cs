@@ -69,6 +69,7 @@ namespace HOFCServerNet
                     .EnableUserinfoEndpoint("/connect/userinfo")
                     .AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
+                    .DisableHttpsRequirement()
                     .EnableRequestCaching();
             try
             {

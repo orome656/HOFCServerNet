@@ -38,7 +38,7 @@
       <Version>9.0.1</Version>
     </PackageReference>
     <PackageReference Include="OpenIddict">
-      <Version>1.0.0-beta2-0552</Version>
+      <Version>1.0.0-beta2-0561</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
