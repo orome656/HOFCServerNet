@@ -25,6 +25,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 using System.Threading;
 using NLog;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 
 namespace HOFCServerNet
 {
@@ -126,6 +127,10 @@ namespace HOFCServerNet
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true
+                });
             }
             
 
@@ -159,13 +164,13 @@ namespace HOFCServerNet
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute("journee",
-                    template: "Journee/Index/{equipe}/{idJournee}", defaults: new { controller = "Journee", action="Index", equipe="equipe1", idJournee = 1});
-                routes.MapRoute("actu",
-                    template: "Journee/Detail/{url}", defaults: new { controller = "Journee", action = "Index", equipe = "equipe1", idJournee = 1 });
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Actu}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
             });
             
             app.UseSwagger();
@@ -221,35 +226,6 @@ namespace HOFCServerNet
                     await manager.CreateAsync(application, cancellationToken);
                 }
             }
-        }
-
-        /// <summary>
-        /// Entry point for the application
-        /// </summary>
-        /// <param name="args"></param>
-        public static void Main(string[] args)
-        {
-            var config = new ConfigurationBuilder()
-                            .SetBasePath(Directory.GetCurrentDirectory())
-                            .AddJsonFile("hosting.json", optional: true)
-                            .AddEnvironmentVariables()
-                            .Build();
-
-            var host = new WebHostBuilder()
-                              .UseConfiguration(config)
-                              .UseKestrel(options => {
-                                  options.NoDelay = true;
-                                  if(!string.IsNullOrWhiteSpace(config["HOFC_SSL_CERT_PATH"]))
-                                      options.UseHttps(config["HOFC_SSL_CERT_PATH"]);
-                                  options.UseConnectionLogging();
-                              })
-                              .UseContentRoot(Directory.GetCurrentDirectory())
-                              .UseIISIntegration()
-                              .UseStartup<Startup>()
-                              .Build();
-
-            host.Run();
-            //WebApplication.Run<Startup>(args);
         }
     }
 }
