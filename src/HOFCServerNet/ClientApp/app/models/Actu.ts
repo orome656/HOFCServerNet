@@ -3,6 +3,6 @@
     titre: string;
     texte: string;
     url: string;
-    imageUrl: string;
+    image: string;
     date: Date;
 }

@@ -1,5 +1,7 @@
 <ul>
     <li *ngFor="let actu of actus">
-        <span>{{actu.titre}}</span>
+        <card [title]="actu.titre"
+              [texte]="actu.texte"
+              [imageUrl]="actu.image"></card>
     </li>
 </ul>
