@@ -1,7 +1,8 @@
-<ul>
-    <li *ngFor="let actu of actus">
-        <card [title]="actu.titre"
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col" *ngFor="let actu of actus; let i = index">
+        <card class="col-sm-4"
+              [title]="actu.titre"
               [texte]="actu.texte"
               [imageUrl]="actu.image"></card>
-    </li>
-</ul>
+    </div>
+</div>

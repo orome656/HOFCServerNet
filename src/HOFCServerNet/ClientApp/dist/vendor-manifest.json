@@ -1,5 +1,5 @@
 {
-  "name": "vendor_b03d1b9bd896227ec064",
+  "name": "vendor_1c8ea9ba502f2f68d18e",
   "content": {
     "./node_modules/@angular/core/bundles/core.umd.js": {
       "id": 0,
@@ -237,43 +237,43 @@
       "id": 62,
       "meta": {}
     },
-    "./node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.eot": {
-      "id": 63,
-      "meta": {}
-    },
     "./node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js": {
-      "id": 66,
+      "id": 65,
       "meta": {}
     },
     "./node_modules/@angular/platform-server/bundles/platform-server.umd.js": {
-      "id": 67,
+      "id": 66,
       "meta": {}
     },
     "./node_modules/@angular/router/bundles/router.umd.js": {
-      "id": 68,
+      "id": 67,
       "meta": {}
     },
     "./node_modules/angular2-universal-polyfills/node.js": {
-      "id": 69,
+      "id": 68,
       "meta": {}
     },
     "./node_modules/angular2-universal/node/index.js": {
-      "id": 70,
+      "id": 69,
       "meta": {}
     },
     "./node_modules/aspnet-prerendering/index.js": {
-      "id": 71,
+      "id": 70,
       "meta": {}
     },
     "./node_modules/bootstrap/dist/js/npm.js": {
-      "id": 72,
+      "id": 71,
       "meta": {}
     },
     "./node_modules/event-source-polyfill/eventsource.js": {
+      "id": 72,
+      "meta": {}
+    },
+    "./node_modules/material-design-lite/dist/material.min.js": {
       "id": 73,
       "meta": {}
     },
-    "./node_modules/bootstrap/dist/css/bootstrap.css": {
+    "./node_modules/material-design-lite/dist/material.indigo-red.min.css": {
       "id": 74,
       "meta": {}
     },
@@ -365,7 +365,7 @@
       "id": 96,
       "meta": {}
     },
-    "./node_modules/css-loader/index.js!./node_modules/bootstrap/dist/css/bootstrap.css": {
+    "./node_modules/css-loader/index.js!./node_modules/material-design-lite/dist/material.indigo-red.min.css": {
       "id": 97,
       "meta": {}
     },
@@ -545,24 +545,8 @@
       "id": 141,
       "meta": {}
     },
-    "./node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.svg": {
-      "id": 142,
-      "meta": {}
-    },
-    "./node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf": {
-      "id": 143,
-      "meta": {}
-    },
-    "./node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff": {
-      "id": 144,
-      "meta": {}
-    },
-    "./node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2": {
-      "id": 145,
-      "meta": {}
-    },
     "./node_modules/zone.js/dist/long-stack-trace-zone.js": {
-      "id": 146,
+      "id": 142,
       "meta": {}
     }
   }

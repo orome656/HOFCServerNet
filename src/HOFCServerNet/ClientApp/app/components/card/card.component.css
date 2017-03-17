@@ -1,0 +1,14 @@
+﻿:host {
+    justify-content: center;
+}
+
+.mdl-card__title {
+    color: #fff;
+    height: 176px;
+    background-position: center;
+    background-size: cover;
+}
+
+.mdl-card {
+    margin:5px;
+}
