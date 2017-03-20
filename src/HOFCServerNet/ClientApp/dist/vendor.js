@@ -72,7 +72,7 @@ module.exports =
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * @license Angular v2.4.9
+ * @license Angular v2.4.10
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -1190,7 +1190,7 @@ module.exports =
     /**
      * @stable
      */
-    var /** @type {?} */ VERSION = new Version('2.4.9');
+    var /** @type {?} */ VERSION = new Version('2.4.10');
 
     /**
      * Allows to refer to references which are not yet defined.
@@ -23082,7 +23082,7 @@ var SafeSubscriber = (function (_super) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * @license Angular v2.4.9
+ * @license Angular v2.4.10
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -27755,7 +27755,7 @@ var SafeSubscriber = (function (_super) {
     /**
      * @stable
      */
-    var /** @type {?} */ VERSION = new core.Version('2.4.9');
+    var /** @type {?} */ VERSION = new core.Version('2.4.10');
 
     exports.BrowserModule = BrowserModule;
     exports.platformBrowser = platformBrowser;
@@ -27781,7 +27781,7 @@ var SafeSubscriber = (function (_super) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * @license Angular v2.4.9
+ * @license Angular v2.4.10
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -27890,6 +27890,11 @@ var SafeSubscriber = (function (_super) {
         PlatformLocation.prototype.back = function () { };
         return PlatformLocation;
     }());
+    /**
+     * @whatItDoes indicates when a location is initialized
+     * @experimental
+     */
+    var /** @type {?} */ LOCATION_INITIALIZED = new _angular_core.OpaqueToken('Location Initialized');
 
     /**
      * `LocationStrategy` is responsible for representing and reading route state
@@ -31416,7 +31421,7 @@ var SafeSubscriber = (function (_super) {
     /**
      * @stable
      */
-    var /** @type {?} */ VERSION = new _angular_core.Version('2.4.9');
+    var /** @type {?} */ VERSION = new _angular_core.Version('2.4.10');
 
     exports.NgLocalization = NgLocalization;
     exports.CommonModule = CommonModule;
@@ -31444,6 +31449,7 @@ var SafeSubscriber = (function (_super) {
     exports.VERSION = VERSION;
     exports.Version = _angular_core.Version;
     exports.PlatformLocation = PlatformLocation;
+    exports.LOCATION_INITIALIZED = LOCATION_INITIALIZED;
     exports.LocationStrategy = LocationStrategy;
     exports.APP_BASE_HREF = APP_BASE_HREF;
     exports.HashLocationStrategy = HashLocationStrategy;
@@ -31749,7 +31755,7 @@ SPECIAL_ELEMENTS[NS.SVG][$.DESC] = true;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * @license Angular v2.4.9
+ * @license Angular v2.4.10
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -31762,7 +31768,7 @@ SPECIAL_ELEMENTS[NS.SVG][$.DESC] = true;
     /**
      * @stable
      */
-    var /** @type {?} */ VERSION = new _angular_core.Version('2.4.9');
+    var /** @type {?} */ VERSION = new _angular_core.Version('2.4.10');
 
     /**
      * @license
@@ -39641,39 +39647,30 @@ SPECIAL_ELEMENTS[NS.SVG][$.DESC] = true;
     function utf8Encode(str) {
         var /** @type {?} */ encoded = '';
         for (var /** @type {?} */ index = 0; index < str.length; index++) {
-            var /** @type {?} */ codePoint = decodeSurrogatePairs(str, index);
+            var /** @type {?} */ codePoint = str.charCodeAt(index);
+            // decode surrogate
+            // see https://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+            if (codePoint >= 0xd800 && codePoint <= 0xdbff && str.length > (index + 1)) {
+                var /** @type {?} */ low = str.charCodeAt(index + 1);
+                if (low >= 0xdc00 && low <= 0xdfff) {
+                    index++;
+                    codePoint = ((codePoint - 0xd800) << 10) + low - 0xdc00 + 0x10000;
+                }
+            }
             if (codePoint <= 0x7f) {
                 encoded += String.fromCharCode(codePoint);
             }
             else if (codePoint <= 0x7ff) {
-                encoded += String.fromCharCode(0xc0 | codePoint >>> 6, 0x80 | codePoint & 0x3f);
+                encoded += String.fromCharCode(((codePoint >> 6) & 0x1F) | 0xc0, (codePoint & 0x3f) | 0x80);
             }
             else if (codePoint <= 0xffff) {
-                encoded += String.fromCharCode(0xe0 | codePoint >>> 12, 0x80 | codePoint >>> 6 & 0x3f, 0x80 | codePoint & 0x3f);
+                encoded += String.fromCharCode((codePoint >> 12) | 0xe0, ((codePoint >> 6) & 0x3f) | 0x80, (codePoint & 0x3f) | 0x80);
             }
             else if (codePoint <= 0x1fffff) {
-                encoded += String.fromCharCode(0xf0 | codePoint >>> 18, 0x80 | codePoint >>> 12 & 0x3f, 0x80 | codePoint >>> 6 & 0x3f, 0x80 | codePoint & 0x3f);
+                encoded += String.fromCharCode(((codePoint >> 18) & 0x07) | 0xf0, ((codePoint >> 12) & 0x3f) | 0x80, ((codePoint >> 6) & 0x3f) | 0x80, (codePoint & 0x3f) | 0x80);
             }
         }
         return encoded;
-    }
-    /**
-     * @param {?} str
-     * @param {?} index
-     * @return {?}
-     */
-    function decodeSurrogatePairs(str, index) {
-        if (index < 0 || index >= str.length) {
-            throw new Error("index=" + index + " is out of range in \"" + str + "\"");
-        }
-        var /** @type {?} */ high = str.charCodeAt(index);
-        if (high >= 0xd800 && high <= 0xdfff && str.length > index + 1) {
-            var /** @type {?} */ low = byteAt(str, index + 1);
-            if (low >= 0xdc00 && low <= 0xdfff) {
-                return (high - 0xd800) * 0x400 + low - 0xdc00 + 0x10000;
-            }
-        }
-        return high;
     }
     /**
      * @param {?} a
@@ -62379,7 +62376,7 @@ module.exports = require("util");
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * @license Angular v2.4.9
+ * @license Angular v2.4.10
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -64399,7 +64396,7 @@ module.exports = require("util");
     /**
      * @stable
      */
-    var /** @type {?} */ VERSION = new _angular_core.Version('2.4.9');
+    var /** @type {?} */ VERSION = new _angular_core.Version('2.4.10');
 
     exports.BrowserXhr = BrowserXhr;
     exports.JSONPBackend = JSONPBackend;
@@ -73856,9 +73853,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__; /*!
 * found in the LICENSE file at https://angular.io/license
 */
 (function (global, factory) {
-     true ? factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (factory());
+	 true ? factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(factory());
 }(this, (function () { 'use strict';
 
 /**
@@ -74023,7 +74020,11 @@ var Zone$1 = (function (global) {
             }
             finally {
                 if (task.type == eventTask || (task.data && task.data.isPeriodic)) {
-                    reEntryGuard && task._transitionTo(scheduled, running, notScheduled);
+                    // if the task's state is notScheduled, then it has already been cancelled
+                    // we should not reset the state to scheduled
+                    if (task.state !== notScheduled) {
+                        reEntryGuard && task._transitionTo(scheduled, running);
+                    }
                 }
                 else {
                     task.runCount = 0;
@@ -74291,7 +74292,6 @@ var Zone$1 = (function (global) {
                 }
             }
             else {
-                debugger;
                 throw new Error(this.type + " '" + this.source + "': can not transition to '" + toState + "', expecting state '" + fromState1 + "'" + (fromState2 ?
                     ' or \'' + fromState2 + '\'' :
                     '') + ", was '" + this._state + "'.");
@@ -74361,11 +74361,25 @@ var Zone$1 = (function (global) {
         _microTaskQueue.push(task);
     }
     function consoleError(e) {
+        if (Zone[__symbol__('ignoreConsoleErrorUncaughtError')]) {
+            return;
+        }
         var rejection = e && e.rejection;
         if (rejection) {
             console.error('Unhandled Promise rejection:', rejection instanceof Error ? rejection.message : rejection, '; Zone:', e.zone.name, '; Task:', e.task && e.task.source, '; Value:', rejection, rejection instanceof Error ? rejection.stack : undefined);
         }
         console.error(e);
+    }
+    function handleUnhandledRejection(e) {
+        consoleError(e);
+        try {
+            var handler = Zone[__symbol__('unhandledPromiseRejectionHandler')];
+            if (handler && typeof handler === 'function') {
+                handler.apply(this, [e]);
+            }
+        }
+        catch (err) {
+        }
     }
     function drainMicroTaskQueue() {
         if (!_isDrainingMicrotaskQueue) {
@@ -74392,7 +74406,7 @@ var Zone$1 = (function (global) {
                         });
                     }
                     catch (error) {
-                        consoleError(error);
+                        handleUnhandledRejection(error);
                     }
                 };
                 while (_uncaughtPromiseErrors.length) {
@@ -74484,6 +74498,11 @@ var Zone$1 = (function (global) {
                 promise[symbolState] = state;
                 var queue = promise[symbolValue];
                 promise[symbolValue] = value;
+                // record task information in value when error occurs, so we can
+                // do some additional work such as render longStackTrace
+                if (state === REJECTED && value instanceof Error) {
+                    value[__symbol__('currentTask')] = Zone.currentTask;
+                }
                 for (var i = 0; i < queue.length;) {
                     scheduleResolveOrReject(promise, queue[i++], queue[i++], queue[i++], queue[i++]);
                 }
@@ -74510,11 +74529,23 @@ var Zone$1 = (function (global) {
     }
     function clearRejectedNoCatch(promise) {
         if (promise[symbolState] === REJECTED_NO_CATCH) {
+            // if the promise is rejected no catch status
+            // and queue.length > 0, means there is a error handler
+            // here to handle the rejected promise, we should trigger
+            // windows.rejectionhandled eventHandler or nodejs rejectionHandled
+            // eventHandler
+            try {
+                var handler = Zone[__symbol__('rejectionHandledHandler')];
+                if (handler && typeof handler === 'function') {
+                    handler.apply(this, [{ rejection: promise[symbolValue], promise: promise }]);
+                }
+            }
+            catch (err) {
+            }
             promise[symbolState] = REJECTED;
             for (var i = 0; i < _uncaughtPromiseErrors.length; i++) {
                 if (promise === _uncaughtPromiseErrors[i].promise) {
                     _uncaughtPromiseErrors.splice(i, 1);
-                    break;
                 }
             }
         }
@@ -74852,6 +74883,24 @@ var Zone$1 = (function (global) {
     ZoneAwareError.prototype = NativeError.prototype;
     ZoneAwareError[Zone.__symbol__('blacklistedStackFrames')] = blackListedStackFrames;
     ZoneAwareError[stackRewrite] = false;
+    // those properties need special handling
+    var specialPropertyNames = ['stackTraceLimit', 'captureStackTrace', 'prepareStackTrace'];
+    // those properties of NativeError should be set to ZoneAwareError
+    var nativeErrorProperties = Object.keys(NativeError);
+    if (nativeErrorProperties) {
+        nativeErrorProperties.forEach(function (prop) {
+            if (specialPropertyNames.filter(function (sp) { return sp === prop; }).length === 0) {
+                Object.defineProperty(ZoneAwareError, prop, {
+                    get: function () {
+                        return NativeError[prop];
+                    },
+                    set: function (value) {
+                        NativeError[prop] = value;
+                    }
+                });
+            }
+        });
+    }
     if (NativeError.hasOwnProperty('stackTraceLimit')) {
         // Extend default stack limit as we will be removing few frames.
         NativeError.stackTraceLimit = Math.max(NativeError.stackTraceLimit, 15);
@@ -74977,18 +75026,11 @@ var Zone$1 = (function (global) {
 /**
  * Suppress closure compiler errors about unknown 'Zone' variable
  * @fileoverview
- * @suppress {undefinedVars}
+ * @suppress {undefinedVars,globalThis}
  */
 var zoneSymbol = function (n) { return ("__zone_symbol__" + n); };
 var _global$1 = typeof window === 'object' && window || typeof self === 'object' && self || global;
-function bindArguments(args, source) {
-    for (var i = args.length - 1; i >= 0; i--) {
-        if (typeof args[i] === 'function') {
-            args[i] = Zone.current.wrap(args[i], source + '_' + i);
-        }
-    }
-    return args;
-}
+
 
 var isWebWorker = (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope);
 var isNode = (!('nw' in _global$1) && typeof process !== 'undefined' &&
@@ -75013,7 +75055,7 @@ function patchProperty(obj, prop) {
     delete desc.value;
     // substr(2) cuz 'onclick' -> 'click', etc
     var eventName = prop.substr(2);
-    var _prop = '_' + prop;
+    var _prop = zoneSymbol('_' + prop);
     desc.set = function (fn) {
         if (this[_prop]) {
             this.removeEventListener(eventName, this[_prop]);
@@ -75058,7 +75100,22 @@ function patchProperty(obj, prop) {
     Object.defineProperty(obj, prop, desc);
 }
 
-
+function patchOnProperties(obj, properties) {
+    var onProperties = [];
+    for (var prop in obj) {
+        if (prop.substr(0, 2) == 'on') {
+            onProperties.push(prop);
+        }
+    }
+    for (var j = 0; j < onProperties.length; j++) {
+        patchProperty(obj, onProperties[j]);
+    }
+    if (properties) {
+        for (var i = 0; i < properties.length; i++) {
+            patchProperty(obj, 'on' + properties[i]);
+        }
+    }
+}
 
 var EVENT_TASKS = zoneSymbol('eventTasks');
 // For EventTarget
@@ -75256,8 +75313,19 @@ function makeZoneAwareListeners(fnName) {
 }
 var zoneAwareAddEventListener = makeZoneAwareAddListener(ADD_EVENT_LISTENER, REMOVE_EVENT_LISTENER);
 var zoneAwareRemoveEventListener = makeZoneAwareRemoveListener(REMOVE_EVENT_LISTENER);
-
-var originalInstanceKey = zoneSymbol('originalInstance');
+function patchEventTargetMethods(obj, addFnName, removeFnName, metaCreator) {
+    if (addFnName === void 0) { addFnName = ADD_EVENT_LISTENER; }
+    if (removeFnName === void 0) { removeFnName = REMOVE_EVENT_LISTENER; }
+    if (metaCreator === void 0) { metaCreator = defaultListenerMetaCreator; }
+    if (obj && obj[addFnName]) {
+        patchMethod(obj, addFnName, function () { return makeZoneAwareAddListener(addFnName, removeFnName, true, false, false, metaCreator); });
+        patchMethod(obj, removeFnName, function () { return makeZoneAwareRemoveListener(removeFnName, true, metaCreator); });
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 // wrap some native API on `window`
 
 
@@ -75334,6 +75402,23 @@ function patchMicroTask(obj, funcName, metaCreator) {
         }
     }; });
 }
+function findEventTask(target, evtName) {
+    var eventTasks = target[zoneSymbol('eventTasks')];
+    var result = [];
+    if (eventTasks) {
+        for (var i = 0; i < eventTasks.length; i++) {
+            var eventTask = eventTasks[i];
+            var data = eventTask.data;
+            var eventName = data && data.eventName;
+            if (eventName === evtName) {
+                result.push(eventTask);
+            }
+        }
+    }
+    return result;
+}
+Zone[zoneSymbol('patchEventTargetMethods')] = patchEventTargetMethods;
+Zone[zoneSymbol('patchOnProperties')] = patchOnProperties;
 
 /**
  * @license
@@ -75355,16 +75440,16 @@ var EE_REMOVE_LISTENER = 'removeListener';
 var EE_REMOVE_ALL_LISTENER = 'removeAllListeners';
 var EE_LISTENERS = 'listeners';
 var EE_ON = 'on';
-var zoneAwareAddListener$1 = callAndReturnFirstParam(makeZoneAwareAddListener(EE_ADD_LISTENER, EE_REMOVE_LISTENER, false, true, false));
+var zoneAwareAddListener = callAndReturnFirstParam(makeZoneAwareAddListener(EE_ADD_LISTENER, EE_REMOVE_LISTENER, false, true, false));
 var zoneAwarePrependListener = callAndReturnFirstParam(makeZoneAwareAddListener(EE_PREPEND_LISTENER, EE_REMOVE_LISTENER, false, true, true));
-var zoneAwareRemoveListener$1 = callAndReturnFirstParam(makeZoneAwareRemoveListener(EE_REMOVE_LISTENER, false));
+var zoneAwareRemoveListener = callAndReturnFirstParam(makeZoneAwareRemoveListener(EE_REMOVE_LISTENER, false));
 var zoneAwareRemoveAllListeners = callAndReturnFirstParam(makeZoneAwareRemoveAllListeners(EE_REMOVE_ALL_LISTENER, false));
 var zoneAwareListeners = makeZoneAwareListeners(EE_LISTENERS);
 function patchEventEmitterMethods(obj) {
     if (obj && obj.addListener) {
-        patchMethod(obj, EE_ADD_LISTENER, function () { return zoneAwareAddListener$1; });
+        patchMethod(obj, EE_ADD_LISTENER, function () { return zoneAwareAddListener; });
         patchMethod(obj, EE_PREPEND_LISTENER, function () { return zoneAwarePrependListener; });
-        patchMethod(obj, EE_REMOVE_LISTENER, function () { return zoneAwareRemoveListener$1; });
+        patchMethod(obj, EE_REMOVE_LISTENER, function () { return zoneAwareRemoveListener; });
         patchMethod(obj, EE_REMOVE_ALL_LISTENER, function () { return zoneAwareRemoveAllListeners; });
         patchMethod(obj, EE_LISTENERS, function () { return zoneAwareListeners; });
         obj[EE_ON] = obj[EE_ADD_LISTENER];
@@ -75437,8 +75522,12 @@ function patchTimer(window, setName, cancelName, nameSuffix) {
     function scheduleTask(task) {
         var data = task.data;
         data.args[0] = function () {
-            task.invoke.apply(this, arguments);
-            delete tasksByHandleId[data.handleId];
+            try {
+                task.invoke.apply(this, arguments);
+            }
+            finally {
+                delete tasksByHandleId[data.handleId];
+            }
         };
         data.handleId = setNative.apply(window, data.args);
         tasksByHandleId[data.handleId] = task;
@@ -75518,6 +75607,7 @@ if (shouldPatchGlobalTimers) {
 }
 // patch process related methods
 patchProcess();
+handleUnhandledPromiseRejection();
 // Crypto
 var crypto;
 try {
@@ -75549,6 +75639,28 @@ function patchProcess() {
             target: process
         };
     });
+}
+// handle unhandled promise rejection
+function findProcessPromiseRejectionHandler(evtName) {
+    return function (e) {
+        var eventTasks = findEventTask(process, evtName);
+        eventTasks.forEach(function (eventTask) {
+            // process has added unhandledrejection event listener
+            // trigger the event listener
+            if (evtName === 'unhandledRejection') {
+                eventTask.invoke(e.rejection, e.promise);
+            }
+            else if (evtName === 'rejectionHandled') {
+                eventTask.invoke(e.promise);
+            }
+        });
+    };
+}
+function handleUnhandledPromiseRejection() {
+    Zone[zoneSymbol('unhandledPromiseRejectionHandler')] =
+        findProcessPromiseRejectionHandler('unhandledRejection');
+    Zone[zoneSymbol('rejectionHandledHandler')] =
+        findProcessPromiseRejectionHandler('rejectionHandled');
 }
 
 })));
@@ -81087,7 +81199,7 @@ module.exports = require("fs");
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * @license Angular v2.4.9
+ * @license Angular v2.4.10
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -81237,7 +81349,7 @@ module.exports = require("fs");
     /**
      * @stable
      */
-    var VERSION = new _angular_core.Version('2.4.9');
+    var VERSION = new _angular_core.Version('2.4.10');
 
     /**
      * @experimental
@@ -81260,7 +81372,7 @@ module.exports = require("fs");
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * @license Angular v2.4.9
+ * @license Angular v2.4.10
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -83236,7 +83348,7 @@ module.exports = require("fs");
     /**
      * @stable
      */
-    var /** @type {?} */ VERSION = new _angular_core.Version('2.4.9');
+    var /** @type {?} */ VERSION = new _angular_core.Version('2.4.10');
 
     exports.ServerModule = ServerModule;
     exports.platformDynamicServer = platformDynamicServer;
@@ -83251,7 +83363,7 @@ module.exports = require("fs");
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * @license Angular v3.4.9
+ * @license Angular v3.4.10
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */(function (global, factory) {
@@ -86558,6 +86670,14 @@ module.exports = require("fs");
         throw error;
     }
     /**
+     * \@internal
+     * @param {?} snapshot
+     * @return {?}
+     */
+    function defaultRouterHook(snapshot) {
+        return rxjs_observable_of.of(null);
+    }
+    /**
      * Does not detach any subtrees. Reuses routes as long as their route config is the same.
      */
     var DefaultRouteReuseStrategy = (function () {
@@ -86636,6 +86756,16 @@ module.exports = require("fs");
             this.navigated = false;
             /**
              * Extracts and merges URLs. Used for Angular 1 to Angular 2 migrations.
+             * Used by RouterModule. This allows us to
+             * pause the navigation either before preactivation or after it.
+             * @internal
+             */
+            this.hooks = {
+                beforePreactivation: defaultRouterHook,
+                afterPreactivation: defaultRouterHook
+            };
+            /**
+             * Extracts and merges URLs. Used for AngularJS to Angular migrations.
              */
             this.urlHandlingStrategy = new DefaultUrlHandlingStrategy();
             this.routeReuseStrategy = new DefaultRouteReuseStrategy();
@@ -87012,16 +87142,19 @@ module.exports = require("fs");
                 else {
                     urlAndSnapshot$ = rxjs_observable_of.of({ appliedUrl: url, snapshot: precreatedState });
                 }
+                var /** @type {?} */ beforePreactivationDone$ = rxjs_operator_mergeMap.mergeMap.call(urlAndSnapshot$, function (p) {
+                    return rxjs_operator_map.map.call(_this.hooks.beforePreactivation(p.snapshot), function () { return p; });
+                });
                 // run preactivation: guards and data resolvers
                 var /** @type {?} */ preActivation;
-                var /** @type {?} */ preactivationTraverse$ = rxjs_operator_map.map.call(urlAndSnapshot$, function (_a) {
+                var /** @type {?} */ preactivationTraverse$ = rxjs_operator_map.map.call(beforePreactivationDone$, function (_a) {
                     var appliedUrl = _a.appliedUrl, snapshot = _a.snapshot;
                     preActivation =
                         new PreActivation(snapshot, _this.currentRouterState.snapshot, _this.injector);
                     preActivation.traverse(_this.outletMap);
                     return { appliedUrl: appliedUrl, snapshot: snapshot };
                 });
-                var /** @type {?} */ preactivationCheckGuards = rxjs_operator_mergeMap.mergeMap.call(preactivationTraverse$, function (_a) {
+                var /** @type {?} */ preactivationCheckGuards$ = rxjs_operator_mergeMap.mergeMap.call(preactivationTraverse$, function (_a) {
                     var appliedUrl = _a.appliedUrl, snapshot = _a.snapshot;
                     if (_this.navigationId !== id)
                         return rxjs_observable_of.of(false);
@@ -87029,7 +87162,7 @@ module.exports = require("fs");
                         return { appliedUrl: appliedUrl, snapshot: snapshot, shouldActivate: shouldActivate };
                     });
                 });
-                var /** @type {?} */ preactivationResolveData$ = rxjs_operator_mergeMap.mergeMap.call(preactivationCheckGuards, function (p) {
+                var /** @type {?} */ preactivationResolveData$ = rxjs_operator_mergeMap.mergeMap.call(preactivationCheckGuards$, function (p) {
                     if (_this.navigationId !== id)
                         return rxjs_observable_of.of(false);
                     if (p.shouldActivate) {
@@ -87039,9 +87172,12 @@ module.exports = require("fs");
                         return rxjs_observable_of.of(p);
                     }
                 });
+                var /** @type {?} */ preactivationDone$ = rxjs_operator_mergeMap.mergeMap.call(preactivationResolveData$, function (p) {
+                    return rxjs_operator_map.map.call(_this.hooks.afterPreactivation(p.snapshot), function () { return p; });
+                });
                 // create router state
                 // this operation has side effects => route state is being affected
-                var /** @type {?} */ routerState$ = rxjs_operator_map.map.call(preactivationResolveData$, function (_a) {
+                var /** @type {?} */ routerState$ = rxjs_operator_map.map.call(preactivationDone$, function (_a) {
                     var appliedUrl = _a.appliedUrl, snapshot = _a.snapshot, shouldActivate = _a.shouldActivate;
                     if (shouldActivate) {
                         var /** @type {?} */ state = createRouterState(_this.routeReuseStrategy, snapshot, _this.currentRouterState);
@@ -88765,26 +88901,123 @@ module.exports = require("fs");
         return router.routerState.root;
     }
     /**
-     * @param {?} router
-     * @param {?} ref
-     * @param {?} preloader
-     * @param {?} opts
-     * @return {?}
+     * To initialize the router properly we need to do in two steps:
+     *
+     * We need to start the navigation in a APP_INITIALIZER to block the bootstrap if
+     * a resolver or a guards executes asynchronously. Second, we need to actually run
+     * activation in a BOOTSTRAP_LISTENER. We utilize the afterPreactivation
+     * hook provided by the router to do that.
+     *
+     * The router navigation starts, reaches the point when preactivation is done, and then
+     * pauses. It waits for the hook to be resolved. We then resolve it only in a bootstrap listener.
      */
-    function initialRouterNavigation(router, ref, preloader, opts) {
-        return function (bootstrappedComponentRef) {
+    var RouterInitializer = (function () {
+        /**
+         * @param {?} injector
+         */
+        function RouterInitializer(injector) {
+            this.injector = injector;
+            this.initNavigation = false;
+            this.resultOfPreactivationDone = new rxjs_Subject.Subject();
+        }
+        /**
+         * @return {?}
+         */
+        RouterInitializer.prototype.appInitializer = function () {
+            var _this = this;
+            var /** @type {?} */ p = this.injector.get(_angular_common.LOCATION_INITIALIZED, Promise.resolve(null));
+            return p.then(function () {
+                var /** @type {?} */ resolve = null;
+                var /** @type {?} */ res = new Promise(function (r) { return resolve = r; });
+                var /** @type {?} */ router = _this.injector.get(Router);
+                var /** @type {?} */ opts = _this.injector.get(ROUTER_CONFIGURATION);
+                if (_this.isLegacyDisabled(opts) || _this.isLegacyEnabled(opts)) {
+                    resolve(true);
+                }
+                else if (opts.initialNavigation === 'disabled') {
+                    router.setUpLocationChangeListener();
+                    resolve(true);
+                }
+                else if (opts.initialNavigation === 'enabled') {
+                    router.hooks.afterPreactivation = function () {
+                        // only the initial navigation should be delayed
+                        if (!_this.initNavigation) {
+                            _this.initNavigation = true;
+                            resolve(true);
+                            return _this.resultOfPreactivationDone;
+                        }
+                        else {
+                            return rxjs_observable_of.of(null);
+                        }
+                    };
+                    router.initialNavigation();
+                }
+                else {
+                    throw new Error("Invalid initialNavigation options: '" + opts.initialNavigation + "'");
+                }
+                return res;
+            });
+        };
+        /**
+         * @param {?} bootstrappedComponentRef
+         * @return {?}
+         */
+        RouterInitializer.prototype.bootstrapListener = function (bootstrappedComponentRef) {
+            var /** @type {?} */ opts = this.injector.get(ROUTER_CONFIGURATION);
+            var /** @type {?} */ preloader = this.injector.get(RouterPreloader);
+            var /** @type {?} */ router = this.injector.get(Router);
+            var /** @type {?} */ ref = this.injector.get(_angular_core.ApplicationRef);
             if (bootstrappedComponentRef !== ref.components[0]) {
                 return;
             }
-            router.resetRootComponentType(ref.componentTypes[0]);
-            preloader.setUpPreloading();
-            if (opts.initialNavigation === false) {
-                router.setUpLocationChangeListener();
-            }
-            else {
+            if (this.isLegacyEnabled(opts)) {
                 router.initialNavigation();
             }
+            else if (this.isLegacyDisabled(opts)) {
+                router.setUpLocationChangeListener();
+            }
+            preloader.setUpPreloading();
+            router.resetRootComponentType(ref.componentTypes[0]);
+            this.resultOfPreactivationDone.next(null);
+            this.resultOfPreactivationDone.complete();
         };
+        /**
+         * @param {?} opts
+         * @return {?}
+         */
+        RouterInitializer.prototype.isLegacyEnabled = function (opts) {
+            return opts.initialNavigation === 'legacy_enabled' || opts.initialNavigation === true ||
+                opts.initialNavigation === undefined;
+        };
+        /**
+         * @param {?} opts
+         * @return {?}
+         */
+        RouterInitializer.prototype.isLegacyDisabled = function (opts) {
+            return opts.initialNavigation === 'legacy_disabled' || opts.initialNavigation === false;
+        };
+        RouterInitializer.decorators = [
+            { type: _angular_core.Injectable },
+        ];
+        /** @nocollapse */
+        RouterInitializer.ctorParameters = function () { return [
+            { type: _angular_core.Injector, },
+        ]; };
+        return RouterInitializer;
+    }());
+    /**
+     * @param {?} r
+     * @return {?}
+     */
+    function getAppInitializer(r) {
+        return r.appInitializer.bind(r);
+    }
+    /**
+     * @param {?} r
+     * @return {?}
+     */
+    function getBootstrapListener(r) {
+        return r.bootstrapListener.bind(r);
     }
     /**
      * A token for the router initializer that will be called after the app is bootstrapped.
@@ -88797,11 +89030,14 @@ module.exports = require("fs");
      */
     function provideRouterInitializer() {
         return [
+            RouterInitializer,
             {
-                provide: ROUTER_INITIALIZER,
-                useFactory: initialRouterNavigation,
-                deps: [Router, _angular_core.ApplicationRef, RouterPreloader, ROUTER_CONFIGURATION]
+                provide: _angular_core.APP_INITIALIZER,
+                multi: true,
+                useFactory: getAppInitializer,
+                deps: [RouterInitializer]
             },
+            { provide: ROUTER_INITIALIZER, useFactory: getBootstrapListener, deps: [RouterInitializer] },
             { provide: _angular_core.APP_BOOTSTRAP_LISTENER, multi: true, useExisting: ROUTER_INITIALIZER },
         ];
     }
@@ -88809,7 +89045,7 @@ module.exports = require("fs");
     /**
      * @stable
      */
-    var /** @type {?} */ VERSION = new _angular_core.Version('3.4.9');
+    var /** @type {?} */ VERSION = new _angular_core.Version('3.4.10');
 
     var /** @type {?} */ __router_private__ = {
         ROUTER_PROVIDERS: ROUTER_PROVIDERS,
@@ -101024,9 +101260,9 @@ exports.tryCatch = tryCatch;
 * found in the LICENSE file at https://angular.io/license
 */
 (function (global, factory) {
-     true ? factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (factory());
+	 true ? factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(factory());
 }(this, (function () { 'use strict';
 
 /**
@@ -101035,6 +101271,10 @@ exports.tryCatch = tryCatch;
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @fileoverview
+ * @suppress {globalThis}
  */
 var NEWLINE = '\n';
 var SEP = '  -------------  ';
@@ -101054,17 +101294,17 @@ function getStacktraceWithCaughtError() {
     try {
         throw getStacktraceWithUncaughtError();
     }
-    catch (error) {
-        return error;
+    catch (err) {
+        return err;
     }
 }
 // Some implementations of exception handling don't create a stack trace if the exception
 // isn't thrown, however it's faster not to actually throw the exception.
 var error = getStacktraceWithUncaughtError();
-var coughtError = getStacktraceWithCaughtError();
+var caughtError = getStacktraceWithCaughtError();
 var getStacktrace = error.stack ?
     getStacktraceWithUncaughtError :
-    (coughtError.stack ? getStacktraceWithCaughtError : getStacktraceWithUncaughtError);
+    (caughtError.stack ? getStacktraceWithCaughtError : getStacktraceWithUncaughtError);
 function getFrames(error) {
     return error.stack ? error.stack.split(NEWLINE) : [];
 }
@@ -101095,6 +101335,19 @@ function renderLongStackTrace(frames, stack) {
 Zone['longStackTraceZoneSpec'] = {
     name: 'long-stack-trace',
     longStackTraceLimit: 10,
+    // add a getLongStackTrace method in spec to
+    // handle handled reject promise error.
+    getLongStackTrace: function (error) {
+        if (!error) {
+            return undefined;
+        }
+        var task = error[Zone['__symbol__']('currentTask')];
+        var trace = task && task.data && task.data[creationTrace];
+        if (!trace) {
+            return error.stack;
+        }
+        return renderLongStackTrace(trace, error.stack);
+    },
     onScheduleTask: function (parentZoneDelegate, currentZone, targetZone, task) {
         var currentTask = Zone.currentTask;
         var trace = currentTask && currentTask.data && currentTask.data[creationTrace] || [];
