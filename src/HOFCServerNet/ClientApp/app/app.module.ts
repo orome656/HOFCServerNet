@@ -6,6 +6,7 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
 import { CardComponent } from './components/card/card.component';
 import { MDL } from './components/app/MaterialDesignLiteUpgradeElement';
 
@@ -18,6 +19,7 @@ import { MDL } from './components/app/MaterialDesignLiteUpgradeElement';
         FetchDataComponent,
         HomeComponent,
         CardComponent,
+        CalendarComponent,
         MDL
     ],
     imports: [
@@ -25,8 +27,7 @@ import { MDL } from './components/app/MaterialDesignLiteUpgradeElement';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
-            { path: 'counter', component: CounterComponent },
-            { path: 'fetch-data', component: FetchDataComponent },
+            { path: 'calendar', component: CalendarComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

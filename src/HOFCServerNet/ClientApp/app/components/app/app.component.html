@@ -6,9 +6,14 @@
         </div>
     </header>
     <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">WebHOFC</span>
+        <span class="mdl-layout-title">
+            <span>WebHOFC</span>
+        </span>
         <nav class="mdl-navigation">
             <a class="mdl-navigation__link" [routerLink]="['/home']">Actu</a>
+            <div class="android-drawer-separator"></div>
+            <span class="mdl-navigation__link" href="">Calendrier</span>
+            <a class="mdl-navigation__link" [routerLink]="['/calendar']">Equipe 1</a>
         </nav>
     </div>
     <main class="mdl-layout__content">

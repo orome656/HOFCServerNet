@@ -1,0 +1,22 @@
+﻿<div class="mdl-list">
+    <div class="mdl-list__item" *ngFor="let match of matchs; let i = index">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone">
+
+            </div>
+            <div class="mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--2-col-phone">
+                {{match.equipe1}}
+            </div>
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--1-col-phone">
+                {{ (match.score1 != null && match.score2 != null) ? match.score1 + ' - ' + match.score2 : '' }}
+                {{ match.message != null ? match.message : ''}}
+            </div>
+            <div class="mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
+                {{match.equipe2}}
+            </div>
+            <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone">
+
+            </div>
+        </div>
+    </div>
+</div>
