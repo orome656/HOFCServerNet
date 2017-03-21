@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c8563d1b9fb30cf5eec4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f65819c0b73eb7b1eda6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -1793,6 +1793,7 @@ var CalendarComponent = (function () {
     function CalendarComponent(_matchService, _route) {
         this._matchService = _matchService;
         this._route = _route;
+        this.isLoading = true;
     }
     CalendarComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1800,8 +1801,13 @@ var CalendarComponent = (function () {
     };
     CalendarComponent.prototype.updateView = function (params) {
         var _this = this;
+        this.matchs = [];
+        this.isLoading = true;
         this.team = this._route.snapshot.params['team'];
-        this._matchService.getMatchs().subscribe(function (a) { return _this.matchs = a; });
+        this._matchService.getMatchs().subscribe(function (a) {
+            _this.matchs = a;
+            _this.isLoading = false;
+        });
     };
     CalendarComponent.prototype.OpenMatchDetails = function () {
         console.log('Coucou');
@@ -2060,7 +2066,7 @@ exports = module.exports = __webpack_require__(3)();
 
 
 // module
-exports.push([module.i, ".mdl-grid {\r\n    width:100%;\r\n}\r\n\r\n.mdl-list__item>div {\r\n    width:100%;\r\n}", ""]);
+exports.push([module.i, ".mdl-grid {\r\n    width:100%;\r\n}\r\n\r\n.mdl-list__item>div {\r\n    width:100%;\r\n}\r\n\r\n.mdl-list .mdl-list__item .mdl-cell {\r\n    text-align: center;\r\n}\r\n\r\n.hidden {\r\n    display: none;\r\n}\r\n\r\n.spinner-div {\r\n    height:100%;\r\n    width: 100%;\r\n    text-align: center;\r\n}", ""]);
 
 // exports
 
@@ -2429,7 +2435,7 @@ module.exports = "<div mdl class='mdl-layout mdl-js-layout mdl-layout--fixed-hea
 /* 37 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"mdl-tabs mdl-js-tabs mdl-js-ripple-effect\">\r\n    <div class=\"mdl-tabs__tab-bar\">\r\n        <a [routerLink]=\"['/calendar/equipe1']\" class=\"mdl-tabs__tab\" [ngClass]=\"{'is-active': team == 'equipe1'}\">Equipe 1</a>\r\n        <a [routerLink]=\"['/calendar/equipe2']\" class=\"mdl-tabs__tab\" [ngClass]=\"{'is-active': team == 'equipe2'}\">Equipe 2</a>\r\n        <a [routerLink]=\"['/calendar/equipe3']\" class=\"mdl-tabs__tab\" [ngClass]=\"{'is-active': team == 'equipe3'}\">Equipe 3</a>\r\n    </div>\r\n</div>\r\n<div class=\"mdl-list\">\r\n    <div class=\"mdl-list__item\" *ngFor=\"let match of (matchs | team : team)\">\r\n        <div>\r\n            <div class=\"mdl-grid\">\r\n                <div class=\"mdl-cell mdl-cell--12-col\">\r\n                    {{match.date | date: 'dd/MM/y HH:mm'}}\r\n                </div>\r\n            </div>\r\n            <div class=\"mdl-grid\">\r\n                <div class=\"mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone\">\r\n\r\n                </div>\r\n                <div class=\"mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--2-col-phone\">\r\n                    {{match.equipe1}}\r\n                </div>\r\n                <div class=\"mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--1-col-phone\">\r\n                    {{ (match.score1 != null && match.score2 != null) ? match.score1 + ' - ' + match.score2 : '' }}\r\n                    {{ match.message != null ? match.message : ''}}\r\n                </div>\r\n                <div class=\"mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone\">\r\n                    {{match.equipe2}}\r\n                </div>\r\n                <div class=\"mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone\">\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<div class=\"mdl-tabs mdl-js-tabs mdl-js-ripple-effect\">\r\n    <div class=\"mdl-tabs__tab-bar\">\r\n        <a [routerLink]=\"['/calendar/equipe1']\" class=\"mdl-tabs__tab\" [ngClass]=\"{'is-active': team == 'equipe1'}\">Equipe 1</a>\r\n        <a [routerLink]=\"['/calendar/equipe2']\" class=\"mdl-tabs__tab\" [ngClass]=\"{'is-active': team == 'equipe2'}\">Equipe 2</a>\r\n        <a [routerLink]=\"['/calendar/equipe3']\" class=\"mdl-tabs__tab\" [ngClass]=\"{'is-active': team == 'equipe3'}\">Equipe 3</a>\r\n    </div>\r\n</div>\r\n<div class=\"spinner-div\">\r\n    <div class=\"mdl-spinner mdl-js-spinner\" [ngClass]=\"{'hidden': !isLoading, 'is-active': isLoading}\"></div>\r\n</div>\r\n<div class=\"mdl-list\">\r\n    <div class=\"mdl-list__item\" *ngFor=\"let match of (matchs | team : team)\">\r\n        <div>\r\n            <div class=\"mdl-grid\">\r\n                <div class=\"mdl-cell mdl-cell--12-col\">\r\n                    {{match.date | date: 'dd/MM/y HH:mm'}}\r\n                </div>\r\n            </div>\r\n            <div class=\"mdl-grid\">\r\n                <div class=\"mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone\">\r\n\r\n                </div>\r\n                <div class=\"mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--2-col-phone\">\r\n                    {{match.equipe1}}\r\n                </div>\r\n                <div class=\"mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--1-col-phone\">\r\n                    {{ (match.score1 != null && match.score2 != null) ? match.score1 + ' - ' + match.score2 : '' }}\r\n                    {{ match.message != null ? match.message : ''}}\r\n                </div>\r\n                <div class=\"mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone\">\r\n                    {{match.equipe2}}\r\n                </div>\r\n                <div class=\"mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone\">\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 38 */

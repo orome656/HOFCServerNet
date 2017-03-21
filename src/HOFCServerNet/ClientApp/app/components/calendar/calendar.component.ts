@@ -11,6 +11,7 @@ import { MatchService } from '../../services/matchs.service';
 export class CalendarComponent implements OnInit {
     private matchs: Match[];
     private team: string;
+    private isLoading: boolean = true;
     
     constructor(private _matchService: MatchService, private _route: ActivatedRoute) {
 
@@ -21,8 +22,13 @@ export class CalendarComponent implements OnInit {
     }
 
     updateView(params) {
+        this.matchs = [];
+        this.isLoading = true;
         this.team = this._route.snapshot.params['team'];
-        this._matchService.getMatchs().subscribe(a => this.matchs = a);
+        this._matchService.getMatchs().subscribe(a => {
+            this.matchs = a;
+            this.isLoading = false;
+        });
     }
 
     OpenMatchDetails() {

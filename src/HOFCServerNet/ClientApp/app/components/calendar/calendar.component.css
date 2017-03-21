@@ -5,3 +5,17 @@
 .mdl-list__item>div {
     width:100%;
 }
+
+.mdl-list .mdl-list__item .mdl-cell {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.spinner-div {
+    height:100%;
+    width: 100%;
+    text-align: center;
+}
