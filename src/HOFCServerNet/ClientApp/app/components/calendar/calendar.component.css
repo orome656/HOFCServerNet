@@ -1,3 +1,7 @@
 ﻿.mdl-grid {
     width:100%;
 }
+
+.mdl-list__item>div {
+    width:100%;
+}

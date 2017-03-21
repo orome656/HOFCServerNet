@@ -9,6 +9,7 @@ import { CounterComponent } from './components/counter/counter.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { CardComponent } from './components/card/card.component';
 import { MDL } from './components/app/MaterialDesignLiteUpgradeElement';
+import { TeamPipe } from './filters/team';
 
 @NgModule({
     bootstrap: [ AppComponent ],
@@ -20,14 +21,15 @@ import { MDL } from './components/app/MaterialDesignLiteUpgradeElement';
         HomeComponent,
         CardComponent,
         CalendarComponent,
-        MDL
+        MDL,
+        TeamPipe
     ],
     imports: [
         UniversalModule, // Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
-            { path: 'calendar', component: CalendarComponent },
+            { path: 'calendar/:team', component: CalendarComponent,  },
             { path: '**', redirectTo: 'home' }
         ])
     ]

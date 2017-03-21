@@ -1,21 +1,35 @@
-﻿<div class="mdl-list">
-    <div class="mdl-list__item" *ngFor="let match of matchs; let i = index">
-        <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone">
+﻿<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+        <a [routerLink]="['/calendar/equipe1']" class="mdl-tabs__tab" [ngClass]="{'is-active': team == 'equipe1'}">Equipe 1</a>
+        <a [routerLink]="['/calendar/equipe2']" class="mdl-tabs__tab" [ngClass]="{'is-active': team == 'equipe2'}">Equipe 2</a>
+        <a [routerLink]="['/calendar/equipe3']" class="mdl-tabs__tab" [ngClass]="{'is-active': team == 'equipe3'}">Equipe 3</a>
+    </div>
+</div>
+<div class="mdl-list">
+    <div class="mdl-list__item" *ngFor="let match of (matchs | team : team)">
+        <div>
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col">
+                    {{match.date | date: 'dd/MM/y HH:mm'}}
+                </div>
+            </div>
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone">
 
-            </div>
-            <div class="mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--2-col-phone">
-                {{match.equipe1}}
-            </div>
-            <div class="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--1-col-phone">
-                {{ (match.score1 != null && match.score2 != null) ? match.score1 + ' - ' + match.score2 : '' }}
-                {{ match.message != null ? match.message : ''}}
-            </div>
-            <div class="mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
-                {{match.equipe2}}
-            </div>
-            <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone">
+                </div>
+                <div class="mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--2-col-phone">
+                    {{match.equipe1}}
+                </div>
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--1-col-phone">
+                    {{ (match.score1 != null && match.score2 != null) ? match.score1 + ' - ' + match.score2 : '' }}
+                    {{ match.message != null ? match.message : ''}}
+                </div>
+                <div class="mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
+                    {{match.equipe2}}
+                </div>
+                <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone">
 
+                </div>
             </div>
         </div>
     </div>
