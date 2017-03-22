@@ -5,7 +5,7 @@
         <a [routerLink]="['/calendar/equipe3']" class="mdl-tabs__tab" [ngClass]="{'is-active': team == 'equipe3'}">Equipe 3</a>
     </div>
 </div>
-<div class="spinner-div">
+<div class="spinner-div" [ngClass]="{'hidden': !isLoading}">
     <div class="mdl-spinner mdl-js-spinner" [ngClass]="{'hidden': !isLoading, 'is-active': isLoading}"></div>
 </div>
 <div class="mdl-list">
@@ -34,6 +34,7 @@
 
                 </div>
             </div>
+            <hr class="divider" />
         </div>
     </div>
 </div>
