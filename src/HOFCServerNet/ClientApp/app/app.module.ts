@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UniversalModule } from 'angular2-universal';
-import { AppComponent } from './components/app/app.component'
-import { NavMenuComponent } from './components/navmenu/navmenu.component';
+import { AppComponent } from './components/app/app.component';
 import { HomeComponent } from './components/home/home.component';
-import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
-import { CounterComponent } from './components/counter/counter.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { CardComponent } from './components/card/card.component';
+import { RankComponent } from './components/rank/rank.component';
 import { MDL } from './components/app/MaterialDesignLiteUpgradeElement';
 import { TeamPipe } from './filters/team';
 
@@ -15,12 +13,10 @@ import { TeamPipe } from './filters/team';
     bootstrap: [ AppComponent ],
     declarations: [
         AppComponent,
-        NavMenuComponent,
-        CounterComponent,
-        FetchDataComponent,
         HomeComponent,
         CardComponent,
         CalendarComponent,
+        RankComponent,
         MDL,
         TeamPipe
     ],
@@ -29,7 +25,8 @@ import { TeamPipe } from './filters/team';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
-            { path: 'calendar/:team', component: CalendarComponent,  },
+            { path: 'calendar/:team', component: CalendarComponent, },
+            { path: 'rank/:team', component: RankComponent, },
             { path: '**', redirectTo: 'home' }
         ])
     ]
