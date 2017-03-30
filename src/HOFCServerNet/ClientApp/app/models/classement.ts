@@ -1,7 +1,7 @@
-﻿import { Competition } from './competition';
+﻿import { CommonCompetition } from './common.competition';
 
 
-export class Classement {
+export class Classement extends CommonCompetition {
     id: number;
     nom: string;
     joue: number;
@@ -12,5 +12,4 @@ export class Classement {
     bp: number;
     bc: number;
     diff: number;
-    competition: Competition;
 }

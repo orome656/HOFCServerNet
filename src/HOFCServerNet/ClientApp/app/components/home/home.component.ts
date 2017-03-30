@@ -4,11 +4,13 @@ import { Actu } from '../../models/Actu';
 
 @Component({
     selector: 'home',
-    templateUrl: './home.component.html'
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
 
     private actus: Actu[];
+    regularDistribution = 90 / 3;
 
     constructor(private _actuService: ActuService) {
 

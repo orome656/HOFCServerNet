@@ -1,7 +1,7 @@
-﻿import { Competition } from './competition';
+﻿import { CommonCompetition } from './common.competition';
 import { StatutVote } from '../enums/StatutVote';
 
-export class Match {
+export class Match extends CommonCompetition {
     id: number;
     equipe1: string;
     equipe2: string;
@@ -10,6 +10,5 @@ export class Match {
     date: Date;
     message: string;
     infos: string;
-    competition: Competition;
     voteStatut: StatutVote;
 }

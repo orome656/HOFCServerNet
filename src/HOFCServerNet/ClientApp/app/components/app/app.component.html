@@ -1,7 +1,43 @@
-<div mdl class='mdl-layout mdl-js-layout mdl-layout--fixed-header'>
+<md-toolbar color="primary">
+    <md-icon (click)="sidenav.open()">menu</md-icon>
+    <span>WebHOFC</span>
+</md-toolbar>
+<md-sidenav-container>
+    <md-sidenav #sidenav>
+        <md-list>
+            <h3 md-subheader>Calendrier</h3>
+            <md-list-item>
+                <a (click)="sidenav.close()" [routerLink]="['/calendar/equipe1']">Equipe 1</a>
+            </md-list-item>
+            <md-list-item>
+                <a (click)="sidenav.close()" [routerLink]="['/calendar/equipe2']">Equipe 2</a>
+            </md-list-item>
+            <md-list-item>
+                <a (click)="sidenav.close()" [routerLink]="['/calendar/equipe3']">Equipe 3</a>
+            </md-list-item>
+        </md-list>
+        <md-list>
+            <h3 md-subheader>Classement</h3>
+            <md-list-item>
+                <a (click)="sidenav.close()" [routerLink]="['/rank/equipe1']">Equipe 1</a>
+            </md-list-item>
+            <md-list-item>
+                <a (click)="sidenav.close()" [routerLink]="['/rank/equipe2']">Equipe 2</a>
+            </md-list-item>
+            <md-list-item>
+                <a (click)="sidenav.close()" [routerLink]="['/rank/equipe3']">Equipe 3</a>
+            </md-list-item>
+        </md-list>
+    </md-sidenav>
+
+    <main class="mdl-layout__content">
+        <router-outlet class="mdl-grid"></router-outlet>
+    </main>
+</md-sidenav-container>
+
+<!--div mdl class='mdl-layout mdl-js-layout mdl-layout--fixed-header'>
     <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
-            <!-- Title -->
             <span class="mdl-layout-title">WebHOFC</span>
         </div>
     </header>
@@ -22,7 +58,4 @@
             <a class="mdl-navigation__link" [routerLink]="['/rank/equipe3']">Equipe 3</a>
         </nav>
     </div>
-    <main class="mdl-layout__content">
-        <router-outlet class="mdl-grid"></router-outlet>
-    </main>
-</div>
+</div-->

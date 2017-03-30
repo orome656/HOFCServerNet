@@ -1,21 +1,39 @@
-﻿.mdl-grid {
-    width:100%;
-}
-
-.mdl-list__item>div {
-    width:100%;
-}
-
-.mdl-list .mdl-list__item .mdl-cell {
-    text-align: center;
-}
-
-.hidden {
+﻿.hidden {
     display: none;
 }
 
-.spinner-div {
-    height:100%;
-    width: 100%;
+.list-item {
     text-align: center;
+    border-bottom: solid 1px grey;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.list-item .dateDiv, .list-item .nameDiv {
+    margin-bottom:10px;
+    font-size:0.8em;
+}
+
+.dateDiv {
+    color: gray;
+}
+
+.teamName {
+    color: gray;
+    font-size:0.7em;
+}
+
+.scoreDiv {
+    color: black;
+    font-weight:bold;
+}
+
+md-progress-circle {
+    margin:auto;
+}
+
+.imgDiv img {
+    height: 60px;
 }

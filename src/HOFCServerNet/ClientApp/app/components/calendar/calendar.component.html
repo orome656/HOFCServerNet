@@ -1,45 +1,36 @@
-﻿<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-    <div class="mdl-tabs__tab-bar">
-        <a [routerLink]="['/calendar/equipe1']" class="mdl-tabs__tab" [ngClass]="{'is-active': team == 'equipe1'}">Equipe 1</a>
-        <a [routerLink]="['/calendar/equipe2']" class="mdl-tabs__tab" [ngClass]="{'is-active': team == 'equipe2'}">Equipe 2</a>
-        <a [routerLink]="['/calendar/equipe3']" class="mdl-tabs__tab" [ngClass]="{'is-active': team == 'equipe3'}">Equipe 3</a>
+﻿<nav md-tab-nav-bar>
+    <a md-tab-link
+       *ngFor="let tab of navLinks"
+       [routerLink]="tab.link"
+       routerLinkActive #rla="routerLinkActive"
+       [active]="rla.isActive">
+        {{tab.label}}
+    </a>
+</nav>
+<md-progress-circle color="primary" [ngClass]="{'hidden': !isLoading}" mode="indeterminate"></md-progress-circle>
+<div class="list-item" *ngFor="let match of (matchs | team : team)">
+    <div class="nameDiv">
+        {{match.competition.nom}}
     </div>
-</div>
-<div class="spinner-div" [ngClass]="{'hidden': !isLoading}">
-    <div class="mdl-spinner mdl-js-spinner" [ngClass]="{'hidden': !isLoading, 'is-active': isLoading}"></div>
-</div>
-<div class="mdl-list">
-    <div class="mdl-list__item" *ngFor="let match of (matchs | team : team)">
-        <div>
-            <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--12-col">
-                    {{match.competition.nom}}
-                </div>
-            </div>
-            <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--12-col">
-                    {{match.date | date: 'dd/MM/y HH:mm'}}
-                </div>
-            </div>
-            <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone">
-
-                </div>
-                <div class="mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--2-col-phone">
-                    {{match.equipe1}}
-                </div>
-                <div class="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--1-col-phone">
-                    {{ (match.score1 != null && match.score2 != null) ? match.score1 + ' - ' + match.score2 : '' }}
-                    {{ match.message != null ? match.message : ''}}
-                </div>
-                <div class="mdl-cell  mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--1-col-phone">
-                    {{match.equipe2}}
-                </div>
-                <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-tablet mdl-cell--hide-phone">
-
-                </div>
-            </div>
-            <hr class="divider" />
+    <div class="dateDiv">
+        {{match.date | date: 'dd/MM/y HH:mm'}}
+    </div>
+    <div fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="space-around center">
+        <div class="imgDiv" fxFlex="10" fxShow="false" fxShow.gt-xs>
+            <img [ngClass]="{'hidden': isHOFC(match.equipe1)}" src="../../assets/images/icon.png" />
+        </div>
+        <div class="teamName" fxFlex="35">
+            {{match.equipe1}}
+        </div>
+        <div class="scoreDiv" fxFlex>
+            {{ (match.score1 != null && match.score2 != null) ? match.score1 + ' - ' + match.score2 : '' }}
+            {{ match.message != null ? match.message : ''}}
+        </div>
+        <div class="teamName" fxFlex="35">
+            {{match.equipe2}}
+        </div>
+        <div class="imgDiv" fxFlex="10" fxShow="false" fxShow.gt-xs>
+            <img [ngClass]="{'hidden': isHOFC(match.equipe2)}" src="../../assets/images/icon.png" />
         </div>
     </div>
 </div>

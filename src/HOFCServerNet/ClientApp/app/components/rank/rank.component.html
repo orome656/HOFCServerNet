@@ -1,16 +1,87 @@
-﻿<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-    <div class="mdl-tabs__tab-bar">
-        <a [routerLink]="['/rank/equipe1']" class="mdl-tabs__tab" [ngClass]="{'is-active': team == 'equipe1'}">Equipe 1</a>
-        <a [routerLink]="['/rank/equipe2']" class="mdl-tabs__tab" [ngClass]="{'is-active': team == 'equipe2'}">Equipe 2</a>
-        <a [routerLink]="['/rank/equipe3']" class="mdl-tabs__tab" [ngClass]="{'is-active': team == 'equipe3'}">Equipe 3</a>
+﻿<nav md-tab-nav-bar>
+    <a md-tab-link
+       *ngFor="let tab of navLinks"
+       [routerLink]="tab.link"
+       routerLinkActive #rla="routerLinkActive"
+       [active]="rla.isActive">
+        {{tab.label}}
+    </a>
+</nav>
+<md-progress-circle color="primary" [ngClass]="{'hidden': !isLoading}" mode="indeterminate"></md-progress-circle>
+
+<div class="row"
+     fxLayout="row"
+     fxLayoutWrap="wrap"
+     fxLayoutAlign="space-around center">
+    <div class="imgDiv" fxFlex="10" fxShow="false" fxShow.gt-xs>
+    </div>
+    <div fxFlex="7">
+        #
+    </div>
+    <div class="nomDiv" fxFlex>
+        Nom
+    </div>
+    <div fxFlex="7">
+        P
+    </div>
+    <div fxFlex="7">
+        J
+    </div>
+    <div fxFlex="7" fxShow="false" fxShow.gt-xs>
+        V
+    </div>
+    <div fxFlex="7" fxShow="false" fxShow.gt-xs>
+        N
+    </div>
+    <div fxFlex="7" fxShow="false" fxShow.gt-xs>
+        D
+    </div>
+    <div fxFlex="7" fxShow="false" fxShow.gt-xs>
+        BP
+    </div>
+    <div fxFlex="7" fxShow="false" fxShow.gt-xs>
+        BC
+    </div>
+    <div fxFlex="7">
+        Diff
     </div>
 </div>
-<div class="spinner-div" [ngClass]="{'hidden': !isLoading}">
-    <div class="mdl-spinner mdl-js-spinner" [ngClass]="{'hidden': !isLoading, 'is-active': isLoading}"></div>
-</div>
-
-<div class="mdl-list">
-    <div class="mdl-list__item" *ngFor="let rank of _ranks">
+<div class="row" 
+     fxLayout="row" 
+     fxLayoutWrap="wrap" 
+     fxLayoutAlign="space-around center" 
+     *ngFor="let rank of (_ranks | team : team); let i = index">
+    <div class="imgDiv" fxFlex="10" fxShow="false" fxShow.gt-xs>
+        <img [ngClass]="{'hidden': isHOFC(rank.nom)}" src="../../assets/images/icon.png" />
+    </div>
+    <div fxFlex="7">
+        {{i + 1}}
+    </div>
+    <div class="nomDiv" fxFlex>
         {{rank.nom}}
+    </div>
+    <div fxFlex="7">
+        {{rank.points}}
+    </div>
+    <div fxFlex="7">
+        {{rank.joue}}
+    </div>
+    <div fxFlex="7" fxShow="false" fxShow.gt-xs>
+        {{rank.victoire}}
+    </div>
+    <div fxFlex="7" fxShow="false" fxShow.gt-xs>
+        {{rank.nul}}
+    </div>
+    <div fxFlex="7" fxShow="false" fxShow.gt-xs>
+        {{rank.defaite}}
+    </div>
+    <div fxFlex="7" fxShow="false" fxShow.gt-xs>
+        {{rank.bp}}
+    </div>
+    <div fxFlex="7" fxShow="false" fxShow.gt-xs>
+        {{rank.bc}}
+    </div>
+    <div fxFlex="7">
+        {{rank.diff}}
     </div>
 </div>

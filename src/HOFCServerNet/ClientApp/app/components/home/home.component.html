@@ -1,8 +1,9 @@
-<div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--4-col" *ngFor="let actu of actus; let i = index">
-        <card class="col-sm-4"
-              [title]="actu.titre"
-              [texte]="actu.texte"
-              [imageUrl]="actu.image"></card>
-    </div>
+<div fxLayout="row" fxLayout.xs="column" fxLayoutWrap="wrap" fxLayoutAlign="space-around center">
+    <md-card fxFlex.gt-xs="40%" [fxFlex.gt-md]="regularDistribution"  *ngFor="let actu of actus; let i = index">
+        <md-card-title>{{actu.titre}}</md-card-title>
+        <img md-card-image [src]="actu.image"/>
+        <md-card-content>
+            <p>{{actu.texte}}</p>
+        </md-card-content>
+    </md-card>
 </div>

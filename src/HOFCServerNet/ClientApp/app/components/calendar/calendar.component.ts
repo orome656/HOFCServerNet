@@ -12,7 +12,18 @@ export class CalendarComponent implements OnInit {
     private matchs: Match[];
     private team: string;
     private isLoading: boolean = true;
-    
+
+    private navLinks = [{
+            link: '/calendar/equipe1',
+            label: 'Equipe1'
+        },{
+            link: '/calendar/equipe2',
+            label: 'Equipe2'
+        },{
+            link: '/calendar/equipe3',
+            label: 'Equipe3'
+    }];
+
     constructor(private _matchService: MatchService, private _route: ActivatedRoute) {
 
     }
@@ -29,6 +40,10 @@ export class CalendarComponent implements OnInit {
             this.matchs = a;
             this.isLoading = false;
         });
+    }
+
+    isHOFC(team: string) {
+        return !(team != null && team.indexOf("HORGUES ODOS") != -1);
     }
 
     OpenMatchDetails() {
