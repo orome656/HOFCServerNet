@@ -7,6 +7,7 @@ import { HomeComponent } from './components/home/home.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { CardComponent } from './components/card/card.component';
 import { RankComponent } from './components/rank/rank.component';
+import { RankLineComponent } from './components/rank/rank.line.component';
 import { TeamPipe } from './filters/team';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -18,6 +19,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         CardComponent,
         CalendarComponent,
         RankComponent,
+        RankLineComponent,
         TeamPipe
     ],
     imports: [

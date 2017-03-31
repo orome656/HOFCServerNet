@@ -40,8 +40,4 @@ export class RankComponent implements OnInit {
                 this.isLoading = false;
             });
     }
-
-    isHOFC(team: string) {
-        return !(team != null && team.indexOf("HORGUES ODOS") != -1);
-    }
 }
