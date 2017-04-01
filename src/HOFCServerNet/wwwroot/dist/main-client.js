@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "313f41889fe6ef4bf1b0"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "497a694aff6a84de77a5"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -2171,7 +2171,7 @@ exports = module.exports = __webpack_require__(2)();
 
 
 // module
-exports.push([module.i, ".hidden {\r\n    display: none !important;\r\n}\r\n", ""]);
+exports.push([module.i, ".hidden {\r\n    display: none !important;\r\n}\r\n\r\nmd-progress-circle {\r\n    margin: auto;\r\n}\r\n", ""]);
 
 // exports
 
