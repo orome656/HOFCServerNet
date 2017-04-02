@@ -5,6 +5,9 @@
 <md-sidenav-container>
     <md-sidenav #sidenav>
         <md-list>
+            <md-list-item>
+                <a (click)="sidenav.close()" [routerLink]="['/home']">Actu</a>
+            </md-list-item>
             <h3 md-subheader>Calendrier</h3>
             <md-list-item>
                 <a (click)="sidenav.close()" [routerLink]="['/calendar/equipe1']">Equipe 1</a>
@@ -28,34 +31,12 @@
                 <a (click)="sidenav.close()" [routerLink]="['/rank/equipe3']">Equipe 3</a>
             </md-list-item>
         </md-list>
+        <md-list>
+            <h3 md-subheader>Agenda</h3>
+        </md-list>
     </md-sidenav>
 
     <main class="mdl-layout__content">
         <router-outlet class="mdl-grid"></router-outlet>
     </main>
 </md-sidenav-container>
-
-<!--div mdl class='mdl-layout mdl-js-layout mdl-layout--fixed-header'>
-    <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
-            <span class="mdl-layout-title">WebHOFC</span>
-        </div>
-    </header>
-    <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">
-            <span>WebHOFC</span>
-        </span>
-        <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" [routerLink]="['/home']">Actu</a>
-            <div class="android-drawer-separator"></div>
-            <span class="mdl-navigation__link" href="">Calendrier</span>
-            <a class="mdl-navigation__link" [routerLink]="['/calendar/equipe1']">Equipe 1</a>
-            <a class="mdl-navigation__link" [routerLink]="['/calendar/equipe2']">Equipe 2</a>
-            <a class="mdl-navigation__link" [routerLink]="['/calendar/equipe3']">Equipe 3</a>
-            <span class="mdl-navigation__link" href="">Classement</span>
-            <a class="mdl-navigation__link" [routerLink]="['/rank/equipe1']">Equipe 1</a>
-            <a class="mdl-navigation__link" [routerLink]="['/rank/equipe2']">Equipe 2</a>
-            <a class="mdl-navigation__link" [routerLink]="['/rank/equipe3']">Equipe 3</a>
-        </nav>
-    </div>
-</div-->

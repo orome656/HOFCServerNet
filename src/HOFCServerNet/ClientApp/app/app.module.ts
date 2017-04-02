@@ -7,8 +7,10 @@ import { HomeComponent } from './components/home/home.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { CardComponent } from './components/card/card.component';
 import { RankComponent } from './components/rank/rank.component';
+import { AgendaComponent } from './components/agenda/agenda.component';
 import { RankLineComponent } from './components/rank/rank.line.component';
 import { TeamPipe } from './filters/team';
+import { AgendaPipe } from './filters/agenda';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
@@ -18,9 +20,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         HomeComponent,
         CardComponent,
         CalendarComponent,
+        AgendaComponent,
         RankComponent,
         RankLineComponent,
-        TeamPipe
+        TeamPipe,
+        AgendaPipe
     ],
     imports: [
         MaterialModule,
@@ -29,6 +33,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
             { path: 'home', component: HomeComponent },
             { path: 'calendar/:team', component: CalendarComponent, },
             { path: 'rank/:team', component: RankComponent, },
+            { path: 'agenda/:date', component: AgendaComponent, },
             { path: '**', redirectTo: 'home' }
         ]),
         FlexLayoutModule,
