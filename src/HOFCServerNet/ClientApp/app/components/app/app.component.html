@@ -33,9 +33,11 @@
         </md-list>
         <md-list>
             <h3 md-subheader>Agenda</h3>
+            <md-list-item *ngFor="let week of weeks">
+                <a (click)="sidenav.close()" [routerLink]="[week.link]">{{week.label}}</a>
+            </md-list-item>
         </md-list>
     </md-sidenav>
-
     <main class="mdl-layout__content">
         <router-outlet class="mdl-grid"></router-outlet>
     </main>

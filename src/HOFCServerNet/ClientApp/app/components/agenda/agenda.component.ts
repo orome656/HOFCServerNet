@@ -1,7 +1,10 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Match } from '../../models/match';
+import { Link } from '../../models/link';
 import { MatchService } from '../../services/matchs.service';
+
+import { DateUtils } from '../../utils/date.utils';
 
 @Component({
     selector: 'agenda',
@@ -13,16 +16,7 @@ export class AgendaComponent implements OnInit {
     private date: Date;
     private isLoading: boolean = true;
 
-    private navLinks = [{
-            link: '/agenda/20-03-2017',
-            label: '20-03-2017'
-        },{
-            link: '/agenda/27-03-2017',
-            label: '27-03-2017'
-        },{
-            link: '/agenda/03-04-2017',
-            label: '03-04-2017'
-    }];
+    private navLinks: Link[] = [];
 
     constructor(private _matchService: MatchService, private _route: ActivatedRoute) {
 
@@ -30,13 +24,20 @@ export class AgendaComponent implements OnInit {
 
     ngOnInit() {
         this._route.params.subscribe(params => this.updateView(params));
+        var date = new Date();
+        var monday = DateUtils.getPreviousMonday(date);
+        var previousWeek = DateUtils.getPreviousWeek(monday);
+        var nextWeek = DateUtils.getNextWeek(monday);
+        this.navLinks.push({ link: '/agenda/' + DateUtils.formatDate(previousWeek), label: 'Semaine dernière' });
+        this.navLinks.push({ link: '/agenda/' + DateUtils.formatDate(monday), label: 'Cette semaine' });
+        this.navLinks.push({ link: '/agenda/' + DateUtils.formatDate(nextWeek), label: 'Semaine Prochaine' });
     }
 
     updateView(params) {
         this.matchs = [];
         this.isLoading = true;
         var splitDate = this._route.snapshot.params['date'].split('-');
-        this.date = new Date(splitDate[2], splitDate[1], splitDate[0]);
+        this.date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0]);
         this._matchService.getMatchs().subscribe(a => {
             this.matchs = a;
             this.isLoading = false;
