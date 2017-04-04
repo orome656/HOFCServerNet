@@ -26,6 +26,7 @@ namespace HOFCServerNet.Data.Models
         public int? Score2 { get; set; }
 
         [JsonProperty(PropertyName = "date")]
+        [JsonConverter(typeof(DateTimeConverter))]
         public DateTime Date { get; set; }
 
         [JsonProperty(PropertyName = "idJournee")]
