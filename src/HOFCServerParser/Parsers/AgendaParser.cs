@@ -172,8 +172,8 @@ namespace HOFCServerParser.Parsers
 
             if (time != null)
             {
-                completeDate += " " + time;
-                parseFormat += " HH'h'mm";
+                completeDate += " " + time + "+02:00";
+                parseFormat += " HH'h'mmzzz";
             }
 
             CultureInfo infos = new CultureInfo("fr-FR");
