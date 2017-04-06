@@ -20,6 +20,12 @@ export class MatchService {
             .catch(this.logError);
     }
 
+    getHOFCMatchsForTeam(equipe: string): Observable<Match[]> {
+        return this._http.get(this._siteUrl + '/team/' + equipe)
+            .map(this.extractData)
+            .catch(this.logError);
+    }
+
     extractData(response: Response): Match[] {
         var data = <Match[]>response.json();
         data.forEach((d) => {

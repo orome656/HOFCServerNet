@@ -8,7 +8,7 @@
     </a>
 </nav>
 <md-progress-circle color="primary" [ngClass]="{'hidden': !isLoading}" mode="indeterminate"></md-progress-circle>
-<div class="list-item" *ngFor="let match of (matchs | team : team)">
+<div class="list-item" *ngFor="let match of matchs">
     <div class="nameDiv">
         {{match.competition.nom}}
     </div>

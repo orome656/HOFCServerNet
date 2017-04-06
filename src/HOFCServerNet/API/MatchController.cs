@@ -52,6 +52,17 @@ namespace HOFCServerNet.API
         }
 
         /// <summary>
+        /// Permet de récupérer la liste des matchs d'une equipe
+        /// </summary>
+        /// <param name="equipe">identifiant de l'équipe</param>
+        /// <returns>Liste de matchs</returns>
+        [HttpGet("team/{equipe}")]
+        public List<Match> Get(string equipe)
+        {
+            return _matchService.GetMatchsForHOFCByCategory(equipe);
+        }
+
+        /// <summary>
         /// Permet de mettre a jour le statut du vote pour ce match
         /// </summary>
         /// <param name="id"></param>

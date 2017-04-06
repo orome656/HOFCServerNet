@@ -36,7 +36,7 @@ export class CalendarComponent implements OnInit {
         this.matchs = [];
         this.isLoading = true;
         this.team = this._route.snapshot.params['team'];
-        this._matchService.getMatchs().subscribe(a => {
+        this._matchService.getHOFCMatchsForTeam(this.team).subscribe(a => {
             this.matchs = a;
             this.isLoading = false;
         });
