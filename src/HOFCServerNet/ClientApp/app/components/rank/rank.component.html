@@ -21,7 +21,7 @@
            bc="BC"
            diff="Diff"></rank-line>
 
-<rank-line *ngFor="let rank of (_ranks | team : team); let i = index"
+<rank-line *ngFor="let rank of _ranks; let i = index"
            [ngClass]="{'hidden': isLoading}"
            [rank]="i + 1"
            [nom]="rank.nom"

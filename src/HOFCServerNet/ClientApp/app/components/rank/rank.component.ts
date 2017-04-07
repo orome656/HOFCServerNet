@@ -34,7 +34,7 @@ export class RankComponent implements OnInit {
         this._ranks = [];
         this.isLoading = true;
         this.team = this._route.snapshot.params['team'];
-        this._rankService.getClassements()
+        this._rankService.getClassementsForTeam(this.team)
             .subscribe(c => {
                 this._ranks = c;
                 this.isLoading = false;

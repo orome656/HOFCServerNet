@@ -19,6 +19,12 @@ export class RankService {
                 .catch(this.logError);
     }
 
+    public getClassementsForTeam(equipe: string): Observable<Classement[]> {
+        return this._http.get(this._siteUrl + '/' + equipe)
+            .map(this.extractData)
+            .catch(this.logError);
+    }
+
     private extractData(response: Response): Classement[] {
         var data = <Classement[]>response.json();
         return data;
