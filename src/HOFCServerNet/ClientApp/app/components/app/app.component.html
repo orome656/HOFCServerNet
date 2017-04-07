@@ -1,9 +1,13 @@
-<md-toolbar color="primary">
-    <md-icon (click)="sidenav.open()">menu</md-icon>
-    <span>WebHOFC</span>
-</md-toolbar>
+<div style="position:fixed;z-index:2;width:100%;">
+    <md-toolbar color="primary">
+        <md-icon (click)="sidenav.open()">menu</md-icon>
+        <span>WebHOFC</span>
+    </md-toolbar>
+</div>
 <md-sidenav-container>
+    <div style="height:50px;"></div>
     <md-sidenav #sidenav>
+        <div style="height:50px;"></div>
         <md-list>
             <md-list-item>
                 <a (click)="sidenav.close()" [routerLink]="['/home']">Actu</a>
