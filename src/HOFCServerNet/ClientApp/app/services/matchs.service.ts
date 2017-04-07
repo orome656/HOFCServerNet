@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { Match } from '../models/match';
+import { DateUtils } from '../utils/date.utils';
 
 @Injectable()
 export class MatchService {
@@ -22,6 +23,12 @@ export class MatchService {
 
     getHOFCMatchsForTeam(equipe: string): Observable<Match[]> {
         return this._http.get(this._siteUrl + '/team/' + equipe)
+            .map(this.extractData)
+            .catch(this.logError);
+    }
+
+    getHOFCMatchsForWeek(date: Date): Observable<Match[]> {
+        return this._http.get(this._siteUrl + '/week/' + DateUtils.formatDate(date))
             .map(this.extractData)
             .catch(this.logError);
     }

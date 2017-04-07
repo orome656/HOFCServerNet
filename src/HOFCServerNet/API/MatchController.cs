@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Services;
+using System.Globalization;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -60,6 +61,18 @@ namespace HOFCServerNet.API
         public List<Match> Get(string equipe)
         {
             return _matchService.GetMatchsForHOFCByCategory(equipe);
+        }
+
+
+        /// <summary>
+        /// Permet de récupérer la liste des matchs d'une semaine
+        /// </summary>
+        /// <param name="date">identifiant de la semaine</param>
+        /// <returns>Liste de matchs</returns>
+        [HttpGet("week/{date}")]
+        public List<Match> GetForWeek(string date)
+        {
+            return _matchService.GetMatchForHOFCByWeek(DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture));
         }
 
         /// <summary>

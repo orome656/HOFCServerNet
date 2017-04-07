@@ -1,5 +1,6 @@
 ﻿using HOFCServerNet.Data.Enums;
 using HOFCServerNet.Data.Models;
+using HOFCServerNet.Extensions;
 using HOFCServerNet.ViewModels.Vote;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
@@ -116,6 +117,14 @@ namespace HOFCServerNet.Services
                                 .Include(item => item.Competition)
                                 .Where(item => item.Competition.Categorie == categorie)
                                 .ToList();
+        }
+
+        public List<Match> GetMatchForHOFCByWeek(DateTime date)
+        {
+            return BddContext.Matchs
+                            .Include(item => item.Competition)
+                            .Where(item => item.Date.StartOfWeek(DayOfWeek.Monday).Date == date.StartOfWeek(DayOfWeek.Monday).Date && (item.Equipe1.Contains("HORGUES ODOS") || item.Equipe2.Contains("HORGUES ODOS")))
+                            .ToList();
         }
 
         public List<Match> GetMatchBetweenDates(DateTime date, DateTime dateEnd)

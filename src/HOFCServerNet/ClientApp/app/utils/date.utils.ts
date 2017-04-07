@@ -24,10 +24,7 @@
     }
 
     public static formatDate(d: Date): string {
-        var date = "";
-        if (d.getDate() < 10)
-            date += "0";
-        date += d.getDate();
+        var date = "" + d.getFullYear();
 
         date += "-"
 
@@ -36,10 +33,13 @@
 
         date += d.getMonth() + 1;
 
-        date += "-"
+        date += "-";
 
-        date += d.getFullYear();
+        if (d.getDate() < 10)
+            date += "0";
 
+        date += d.getDate();
+        
         return date;
     }
 }

@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "956d8f42b7bd8b6ecc94"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "46fcc57f6781c9708f94"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -818,6 +818,7 @@ __webpack_require__(9);
 __webpack_require__(11);
 __webpack_require__(10);
 __webpack_require__(7);
+var date_utils_1 = __webpack_require__(14);
 var MatchService = (function () {
     function MatchService(_http) {
         this._http = _http;
@@ -830,6 +831,11 @@ var MatchService = (function () {
     };
     MatchService.prototype.getHOFCMatchsForTeam = function (equipe) {
         return this._http.get(this._siteUrl + '/team/' + equipe)
+            .map(this.extractData)
+            .catch(this.logError);
+    };
+    MatchService.prototype.getHOFCMatchsForWeek = function (date) {
+        return this._http.get(this._siteUrl + '/week/' + date_utils_1.DateUtils.formatDate(date))
             .map(this.extractData)
             .catch(this.logError);
     };
@@ -1020,16 +1026,15 @@ var DateUtils = (function () {
         return new Date(date.setDate(date.getDate() + 7));
     };
     DateUtils.formatDate = function (d) {
-        var date = "";
-        if (d.getDate() < 10)
-            date += "0";
-        date += d.getDate();
+        var date = "" + d.getFullYear();
         date += "-";
         if (d.getMonth() < 9)
             date += "0";
         date += d.getMonth() + 1;
         date += "-";
-        date += d.getFullYear();
+        if (d.getDate() < 10)
+            date += "0";
+        date += d.getDate();
         return date;
     };
     return DateUtils;
@@ -1844,8 +1849,8 @@ var AgendaComponent = (function () {
         this.matchs = [];
         this.isLoading = true;
         var splitDate = this._route.snapshot.params['date'].split('-');
-        this.date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0]);
-        this._matchService.getMatchs().subscribe(function (a) {
+        this.date = new Date(splitDate[0], splitDate[1] - 1, splitDate[2]);
+        this._matchService.getHOFCMatchsForWeek(this.date).subscribe(function (a) {
             _this.matchs = a;
             _this.isLoading = false;
         });
@@ -2710,7 +2715,7 @@ module.exports = XmlEntities;
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<nav md-tab-nav-bar>\r\n    <a md-tab-link\r\n       *ngFor=\"let tab of navLinks\"\r\n       [routerLink]=\"tab.link\"\r\n       routerLinkActive #rla=\"routerLinkActive\"\r\n       [active]=\"rla.isActive\">\r\n        {{tab.label}}\r\n    </a>\r\n</nav>\r\n<md-progress-circle color=\"primary\" [ngClass]=\"{'hidden': !isLoading}\" mode=\"indeterminate\"></md-progress-circle>\r\n<div class=\"list-item\" *ngFor=\"let match of (matchs | agenda : date)\">\r\n    <div class=\"nameDiv\">\r\n        {{match.competition.nom}}\r\n    </div>\r\n    <div class=\"dateDiv\">\r\n        {{match.date | date: 'dd/MM/y HH:mm'}}\r\n    </div>\r\n    <div fxLayout=\"row\" fxLayoutWrap=\"wrap\" fxLayoutAlign=\"space-around center\">\r\n        <div class=\"imgDiv\" fxFlex=\"10\" fxShow=\"false\" fxShow.gt-xs>\r\n            <img [ngClass]=\"{'hidden': isHOFC(match.equipe1)}\" src=\"" + __webpack_require__(3) + "\" />\r\n        </div>\r\n        <div class=\"teamName\" fxFlex=\"35\">\r\n            {{match.equipe1}}\r\n        </div>\r\n        <div class=\"scoreDiv\" fxFlex>\r\n            {{ (match.score1 != null && match.score2 != null) ? match.score1 + ' - ' + match.score2 : '' }}\r\n            {{ match.message != null ? match.message : ''}}\r\n        </div>\r\n        <div class=\"teamName\" fxFlex=\"35\">\r\n            {{match.equipe2}}\r\n        </div>\r\n        <div class=\"imgDiv\" fxFlex=\"10\" fxShow=\"false\" fxShow.gt-xs>\r\n            <img [ngClass]=\"{'hidden': isHOFC(match.equipe2)}\" src=\"" + __webpack_require__(3) + "\" />\r\n        </div>\r\n    </div>\r\n</div>\r\n";
+module.exports = "<nav md-tab-nav-bar>\r\n    <a md-tab-link\r\n       *ngFor=\"let tab of navLinks\"\r\n       [routerLink]=\"tab.link\"\r\n       routerLinkActive #rla=\"routerLinkActive\"\r\n       [active]=\"rla.isActive\">\r\n        {{tab.label}}\r\n    </a>\r\n</nav>\r\n<md-progress-circle color=\"primary\" [ngClass]=\"{'hidden': !isLoading}\" mode=\"indeterminate\"></md-progress-circle>\r\n<div class=\"list-item\" *ngFor=\"let match of matchs\">\r\n    <div class=\"nameDiv\">\r\n        {{match.competition.nom}}\r\n    </div>\r\n    <div class=\"dateDiv\">\r\n        {{match.date | date: 'dd/MM/y HH:mm'}}\r\n    </div>\r\n    <div fxLayout=\"row\" fxLayoutWrap=\"wrap\" fxLayoutAlign=\"space-around center\">\r\n        <div class=\"imgDiv\" fxFlex=\"10\" fxShow=\"false\" fxShow.gt-xs>\r\n            <img [ngClass]=\"{'hidden': isHOFC(match.equipe1)}\" src=\"" + __webpack_require__(3) + "\" />\r\n        </div>\r\n        <div class=\"teamName\" fxFlex=\"35\">\r\n            {{match.equipe1}}\r\n        </div>\r\n        <div class=\"scoreDiv\" fxFlex>\r\n            {{ (match.score1 != null && match.score2 != null) ? match.score1 + ' - ' + match.score2 : '' }}\r\n            {{ match.message != null ? match.message : ''}}\r\n        </div>\r\n        <div class=\"teamName\" fxFlex=\"35\">\r\n            {{match.equipe2}}\r\n        </div>\r\n        <div class=\"imgDiv\" fxFlex=\"10\" fxShow=\"false\" fxShow.gt-xs>\r\n            <img [ngClass]=\"{'hidden': isHOFC(match.equipe2)}\" src=\"" + __webpack_require__(3) + "\" />\r\n        </div>\r\n    </div>\r\n</div>\r\n";
 
 /***/ }),
 /* 43 */

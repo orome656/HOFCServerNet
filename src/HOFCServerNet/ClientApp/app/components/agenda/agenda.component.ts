@@ -37,8 +37,8 @@ export class AgendaComponent implements OnInit {
         this.matchs = [];
         this.isLoading = true;
         var splitDate = this._route.snapshot.params['date'].split('-');
-        this.date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0]);
-        this._matchService.getMatchs().subscribe(a => {
+        this.date = new Date(splitDate[0], splitDate[1] - 1, splitDate[2]);
+        this._matchService.getHOFCMatchsForWeek(this.date).subscribe(a => {
             this.matchs = a;
             this.isLoading = false;
         });
