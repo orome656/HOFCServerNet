@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "8216158355bb0c9d047a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f7238c8ca4446dd0b30d"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -719,7 +719,7 @@ module.exports = (__webpack_require__(1))(0);
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = vendor_efd89734041f00f22024;
+module.exports = vendor_379706d0a4f4a4736039;
 
 /***/ }),
 /* 2 */
@@ -919,25 +919,25 @@ Observable_1.Observable.throw = throw_1._throw;
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = (__webpack_require__(1))(119);
+module.exports = (__webpack_require__(1))(120);
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = (__webpack_require__(1))(39);
+module.exports = (__webpack_require__(1))(38);
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = (__webpack_require__(1))(758);
+module.exports = (__webpack_require__(1))(760);
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = (__webpack_require__(1))(759);
+module.exports = (__webpack_require__(1))(761);
 
 /***/ }),
 /* 13 */
@@ -1299,8 +1299,7 @@ var options = {
   overlay: true,
   reload: false,
   log: true,
-  warn: true,
-  name: ''
+  warn: true
 };
 if (true) {
   var querystring = __webpack_require__(51);
@@ -1311,9 +1310,6 @@ if (true) {
   if (overrides.reload) options.reload = overrides.reload !== 'false';
   if (overrides.noInfo && overrides.noInfo !== 'false') {
     options.log = false;
-  }
-  if (overrides.name) {
-    options.name = overrides.name;
   }
   if (overrides.quiet && overrides.quiet !== 'false') {
     options.log = false;
@@ -1333,27 +1329,22 @@ if (typeof window === 'undefined') {
     "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events#Tools"
   );
 } else {
-  connect();
+  connect(window.EventSource);
 }
 
-function EventSourceWrapper() {
-  var source;
+function connect(EventSource) {
+  var source = new EventSource(options.path);
   var lastActivity = new Date();
-  var listeners = [];
 
-  init();
+  source.onopen = handleOnline;
+  source.onmessage = handleMessage;
+  source.onerror = handleDisconnect;
+
   var timer = setInterval(function() {
     if ((new Date() - lastActivity) > options.timeout) {
       handleDisconnect();
     }
   }, options.timeout / 2);
-
-  function init() {
-    source = new window.EventSource(options.path);
-    source.onopen = handleOnline;
-    source.onerror = handleDisconnect;
-    source.onmessage = handleMessage;
-  }
 
   function handleOnline() {
     if (options.log) console.log("[HMR] connected");
@@ -1362,40 +1353,6 @@ function EventSourceWrapper() {
 
   function handleMessage(event) {
     lastActivity = new Date();
-    for (var i = 0; i < listeners.length; i++) {
-      listeners[i](event);
-    }
-  }
-
-  function handleDisconnect() {
-    clearInterval(timer);
-    source.close();
-    setTimeout(init, options.timeout);
-  }
-
-  return {
-    addMessageListener: function(fn) {
-      listeners.push(fn);
-    }
-  };
-}
-
-function getEventSourceWrapper() {
-  if (!window.__whmEventSourceWrapper) {
-    window.__whmEventSourceWrapper = {};
-  }
-  if (!window.__whmEventSourceWrapper[options.path]) {
-    // cache the wrapper for other entries loaded on
-    // the same page with the same options.path
-    window.__whmEventSourceWrapper[options.path] = EventSourceWrapper();
-  }
-  return window.__whmEventSourceWrapper[options.path];
-}
-
-function connect() {
-  getEventSourceWrapper().addMessageListener(handleMessage);
-
-  function handleMessage(event) {
     if (event.data == "\uD83D\uDC93") {
       return;
     }
@@ -1407,19 +1364,23 @@ function connect() {
       }
     }
   }
+
+  function handleDisconnect() {
+    clearInterval(timer);
+    source.close();
+    setTimeout(function() { connect(EventSource); }, options.timeout);
+  }
+
 }
 
+var reporter;
 // the reporter needs to be a singleton on the page
-// in case the client is being used by multiple bundles
+// in case the client is being used by mutliple bundles
 // we only want to report once.
 // all the errors will go to all clients
 var singletonKey = '__webpack_hot_middleware_reporter__';
-var reporter;
-if (typeof window !== 'undefined') {
-  if (!window[singletonKey]) {
-    window[singletonKey] = createReporter();
-  }
-  reporter = window[singletonKey];
+if (typeof window !== 'undefined' && !window[singletonKey]) {
+  reporter = window[singletonKey] = createReporter();
 }
 
 function createReporter() {
@@ -1430,44 +1391,13 @@ function createReporter() {
     overlay = __webpack_require__(62);
   }
 
-  var styles = {
-    errors: "color: #ff0000;",
-    warnings: "color: #5c3b00;"
-  };
-  var previousProblems = null;
-  function log(type, obj) {
-    var newProblems = obj[type].map(function(msg) { return strip(msg); }).join('\n');
-    if (previousProblems == newProblems) {
-      return;
-    } else {
-      previousProblems = newProblems;
-    }
-
-    var style = styles[type];
-    var name = obj.name ? "'" + obj.name + "' " : "";
-    var title = "[HMR] bundle " + name + "has " + obj[type].length + " " + type;
-    // NOTE: console.warn or console.error will print the stack trace
-    // which isn't helpful here, so using console.log to escape it.
-    if (console.group && console.groupEnd) {
-      console.group("%c" + title, style);
-      console.log("%c" + newProblems, style);
-      console.groupEnd();
-    } else {
-      console.log(
-        "%c" + title + "\n\t%c" + newProblems.replace(/\n/g, "\n\t"),
-        style + "font-weight: bold;",
-        style + "font-weight: normal;"
-      );
-    }
-  }
-
   return {
-    cleanProblemsCache: function () {
-      previousProblems = null;
-    },
     problems: function(type, obj) {
       if (options.warn) {
-        log(type, obj);
+        console.warn("[HMR] bundle has " + type + ":");
+        obj[type].forEach(function(msg) {
+          console.warn("[HMR] " + strip(msg));
+        });
       }
       if (overlay && type !== 'warnings') overlay.showProblems(type, obj[type]);
     },
@@ -1485,45 +1415,27 @@ var processUpdate = __webpack_require__(63);
 var customHandler;
 var subscribeAllHandler;
 function processMessage(obj) {
-  switch(obj.action) {
-    case "building":
-      if (options.log) {
-        console.log(
-          "[HMR] bundle " + (obj.name ? "'" + obj.name + "' " : "") +
-          "rebuilding"
-        );
+  if (obj.action == "building") {
+    if (options.log) console.log("[HMR] bundle rebuilding");
+  } else if (obj.action == "built") {
+    if (options.log) {
+      console.log(
+        "[HMR] bundle " + (obj.name ? obj.name + " " : "") +
+        "rebuilt in " + obj.time + "ms"
+      );
+    }
+    if (obj.errors.length > 0) {
+      if (reporter) reporter.problems('errors', obj);
+    } else {
+      if (reporter) {
+        if (obj.warnings.length > 0) reporter.problems('warnings', obj);
+        reporter.success();
       }
-      break;
-    case "built":
-      if (options.log) {
-        console.log(
-          "[HMR] bundle " + (obj.name ? "'" + obj.name + "' " : "") +
-          "rebuilt in " + obj.time + "ms"
-        );
-      }
-      // fall through
-    case "sync":
-      if (obj.name && options.name && obj.name !== options.name) {
-        return;
-      }
-      if (obj.errors.length > 0) {
-        if (reporter) reporter.problems('errors', obj);
-      } else {
-        if (reporter) {
-          if (obj.warnings.length > 0) {
-            reporter.problems('warnings', obj);
-          } else {
-            reporter.cleanProblemsCache();
-          }
-          reporter.success();
-        }
-        processUpdate(obj.hash, obj.modules, options);
-      }
-      break;
-    default:
-      if (customHandler) {
-        customHandler(obj);
-      }
+
+      processUpdate(obj.hash, obj.modules, options);
+    }
+  } else if (customHandler) {
+    customHandler(obj);
   }
 
   if (subscribeAllHandler) {
@@ -1555,15 +1467,12 @@ module.exports = (__webpack_require__(1))(490);
 
 /***/ }),
 /* 20 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-module.exports = ansiHTML
+module.exports = ansiHTML;
 
 // Reference to https://github.com/sindresorhus/ansi-regex
-var _regANSI = /(?:(?:\u001b\[)|\u009b)(?:(?:[0-9]{1,3})?(?:(?:;[0-9]{0,3})*)?[A-M|f-m])|\u001b[A-M]/
+var re_ansi = /(?:(?:\u001b\[)|\u009b)(?:(?:[0-9]{1,3})?(?:(?:;[0-9]{0,3})*)?[A-M|f-m])|\u001b[A-M]/;
 
 var _defColors = {
   reset: ['fff', '000'], // [FOREGROUD_COLOR, BACKGROUND_COLOR]
@@ -1576,7 +1485,7 @@ var _defColors = {
   cyan: '00ffee',
   lightgrey: 'f0f0f0',
   darkgrey: '888'
-}
+};
 var _styles = {
   30: 'black',
   31: 'red',
@@ -1586,66 +1495,65 @@ var _styles = {
   35: 'magenta',
   36: 'cyan',
   37: 'lightgrey'
-}
+};
 var _openTags = {
   '1': 'font-weight:bold', // bold
-  '2': 'opacity:0.5', // dim
+  '2': 'opacity:0.8', // dim
   '3': '<i>', // italic
   '4': '<u>', // underscore
   '8': 'display:none', // hidden
-  '9': '<del>' // delete
-}
+  '9': '<del>', // delete
+};
 var _closeTags = {
   '23': '</i>', // reset italic
   '24': '</u>', // reset underscore
   '29': '</del>' // reset delete
-}
-
-;[0, 21, 22, 27, 28, 39, 49].forEach(function (n) {
-  _closeTags[n] = '</span>'
-})
+};
+[0, 21, 22, 27, 28, 39, 49].forEach(function (n) {
+  _closeTags[n] = '</span>';
+});
 
 /**
  * Converts text with ANSI color codes to HTML markup.
  * @param {String} text
  * @returns {*}
  */
-function ansiHTML (text) {
+function ansiHTML(text) {
   // Returns the text if the string has no ANSI escape code.
-  if (!_regANSI.test(text)) {
-    return text
+  if (!re_ansi.test(text)) {
+    return text;
   }
 
   // Cache opened sequence.
-  var ansiCodes = []
+  var ansiCodes = [];
   // Replace with markup.
   var ret = text.replace(/\033\[(\d+)*m/g, function (match, seq) {
-    var ot = _openTags[seq]
+    var ot = _openTags[seq];
     if (ot) {
       // If current sequence has been opened, close it.
-      if (!!~ansiCodes.indexOf(seq)) { // eslint-disable-line no-extra-boolean-cast
-        ansiCodes.pop()
-        return '</span>'
+      if (!!~ansiCodes.indexOf(seq)) {
+        ansiCodes.pop();
+        return '</span>';
       }
       // Open tag.
-      ansiCodes.push(seq)
-      return ot[0] === '<' ? ot : '<span style="' + ot + ';">'
+      ansiCodes.push(seq);
+      return ot[0] == '<' ? ot : '<span style="' + ot + ';">';
     }
 
-    var ct = _closeTags[seq]
+    var ct = _closeTags[seq];
     if (ct) {
       // Pop sequence
-      ansiCodes.pop()
-      return ct
+      ansiCodes.pop();
+      return ct;
     }
-    return ''
-  })
+    return '';
+  });
 
   // Make sure tags are closed.
-  var l = ansiCodes.length
-  ;(l > 0) && (ret += Array(l + 1).join('</span>'))
+  var l = ansiCodes.length;
+  (l > 0) && (ret += Array(l + 1).join('</span>'));
 
-  return ret
+  return ret;
 }
 
 /**
@@ -1653,87 +1561,82 @@ function ansiHTML (text) {
  * @param {Object} colors reference to _defColors
  */
 ansiHTML.setColors = function (colors) {
-  if (typeof colors !== 'object') {
-    throw new Error('`colors` parameter must be an Object.')
+  if (typeof colors != 'object') {
+    throw new Error('`colors` parameter must be an Object.');
   }
 
-  var _finalColors = {}
+  var _finalColors = {};
   for (var key in _defColors) {
-    var hex = colors.hasOwnProperty(key) ? colors[key] : null
+    var hex = colors.hasOwnProperty(key) ? colors[key] : null;
     if (!hex) {
-      _finalColors[key] = _defColors[key]
-      continue
+      _finalColors[key] = _defColors[key];
+      continue;
     }
-    if ('reset' === key) {
-      if (typeof hex === 'string') {
-        hex = [hex]
+    if ('reset' == key) {
+    	if(typeof hex == 'string'){
+    		hex = [hex];
+    	}
+      if (!Array.isArray(hex) || hex.length == 0 || hex.some(function (h) {
+          return typeof h != 'string';
+        })) {
+        throw new Error('The value of `' + key + '` property must be an Array and each item could only be a hex string, e.g.: FF0000');
       }
-      if (!Array.isArray(hex) || hex.length === 0 || hex.some(function (h) {
-        return typeof h !== 'string'
-      })) {
-        throw new Error('The value of `' + key + '` property must be an Array and each item could only be a hex string, e.g.: FF0000')
+      var defHexColor = _defColors[key];
+      if(!hex[0]){
+      	hex[0] = defHexColor[0];
       }
-      var defHexColor = _defColors[key]
-      if (!hex[0]) {
-        hex[0] = defHexColor[0]
-      }
-      if (hex.length === 1 || !hex[1]) {
-        hex = [hex[0]]
-        hex.push(defHexColor[1])
+      if (hex.length == 1 || !hex[1]) {
+      	hex = [hex[0]];
+        hex.push(defHexColor[1]);
       }
 
-      hex = hex.slice(0, 2)
-    } else if (typeof hex !== 'string') {
-      throw new Error('The value of `' + key + '` property must be a hex string, e.g.: FF0000')
+      hex = hex.slice(0, 2);
+    } else if (typeof hex != 'string') {
+      throw new Error('The value of `' + key + '` property must be a hex string, e.g.: FF0000');
     }
-    _finalColors[key] = hex
+    _finalColors[key] = hex;
   }
-  _setTags(_finalColors)
-}
+  _setTags(_finalColors);
+};
 
 /**
  * Reset colors.
  */
-ansiHTML.reset = function () {
-  _setTags(_defColors)
-}
+ansiHTML.reset = function(){
+	_setTags(_defColors);
+};
 
 /**
  * Expose tags, including open and close.
  * @type {Object}
  */
-ansiHTML.tags = {}
+ansiHTML.tags = {
+  get open() {
+    return _openTags;
+  },
+  get close() {
+    return _closeTags;
+  }
+};
 
-if (Object.defineProperty) {
-  Object.defineProperty(ansiHTML.tags, 'open', {
-    get: function () { return _openTags }
-  })
-  Object.defineProperty(ansiHTML.tags, 'close', {
-    get: function () { return _closeTags }
-  })
-} else {
-  ansiHTML.tags.open = _openTags
-  ansiHTML.tags.close = _closeTags
-}
-
-function _setTags (colors) {
+function _setTags(colors) {
   // reset all
-  _openTags['0'] = 'font-weight:normal;opacity:1;color:#' + colors.reset[0] + ';background:#' + colors.reset[1]
+  _openTags['0'] = 'font-weight:normal;opacity:1;color:#' + colors.reset[0] + ';background:#' + colors.reset[1];
   // inverse
-  _openTags['7'] = 'color:#' + colors.reset[1] + ';background:#' + colors.reset[0]
+  _openTags['7'] = 'color:#' + colors.reset[1] + ';background:#' + colors.reset[0];
   // dark grey
-  _openTags['90'] = 'color:#' + colors.darkgrey
+  _openTags['90'] = 'color:#' + colors.darkgrey;
 
   for (var code in _styles) {
-    var color = _styles[code]
-    var oriColor = colors[color] || '000'
-    _openTags[code] = 'color:#' + oriColor
-    code = parseInt(code)
-    _openTags[(code + 10).toString()] = 'background:#' + oriColor
+    var color = _styles[code];
+    var oriColor = colors[color] || '000';
+    _openTags[code] = 'color:#' + oriColor;
+    code = parseInt(code);
+    _openTags[(code + 10).toString()] = 'background:#' + oriColor;
   }
 }
 
-ansiHTML.reset()
+ansiHTML.reset();
 
 
 /***/ }),
@@ -2993,7 +2896,7 @@ var ErrorObservable = (function (_super) {
      * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);
      * result.subscribe(x => console.log(x), e => console.error(e));
      *
-     * @example <caption>Map and flatten numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>
+     * @example <caption>Map and flattens numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>
      * var interval = Rx.Observable.interval(1000);
      * var result = interval.mergeMap(x =>
      *   x === 13 ?
@@ -3008,7 +2911,7 @@ var ErrorObservable = (function (_super) {
      * @see {@link of}
      *
      * @param {any} error The particular Error to pass to the error notification.
-     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
+     * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling
      * the emission of the error notification.
      * @return {Observable} An error Observable: emits only the error notification
      * using the given error argument.
@@ -3168,7 +3071,6 @@ module.exports = function (str) {
 /*eslint-env browser*/
 
 var clientOverlay = document.createElement('div');
-clientOverlay.id = 'webpack-hot-middleware-clientOverlay';
 var styles = {
   background: 'rgba(0,0,0,0.85)',
   color: '#E8E8E8',
@@ -3184,8 +3086,7 @@ var styles = {
   top: 0,
   bottom: 0,
   overflow: 'auto',
-  dir: 'ltr',
-  textAlign: 'left'
+  dir: 'ltr'
 };
 for (var key in styles) {
   clientOverlay.style[key] = styles[key];
@@ -3412,7 +3313,7 @@ module.exports = (__webpack_require__(1))(488);
 /* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = (__webpack_require__(1))(802);
+module.exports = (__webpack_require__(1))(804);
 
 /***/ }),
 /* 69 */
