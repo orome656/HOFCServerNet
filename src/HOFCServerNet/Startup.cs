@@ -147,18 +147,23 @@ namespace HOFCServerNet
             app.UseOAuthValidation();
 
             app.UseOpenIddict();
-
-            app.UseGoogleAuthentication(new GoogleOptions()
+            if(!env.IsDevelopment() || Configuration["GOOGLE_CLIENT_ID"] != null)
             {
-                ClientId = Configuration["GOOGLE_CLIENT_ID"],
-                ClientSecret = Configuration["GOOGLE_CLIENT_SECRET"]
-            });
+                app.UseGoogleAuthentication(new GoogleOptions()
+                {
+                    ClientId = Configuration["GOOGLE_CLIENT_ID"],
+                    ClientSecret = Configuration["GOOGLE_CLIENT_SECRET"]
+                });
+            }
 
-            app.UseFacebookAuthentication(new FacebookOptions()
+            if (!env.IsDevelopment() || Configuration["FACEBOOK_APP_ID"] != null)
             {
-                AppId = Configuration["FACEBOOK_APP_ID"],
-                AppSecret = Configuration["FACEBOOK_SECRET_ID"]
-            });
+                app.UseFacebookAuthentication(new FacebookOptions()
+                {
+                    AppId = Configuration["FACEBOOK_APP_ID"],
+                    AppSecret = Configuration["FACEBOOK_SECRET_ID"]
+                }); 
+            }
             
             app.UseMiddleware<WebAPILoggerMiddleware>();
 
