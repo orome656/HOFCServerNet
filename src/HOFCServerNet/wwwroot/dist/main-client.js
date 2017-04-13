@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f7238c8ca4446dd0b30d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "567962aa1a6621769e20"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -1809,7 +1809,7 @@ var AppComponent = (function () {
         var monday = date_utils_1.DateUtils.getPreviousMonday(date);
         var previousWeek = date_utils_1.DateUtils.getPreviousWeek(monday);
         var nextWeek = date_utils_1.DateUtils.getNextWeek(monday);
-        this.weeks.push({ link: 'agenda/' + date_utils_1.DateUtils.formatDate(previousWeek), label: 'Semaine derni�re' });
+        this.weeks.push({ link: 'agenda/' + date_utils_1.DateUtils.formatDate(previousWeek), label: 'Semaine dernière' });
         this.weeks.push({ link: 'agenda/' + date_utils_1.DateUtils.formatDate(monday), label: 'Cette semaine' });
         this.weeks.push({ link: 'agenda/' + date_utils_1.DateUtils.formatDate(nextWeek), label: 'Semaine Prochaine' });
     };

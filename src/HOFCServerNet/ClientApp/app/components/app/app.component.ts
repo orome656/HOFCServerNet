@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
         var monday = DateUtils.getPreviousMonday(date);
         var previousWeek = DateUtils.getPreviousWeek(monday);
         var nextWeek = DateUtils.getNextWeek(monday);
-        this.weeks.push({ link: 'agenda/' + DateUtils.formatDate(previousWeek), label: 'Semaine dernière' });
+        this.weeks.push({ link: 'agenda/' + DateUtils.formatDate(previousWeek), label: 'Semaine derniÃ¨re' });
         this.weeks.push({ link: 'agenda/' + DateUtils.formatDate(monday), label: 'Cette semaine' });
         this.weeks.push({ link: 'agenda/' + DateUtils.formatDate(nextWeek), label: 'Semaine Prochaine' });
     }
