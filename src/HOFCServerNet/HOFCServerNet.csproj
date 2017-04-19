@@ -50,6 +50,7 @@
     <Content Include="NLog.config">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="wwwroot\mobile\mui.min.css" />
     <!-- Files not to show in IDE -->
     <None Remove="yarn.lock" />
 

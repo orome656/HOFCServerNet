@@ -1,0 +1,59 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using Microsoft.AspNetCore.Identity;
+@using HOFCServerNet.Data.Models;
+@using HOFCServerNet.ViewModels.Account;
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    Layout = "_LayoutMobile";
+}
+<div class="mui-container" style="margin-top:20px;">
+    <div class="mui-panel">
+        <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" class="mui-form">
+            <legend>Connexion</legend>
+            <div class="mui-textfield">
+                <input asp-for="Email" type="text" placeholder="Nom d'utilisateur" />
+                <label asp-for="Email">Email</label>
+            </div>
+            <div class="mui-textfield">
+                <input asp-for="Password" type="password" placeholder="Mot de passe" />
+                <label asp-for="Password">Password</label>
+            </div>
+            <button type="submit" class="mui-btn mui-btn--raised">Se connecter</button>
+        </form>
+    </div>
+    @{
+        var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
+        if (loginProviders.Count > 0)
+        {
+            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+
+                <div>
+                    <p>
+                        @foreach (var provider in loginProviders)
+                        {
+                            <button type="submit" class="mui-btn mui-btn--primary" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account">
+                                @if (provider.AuthenticationScheme.ToLower().Equals("google"))
+                                {
+                                    <svg style="width:24px;height:24px;vertical-align:middle;" viewBox="0 0 24 24">
+                                        <path fill="#FFFFFF" d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5,16.25 5,12C5,7.9 8.2,4.73 12.2,4.73C15.29,4.73 17.1,6.7 17.1,6.7L19,4.72C19,4.72 16.56,2 12.1,2C6.42,2 2.03,6.8 2.03,12C2.03,17.05 6.16,22 12.25,22C17.6,22 21.5,18.33 21.5,12.91C21.5,11.76 21.35,11.1 21.35,11.1V11.1Z" />
+                                    </svg>
+                                }
+                                else
+                                {
+                                    <svg style="width:24px;height:24px;vertical-align:middle;" viewBox="0 0 24 24">
+                                        <path fill="#FFFFFF" d="M17,2V2H17V6H15C14.31,6 14,6.81 14,7.5V10H14L17,10V14H14V22H10V14H7V10H10V6A4,4 0 0,1 14,2H17Z" />
+                                    </svg>
+                                }
+                                @provider.AuthenticationScheme
+                            </button>
+                        }
+                    </p>
+                </div>
+            </form>
+        }
+    }
+</div>
