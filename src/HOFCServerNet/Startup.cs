@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using NLog;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using AspNet.Security.OpenIdConnect.Primitives;
 
 namespace HOFCServerNet
 {
@@ -61,6 +62,13 @@ namespace HOFCServerNet
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
+                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
+                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+            });
 
             var builder = services.AddOpenIddict()
                     .AddEntityFrameworkCoreStores<ApplicationDbContext>()
