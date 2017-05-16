@@ -137,6 +137,12 @@ namespace HOFCServerParser.Parsers
                         message = "Arrêté";
                     }
 
+                    if(score.IndexOf("Tab") != -1)
+                    {
+                        message = score.Substring(score.IndexOf("Tab"));
+                        score = score.Substring(0, score.IndexOf("Tab"));
+                    }
+
                     if (score.Length > 0) // On refait le check après la supression
                     {
                         agenda.Score1 = int.Parse(score.Split('-').ElementAt(0));
