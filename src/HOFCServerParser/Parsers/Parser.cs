@@ -46,7 +46,14 @@ namespace HOFCServerParser.Parsers
                 {
                     foreach (var line in lines)
                     {
-                        modelsToSave.Add(ParseLine(line));
+                        try
+                        {
+                            var element = ParseLine(line);
+                            modelsToSave.Add(element);
+                        } catch(Exception e)
+                        {
+                            Logger.Error(e, "Error while parsing line");
+                        }
                     }
                     if (modelsToSave.Count > 0)
                     {
@@ -68,9 +75,10 @@ namespace HOFCServerParser.Parsers
 
         public HttpClient GetHttpClient()
         {
-
-            if (Program.Configuration["HTTP_PROXY"] != null)
+            var proxy = Program.Configuration["HTTP_PROXY"];
+            if (proxy != null)
             {
+                Logger.Info($"Utilisation du proxy {proxy}");
                 HttpClientHandler clientHandler = new HttpClientHandler()
                 {
                     Proxy = new WebProxy()
