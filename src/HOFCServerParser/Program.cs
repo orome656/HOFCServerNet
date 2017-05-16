@@ -70,22 +70,13 @@ namespace HOFCServerParser
         static void ParseAgendas()
         {
             DateTime now = DateTime.Now;
-            DateTime date;
-            DateTime maxDate;
-            if (now.Month <= 7)
-            {
-                date = new DateTime(now.Year - 1, 8, 1);
-                maxDate = new DateTime(now.Year, 7, 1);
-            }
-            else
-            {
-                date = new DateTime(now.Year, 8, 1);
-                maxDate = new DateTime(now.Year + 1, 7, 1);
-            }
+            DateTime date = DateTime.Now.AddDays(-7);
+            DateTime maxDate = DateTime.Now.AddDays(7);
+
             if (date.DayOfWeek != DayOfWeek.Monday)
                 date = date.Subtract(new TimeSpan((int)date.DayOfWeek - 1, 0, 0, 0));
 
-            while (date < maxDate)
+            while (date <= maxDate)
             {
                 var agendaParser = new AgendaParser(date.ToString("ddMMyyyy"));
                 agendaParser.Parse();
