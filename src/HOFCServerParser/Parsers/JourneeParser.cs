@@ -20,8 +20,6 @@ namespace HOFCServerParser.Parsers
 
         public JourneeParser(string categorie, int idJournee, string competition, string seasonIndex) : base()
         {
-            Logger.Info("Init Journee Parser. Category : " + categorie + ", IdJournee : " + idJournee + ", CompetitionName : " + competition + ", SeasonIndex : " + seasonIndex);
-
             Categorie = categorie;
             IdJournee = idJournee;
             Competition = competition;
@@ -67,7 +65,7 @@ namespace HOFCServerParser.Parsers
             var now = DateTime.Now;
             if (childs.Count() != 6)
             {
-                Logger.Warn("Something changed here ...");
+                Logger.Error("Something changed here ...");
             }
             else
             {

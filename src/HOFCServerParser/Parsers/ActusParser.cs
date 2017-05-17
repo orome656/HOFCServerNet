@@ -14,12 +14,8 @@ namespace HOFCServerParser.Parsers
 {
     public class ActusParser : Parser<Actu>
     {
-
-
         public ActusParser() : base()
         {
-            Logger.Info("Init Actus Parser.");
-
             ConfigPath = "Parser:ActuURL";
         }
 

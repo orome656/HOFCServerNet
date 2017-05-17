@@ -21,56 +21,49 @@ namespace HOFCServerParser.Parsers
 
 		public virtual void Parse()
         {
-            Logger.Info("Start Parsing " + this.GetType().Name);
+            Logger.Info("Start Parsing ");
             try
             {
-                Logger.Info("Start getting lines " + this.GetType().Name);
 
                 var root = GetHtml(ConfigPath, AdditionalParam);
                 IEnumerable<HtmlNode> lines = null;
                 if(root != null)
                 {
                     lines = FilterLines(root);
-                    Logger.Info("Got " + lines.Count() + " lines");
+                    Logger.Debug("Got " + lines.Count() + " lines");
+
+                    var modelsToSave = new List<T>();
+
+                    if (lines != null)
+                    {
+                        foreach (var line in lines)
+                        {
+                            try
+                            {
+                                var element = ParseLine(line);
+                                modelsToSave.Add(element);
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.Error(e, "Error while parsing line");
+                            }
+                        }
+                        if (modelsToSave.Count > 0)
+                        {
+                            Logger.Debug(modelsToSave);
+                            SaveToBDD(modelsToSave);
+                        }
+                    }
                 }
                 else
                 {
                     Logger.Info("Nothing to get");
                 }
-                
-                Logger.Info("End getting lines " + this.GetType().Name);
-
-                var modelsToSave = new List<T>();
-
-                if (lines != null)
-                {
-                    foreach (var line in lines)
-                    {
-                        try
-                        {
-                            var element = ParseLine(line);
-                            modelsToSave.Add(element);
-                        } catch(Exception e)
-                        {
-                            Logger.Error(e, "Error while parsing line");
-                        }
-                    }
-                    if (modelsToSave.Count > 0)
-                    {
-                        Logger.Info("Start saving to bdd " + this.GetType().Name);
-                        SaveToBDD(modelsToSave);
-                        Logger.Info("End saving to bdd " + this.GetType().Name);
-                    }
-                    else
-                    {
-                        Logger.Info("Nothing to save for parser " + this.GetType().Name);
-                    }
-                }
             } catch (Exception e)
             {
-                Logger.Error(e, "Error with " + this.GetType().Name);
+                Logger.Error(e, "Error while parsing");
             }
-            Logger.Info("End Parsing" + this.GetType().Name);
+            Logger.Info("End Parsing");
         }
 
         public HttpClient GetHttpClient()

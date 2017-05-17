@@ -17,7 +17,6 @@ namespace HOFCServerParser.Parsers
 
         public ClassementParser(string _category, string _competitionName) : base()
         {
-            Logger.Info("Init Classement Parser. Category : " + _category + ", CompetitionName : " + _competitionName);
             this.Categorie = _category;
             this.CompetitionName = _competitionName;
 

@@ -34,8 +34,6 @@ namespace HOFCServerParser.Parsers
 
         public AgendaParser(string semaine): base()
         {
-            Logger.Info("Init Agenda Parser. Semaine : " + semaine);
-
             ConfigPath = "Parser:" + SeasonTool.GetSeasonIndex() + ":AgendaURL";
             AdditionalParam = semaine;
             this.semaine = semaine;
@@ -62,7 +60,7 @@ namespace HOFCServerParser.Parsers
             var now = DateTime.Now;
             if (childs.Count() != 6)
             {
-                Logger.Warn("Something changed here ...");
+                Logger.Error("Something changed here ...");
             }
             else
             {
