@@ -27,7 +27,6 @@ using System.Threading;
 using NLog;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using AspNet.Security.OpenIdConnect.Primitives;
-using Microsoft.AspNetCore.ResponseCompression;
 
 namespace HOFCServerNet
 {
@@ -103,8 +102,7 @@ namespace HOFCServerNet
 
             // Add framework services.
             services.AddMvc();
-            services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
-            services.AddResponseCompression();
+
             services.AddSwaggerGen();
         }
 
@@ -142,8 +140,6 @@ namespace HOFCServerNet
                     HotModuleReplacement = true
                 });
             }
-
-            app.UseResponseCompression();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
