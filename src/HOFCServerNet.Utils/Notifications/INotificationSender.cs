@@ -8,6 +8,6 @@ namespace HOFCServerNet.Utils.Notifications
 {
     public interface INotificationSender
     {
-        Task SendNotification(string titre, string message, NotificationClient client);
+        Task<NotificationResult> SendNotification(string titre, string message, NotificationClient client);
     }
 }

@@ -14,7 +14,7 @@ namespace HOFCServerNet.Utils.Notifications
     {
         private static readonly Logger _logger = LogManager.GetLogger("HOFCServerNet.Utils.Notifications.AndroidGCMNotificationSender");
 
-        public async Task SendNotification(string titre, string message, NotificationClient client)
+        public async Task<NotificationResult> SendNotification(string titre, string message, NotificationClient client)
         {
             string URL = "https://android.googleapis.com/gcm/send";
             string SERVER_API_KEY = System.Environment.GetEnvironmentVariable("SERVER_API_KEY");
@@ -39,14 +39,17 @@ namespace HOFCServerNet.Utils.Notifications
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 _logger.Error("Error while sending Android notification. Return code is " + response.StatusCode + ". Content is " + responseString);
+                return NotificationResult.ERROR;
             }
             else if(responseString.Contains("NotRegistered"))
             {
                 _logger.Error("Error while sending Android notification. Device is not registered");
+                return NotificationResult.NOT_REGISTERED;
             }
             else
             {
                 _logger.Info("Android notification OK. Content is " + responseString);
+                return NotificationResult.OK;
             }
         }
     }

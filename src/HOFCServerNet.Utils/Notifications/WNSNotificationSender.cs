@@ -19,12 +19,12 @@ namespace HOFCServerNet.Utils.Notifications
 
         private static readonly Logger _logger = LogManager.GetLogger("HOFCServerNet.Utils.Notifications.WNSNotificationSender");
 
-        public async Task SendNotification(string titre, string message, NotificationClient client)
+        public async Task<NotificationResult> SendNotification(string titre, string message, NotificationClient client)
         {
             if (ACCESS_TOKEN == null)
                 await GetAccessToken();
             
-            await CallNotificationSending(client.NotificationID, titre, message);
+            return await CallNotificationSending(client.NotificationID, titre, message);
         }
 
         private async Task<string> GetAccessToken()
@@ -51,7 +51,7 @@ namespace HOFCServerNet.Utils.Notifications
             return ACCESS_TOKEN;
         }
 
-        private async Task CallNotificationSending(string url, string titre, string message)
+        private async Task<NotificationResult> CallNotificationSending(string url, string titre, string message)
         {
             HttpClient client = new HttpClient();
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
@@ -67,10 +67,12 @@ namespace HOFCServerNet.Utils.Notifications
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 _logger.Error("Error while sending windows notification. Status Code is " + response.StatusCode + ". Content is " + contentString);
+                return NotificationResult.ERROR;
             }
             else
             {
                 _logger.Info("WNS notification OK. Content is " + contentString);
+                return NotificationResult.OK;
             }
         }
     }
