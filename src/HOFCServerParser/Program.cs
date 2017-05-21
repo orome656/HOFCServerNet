@@ -1,6 +1,7 @@
 ﻿using HOFCServerNet.Data.Constants;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Utils.Common;
+using HOFCServerParser.Database;
 using HOFCServerParser.Parsers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -86,21 +87,60 @@ namespace HOFCServerParser
 
         static void ParseJournees(/*string[] equipes*/)
         {
+            DatabaseManager manager = new DatabaseManager();
+
             int nbJourneesEquipe1 = AppConstants.NbMatchEquipe1;
+            int? idJourneeCouranteEquipe1 = manager.GetCurrentJournee("equipe1");
+
             int nbJourneesEquipe2 = AppConstants.NbMatchEquipe2;
+            int? idJourneeCouranteEquipe2 = manager.GetCurrentJournee("equipe2");
+
             int nbJourneesEquipe3 = AppConstants.NbMatchEquipe3;
+            int? idJourneeCouranteEquipe3 = manager.GetCurrentJournee("equipe3");
+
             string seasonIndex = SeasonTool.GetSeasonIndex();
-            for (var i = 1; i <= nbJourneesEquipe1; i++)
+
+            int startIndex = 1;
+            int endIndex = nbJourneesEquipe1;
+
+            if(idJourneeCouranteEquipe1.HasValue)
+            {
+                startIndex = (idJourneeCouranteEquipe1.Value > 1) ? idJourneeCouranteEquipe1.Value - 1 : 1;
+                endIndex = (idJourneeCouranteEquipe1.Value < nbJourneesEquipe1) ? idJourneeCouranteEquipe1.Value + 1 : idJourneeCouranteEquipe1.Value;
+            }
+
+            for (var i = startIndex; i <= endIndex; i++)
             {
                 JourneeParser parser = new JourneeParser("equipe1", i, Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":equipe1:NomCompetition"], seasonIndex);
                 parser.Parse();
             }
-            for (var i = 1; i <= nbJourneesEquipe2; i++)
+
+            startIndex = 1;
+            endIndex = nbJourneesEquipe2;
+
+            if (idJourneeCouranteEquipe2.HasValue)
+            {
+                startIndex = (idJourneeCouranteEquipe2.Value > 1) ? idJourneeCouranteEquipe2.Value - 1 : 1;
+                endIndex = (idJourneeCouranteEquipe2.Value < nbJourneesEquipe2) ? idJourneeCouranteEquipe2.Value + 1 : idJourneeCouranteEquipe2.Value;
+            }
+
+            for (var i = startIndex; i <= endIndex; i++)
             {
                 JourneeParser parser = new JourneeParser("equipe2", i, Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":equipe2:NomCompetition"], seasonIndex);
                 parser.Parse();
             }
-            for (var i = 1; i <= nbJourneesEquipe3; i++)
+
+
+            startIndex = 1;
+            endIndex = nbJourneesEquipe3;
+
+            if (idJourneeCouranteEquipe3.HasValue)
+            {
+                startIndex = (idJourneeCouranteEquipe3.Value > 1) ? idJourneeCouranteEquipe3.Value - 1 : 1;
+                endIndex = (idJourneeCouranteEquipe3.Value < nbJourneesEquipe3) ? idJourneeCouranteEquipe3.Value + 1 : idJourneeCouranteEquipe3.Value;
+            }
+
+            for (var i = startIndex; i <= endIndex; i++)
             {
                 JourneeParser parser = new JourneeParser("equipe3", i, Configuration["Parser:" + SeasonTool.GetSeasonIndex() + ":equipe3:NomCompetition"], seasonIndex);
                 parser.Parse();

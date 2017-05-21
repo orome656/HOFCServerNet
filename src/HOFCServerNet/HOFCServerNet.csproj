@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\HOFCServerNet.Data\HOFCServerNet.Data.csproj" />
+    <ProjectReference Include="..\HOFCServerNet.Utils\HOFCServerNet.Utils.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="1.1.1" />

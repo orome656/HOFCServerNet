@@ -38,7 +38,7 @@ namespace HOFCServerNet.Utils.Notifications
             var responseString = await response.Content.ReadAsStringAsync();
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                _logger.Error("Error while sending Android notification. Return code is " + response.StatusCode + ". Content is " + response.Content);
+                _logger.Error("Error while sending Android notification. Return code is " + response.StatusCode + ". Content is " + responseString);
             }
             else if(responseString.Contains("NotRegistered"))
             {
@@ -46,7 +46,7 @@ namespace HOFCServerNet.Utils.Notifications
             }
             else
             {
-                _logger.Debug("Android notification OK. Content is " + responseString);
+                _logger.Info("Android notification OK. Content is " + responseString);
             }
         }
     }

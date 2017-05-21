@@ -63,10 +63,14 @@ namespace HOFCServerNet.Utils.Notifications
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("text/xml");
 
             var response = await client.SendAsync(request);
-            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            var contentString = await response.Content.ReadAsStringAsync();
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                var contentString = await response.Content.ReadAsStringAsync();
                 _logger.Error("Error while sending windows notification. Status Code is " + response.StatusCode + ". Content is " + contentString);
+            }
+            else
+            {
+                _logger.Info("WNS notification OK. Content is " + contentString);
             }
         }
     }

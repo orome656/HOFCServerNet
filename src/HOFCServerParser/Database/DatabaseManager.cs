@@ -1,5 +1,6 @@
 ﻿using HOFCServerNet.Data.Constants;
 using HOFCServerNet.Data.Models;
+using HOFCServerNet.Utils.Extensions;
 using HOFCServerNet.Utils.Notifications;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -94,6 +95,18 @@ namespace HOFCServerParser.Database
                     }
                 }
                 bddContext.SaveChanges();
+            }
+        }
+
+        public int? GetCurrentJournee(string equipe)
+        {
+            using (var bddContext = new BddContext(Program.Options))
+            {
+                var list = bddContext.Matchs.Where(m => m.Competition.Categorie.Equals(equipe) && m.Date.StartOfWeek(DayOfWeek.Monday) == DateTime.Now.StartOfWeek(DayOfWeek.Monday)).ToList();
+                if (list.Count == 0)
+                    return null;
+                else
+                    return list.First().IdJournee;
             }
         }
     }
