@@ -100,6 +100,8 @@ namespace HOFCServerNet
             services.AddTransient<VoteService>();
             services.AddTransient<StatService>();
 
+            services.AddCors();
+
             // Add framework services.
             services.AddMvc();
 
@@ -171,7 +173,10 @@ namespace HOFCServerNet
                     AppSecret = Configuration["FACEBOOK_SECRET_ID"]
                 }); 
             }
-            
+
+            app.UseCors(builder => builder.AllowAnyOrigin());
+
+
             app.UseMiddleware<WebAPILoggerMiddleware>();
 
             app.UseMvc(routes =>
