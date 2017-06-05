@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Services;
 using System.Globalization;
+using HOFCServerNet.ResourceModels;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,10 +37,7 @@ namespace HOFCServerNet.API
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<Match> Get()
-        {
-            return _matchService.GetAll();
-        }
+        public IEnumerable<Match> Get() => _matchService.GetAll();
 
         /// <summary>
         /// Permet de récupérer un match grâce a son identifiant
@@ -47,53 +45,45 @@ namespace HOFCServerNet.API
         /// <param name="id">Identifiant du match</param>
         /// <returns>Liste de matchs</returns>
         [HttpGet("{id}")]
-        public Match Get(int id)
-        {
-            return _matchService.GetMatchById(id);
-        }
+        public Match Get(int id) => _matchService.GetMatchById(id);
 
         /// <summary>
-        /// Permet de récupérer la liste des matchs d'une equipe
+        /// Retourne la liste des matchs d'une équipe
         /// </summary>
         /// <param name="equipe">identifiant de l'équipe</param>
         /// <returns>Liste de matchs</returns>
         [HttpGet("team/{equipe}")]
-        public List<Match> Get(string equipe)
-        {
-            return _matchService.GetMatchsForHOFCByCategory(equipe);
-        }
+        public List<Match> Get(string equipe) => _matchService.GetMatchsForHOFCByCategory(equipe);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="match"></param>
+        [HttpPatch("/matchs/{id}")]
+        public void PartialUpdate(int id, [FromBody]MatchDetailsResourceModel match) { }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpPost("/matchs/{id}/votes")]
+        public void PostVote(int id) { }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="idVote"></param>
+        [HttpPost("/matchs/{id}/votes/{idVote}")]
+        public void DeleteVote(int id, int idVote) { }
+        
         /// <summary>
         /// Permet de récupérer la liste des matchs d'une semaine
         /// </summary>
         /// <param name="date">identifiant de la semaine</param>
         /// <returns>Liste de matchs</returns>
         [HttpGet("week/{date}")]
-        public List<Match> GetForWeek(string date)
-        {
-            return _matchService.GetMatchForHOFCByWeek(DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture));
-        }
-
-        /// <summary>
-        /// Permet de mettre a jour le statut du vote pour ce match
-        /// </summary>
-        /// <param name="id"></param>
-        [HttpPatch]
-        [Route("{id}/vote-status")]
-        public void OpenVote(int id)
-        {
-            // TODO
-        }
-
-        /// <summary>
-        /// Permet d'ajouter une nouvelle compo sur un match
-        /// </summary>
-        [HttpPost]
-        [Route("{id}/compos")]
-        public void CreateCompo()
-        {
-            // TODO
-        }
+        public List<Match> GetForWeek(string date) => _matchService.GetMatchForHOFCByWeek(DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture));
     }
 }
