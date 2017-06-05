@@ -1,23 +1,27 @@
 ﻿@using HOFCServerNet.ViewModels.Account;
 @model ExternalLoginConfirmationViewModel
 
-@{ 
+@{
     Layout = "_LayoutMobile";
 }
 
-<h3>Associate your @ViewData["LoginProvider"] account.</h3>
+<div class="mui-container" style="margin-top:20px;">
+    <div class="mui-panel">
+        <h3>Associate your @ViewData["LoginProvider"] account.</h3>
 
-<form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-    <h4>Connexion</h4>
-    <hr />
+        <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="mui-form" role="form">
+            <h4>Connexion</h4>
+            <hr />
 
-    <p class="text-info">
-        Succés de la connexion avec <strong>@ViewData["LoginProvider"]</strong>.
-        Merci d'entrer votre nom d'utilisateur pour finir l'enregistrement
-    </p>
-    <div class="form-group">
-        <label asp-for="Email">Email</label>
-        <input asp-for="Email" class="form-control" type="text" placeholder="Email" />
+            <p class="text-info">
+                Succés de la connexion avec <strong>@ViewData["LoginProvider"]</strong>.
+                Merci d'entrer votre nom d'utilisateur pour finir l'enregistrement
+            </p>
+            <div class="mui-textfield">
+                <input asp-for="Email" class="form-control" type="text" placeholder="Email" />
+                <label asp-for="Email">Email</label>
+            </div>
+            <button type="submit" class="mui-btn mui-btn--raised">Sauvegarder</button>
+        </form>
     </div>
-    <button type="submit" class="btn btn-default">Sauvegarder</button>
-</form>
+</div>
