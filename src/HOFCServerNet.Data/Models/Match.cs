@@ -48,6 +48,8 @@ namespace HOFCServerNet.Data.Models
         public int CompetitionId { get; set; }
 
         public string Message { get; set; }
+        
+        public List<Composition> Compositions { get; set; }
 
         public override string ToString()
         {

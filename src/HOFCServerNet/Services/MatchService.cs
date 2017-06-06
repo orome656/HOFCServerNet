@@ -97,9 +97,13 @@ namespace HOFCServerNet.Services
 
         internal Match GetMatchById(int id)
         {
-                return BddContext.Matchs
+            return BddContext.Matchs
                              .Where(item => item.Id == id)
                              .Include(item => item.Competition)
+                             .Include(item => item.Compositions)
+                                .ThenInclude(c => c.Joueur)
+                             .Include(c => c.Compositions)
+                                .ThenInclude(c => c.Poste)
                              .First();
         }
 
