@@ -20,7 +20,7 @@ namespace HOFCServerNet.API
     {
         private MatchService _matchService;
         private CompositionService _compoService;
-        
+
         /// <summary>
         /// Default constuctor
         /// </summary>
@@ -45,7 +45,22 @@ namespace HOFCServerNet.API
         /// <param name="id">Identifiant du match</param>
         /// <returns>Liste de matchs</returns>
         [HttpGet("{id}")]
-        public Match Get(int id) => _matchService.GetMatchById(id);
+        public MatchDetailsResourceModel Get(int id)
+        {
+            var match = _matchService.GetMatchById(id);
+            MatchDetailsResourceModel resource = new MatchDetailsResourceModel(match);
+            if(match.Compositions.Count > 0)
+            {
+                resource.Joueurs = new List<JoueurMatchResourceModel>();
+                foreach (var c in match.Compositions)
+                {
+                    var joueur = new JoueurMatchResourceModel(c.Joueur);
+                    joueur.Poste = c.Poste.Nom;
+                    resource.Joueurs.Add(joueur);
+                }
+            }
+            return resource;
+        }
 
         /// <summary>
         /// Retourne la liste des matchs d'une équipe
