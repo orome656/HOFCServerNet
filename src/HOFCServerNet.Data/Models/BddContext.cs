@@ -16,6 +16,8 @@ namespace HOFCServerNet.Data.Models
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Stat> Stats { get; set; }
 
+        public DbSet<Tactique> Tactiques { get; set; }
+
         public BddContext(DbContextOptions<BddContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

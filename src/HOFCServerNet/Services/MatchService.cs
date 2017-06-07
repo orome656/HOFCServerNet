@@ -158,5 +158,10 @@ namespace HOFCServerNet.Services
                                        .ToList();
             
         }
+
+        public List<Tactique> GetTactiques()
+        {
+            return BddContext.Tactiques.ToList();
+        }
     }
 }

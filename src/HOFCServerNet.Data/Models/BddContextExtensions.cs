@@ -27,6 +27,56 @@ namespace HOFCServerNet.Data.Models
                 context.SaveChanges();
             }
 
+            if (!context.Tactiques.Any())
+            {
+                context.Tactiques.Add(new Tactique()
+                {
+                    Nom = "4-3-3",
+                    NbDD = 1,
+                    NbDG = 1,
+                    NbDC = 1,
+                    NbMDF = 1,
+                    NbMC = 2,
+                    NbMG = 0,
+                    NbMD = 0,
+                    NbMO = 0,
+                    NbAIG = 1,
+                    NbAID = 1,
+                    NbBT = 1
+                });
+                context.Tactiques.Add(new Tactique()
+                {
+                    Nom = "4-4-2",
+                    NbDD = 1,
+                    NbDG = 1,
+                    NbDC = 1,
+                    NbMDF = 0,
+                    NbMC = 2,
+                    NbMG = 1,
+                    NbMD = 1,
+                    NbMO = 0,
+                    NbAIG = 0,
+                    NbAID = 0,
+                    NbBT = 2
+                });
+                context.Tactiques.Add(new Tactique()
+                {
+                    Nom = "4-4-2-Losange",
+                    NbDD = 1,
+                    NbDG = 1,
+                    NbDC = 1,
+                    NbMDF = 1,
+                    NbMC = 0,
+                    NbMG = 1,
+                    NbMD = 1,
+                    NbMO = 1,
+                    NbAIG = 0,
+                    NbAID = 0,
+                    NbBT = 2
+                });
+                context.SaveChanges();
+            }
+
             /*if(!context.Competitions.Any())
             {
                 context.Competitions.Add(new Competition()
