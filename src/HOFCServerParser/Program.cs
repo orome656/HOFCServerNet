@@ -32,7 +32,7 @@ namespace HOFCServerParser
             Configuration = builder.Build();
             
             DbContextOptionsBuilder<BddContext> options = new DbContextOptionsBuilder<BddContext>();
-            options.UseSqlite(Program.Configuration["Data:DefaultConnection:ConnectionString"]);
+            options.UseMySql(Program.Configuration["Data:DefaultConnection:ConnectionString"]);
 
             Options = options.Options;
 

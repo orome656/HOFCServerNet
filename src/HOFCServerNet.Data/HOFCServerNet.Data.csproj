@@ -22,12 +22,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational">
       <Version>1.1.2</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
-      <Version>1.1.2</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design">
-      <Version>1.1.2</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables">
       <Version>1.1.2</Version>
@@ -41,6 +35,8 @@
     <PackageReference Include="OpenIddict">
       <Version>1.0.0-beta2-0605</Version>
     </PackageReference>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="1.1.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet">

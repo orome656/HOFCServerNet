@@ -19,7 +19,7 @@ namespace HOFCServerNet.Data.Models
             var Configuration = builder.Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<BddContext>();
-            optionsBuilder.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]);
+            optionsBuilder.UseMySql(Configuration["Data:DefaultConnection:ConnectionString"]);
 
             return new BddContext(optionsBuilder.Options);
         }

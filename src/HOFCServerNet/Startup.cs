@@ -52,10 +52,10 @@ namespace HOFCServerNet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEntityFramework()
-                    .AddEntityFrameworkSqlite()
-                    .AddDbContext<BddContext>(options => options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]))
+                    .AddEntityFrameworkMySql()
+                    .AddDbContext<BddContext>(options => options.UseMySql(Configuration["Data:DefaultConnection:ConnectionString"]))
                     .AddDbContext<ApplicationDbContext>(options => {
-                        options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]);
+                        options.UseMySql(Configuration["Data:DefaultConnection:ConnectionString"]);
                         options.UseOpenIddict();
                     });
 
@@ -137,14 +137,9 @@ namespace HOFCServerNet
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true
-                });
             }
 
             app.UseDefaultFiles();
-            app.UseStaticFiles();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {

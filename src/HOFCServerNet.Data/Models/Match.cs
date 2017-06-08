@@ -51,6 +51,8 @@ namespace HOFCServerNet.Data.Models
         
         public List<Composition> Compositions { get; set; }
 
+        public string TactiqueId { get; set; }
+        
         public Tactique Tactique { get; set; }
 
         public override string ToString()

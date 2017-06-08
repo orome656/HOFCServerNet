@@ -162,11 +162,15 @@ namespace HOFCServerNet.Data.Migrations
 
                     b.Property<int?>("Score2");
 
+                    b.Property<string>("TactiqueId");
+
                     b.Property<int>("VoteStatut");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompetitionId");
+
+                    b.HasIndex("TactiqueId");
 
                     b.ToTable("Matchs");
                 });
@@ -316,6 +320,10 @@ namespace HOFCServerNet.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CompetitionId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HOFCServerNet.Data.Models.Tactique", "Tactique")
+                        .WithMany()
+                        .HasForeignKey("TactiqueId");
                 });
 
             modelBuilder.Entity("HOFCServerNet.Data.Models.Stat", b =>
