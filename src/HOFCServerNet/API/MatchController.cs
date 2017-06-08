@@ -45,9 +45,11 @@ namespace HOFCServerNet.API
         /// <param name="id">Identifiant du match</param>
         /// <returns>Liste de matchs</returns>
         [HttpGet("{id}")]
-        public MatchDetailsResourceModel Get(int id)
+        public IActionResult Get(int id)
         {
             var match = _matchService.GetMatchById(id);
+            if (match == null)
+                return NotFound();
             MatchDetailsResourceModel resource = new MatchDetailsResourceModel(match);
             if(match.Compositions.Count > 0)
             {
@@ -59,7 +61,7 @@ namespace HOFCServerNet.API
                     resource.Joueurs.Add(joueur);
                 }
             }
-            return resource;
+            return Ok(resource);
         }
 
         /// <summary>

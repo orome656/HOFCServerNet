@@ -104,7 +104,7 @@ namespace HOFCServerNet.Services
                                 .ThenInclude(c => c.Joueur)
                              .Include(c => c.Compositions)
                                 .ThenInclude(c => c.Poste)
-                             .First();
+                             .FirstOrDefault();
         }
 
         public List<Match> GetMatchsForHOFCByCategory(string categorie)
