@@ -9,9 +9,10 @@ using HOFCServerNet.Data.Enums;
 namespace HOFCServerNet.Data.Migrations
 {
     [DbContext(typeof(BddContext))]
-    partial class BddContextModelSnapshot : ModelSnapshot
+    [Migration("20170624184605_Add match infos in database")]
+    partial class Addmatchinfosindatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2");

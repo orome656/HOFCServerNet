@@ -24,7 +24,9 @@ namespace HOFCServerNet.Parsers
             }
             else
             {
-                return ParseLine(node);
+                MatchInfos infos = ParseLine(node);
+                infos.Id = matchId;
+                return infos;
             }
             
         }

@@ -59,6 +59,17 @@ namespace HOFCServerNet.Services
         }*/
         }
 
+        internal async Task SaveMatchInfos(MatchInfos infos)
+        {
+            BddContext.MatchInfos.Add(infos);
+            await BddContext.SaveChangesAsync();
+        }
+
+        internal MatchInfos getMatchInfosById(int matchId)
+        {
+            return BddContext.MatchInfos.Where(i => i.MatchId == matchId).FirstOrDefault();
+        }
+
         internal void ActivateVote(int id)
         {
                 Match match = BddContext.Matchs.FirstOrDefault(m => m.Id == id);

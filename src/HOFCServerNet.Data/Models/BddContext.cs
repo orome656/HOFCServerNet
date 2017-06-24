@@ -18,6 +18,8 @@ namespace HOFCServerNet.Data.Models
 
         public DbSet<Tactique> Tactiques { get; set; }
 
+        public DbSet<MatchInfos> MatchInfos { get; set; }
+
         public BddContext(DbContextOptions<BddContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

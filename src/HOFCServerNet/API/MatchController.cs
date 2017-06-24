@@ -7,6 +7,7 @@ using HOFCServerNet.Data.Models;
 using HOFCServerNet.Services;
 using System.Globalization;
 using HOFCServerNet.ResourceModels;
+using HOFCServerNet.Parsers;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -45,13 +46,29 @@ namespace HOFCServerNet.API
         /// <param name="id">Identifiant du match</param>
         /// <returns>Liste de matchs</returns>
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
             var match = _matchService.GetMatchById(id);
             if (match == null)
                 return NotFound();
             MatchDetailsResourceModel resource = new MatchDetailsResourceModel(match);
-            if(match.Compositions.Count > 0)
+
+            if (!string.IsNullOrEmpty(match.InfosId))
+            {
+                MatchInfos infos = _matchService.getMatchInfosById(match.Id);
+
+                if (infos == null)
+                {
+                    infos = MatchInfosParser.Parse(match.InfosId);
+                    infos.MatchId = match.Id;
+                    await _matchService.SaveMatchInfos(infos);
+                }
+
+                resource.MatchInfos = infos;
+            }
+
+
+            if (match.Compositions.Count > 0)
             {
                 resource.Joueurs = new List<JoueurMatchResourceModel>();
                 foreach (var c in match.Compositions)

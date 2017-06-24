@@ -50,6 +50,8 @@ namespace HOFCServerNet.ResourceModels
         [JsonProperty(PropertyName = "infos")]
         public string InfosId { get; set; }
 
+        public MatchInfos MatchInfos { get; set; }
+
         [JsonProperty(PropertyName = "competition")]
         public Competition Competition { get; set; }
 
