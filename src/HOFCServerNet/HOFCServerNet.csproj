@@ -12,6 +12,8 @@
     <ProjectReference Include="..\HOFCServerNet.Utils\HOFCServerNet.Utils.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.Introspection" Version="1.0.0" />
+    <PackageReference Include="AspNet.Security.OpenIdConnect.Server" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="1.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
       <Version>1.1.1</Version>
@@ -21,9 +23,9 @@
     <PackageReference Include="Swashbuckle.SwaggerGen" Version="6.0.0-beta902" />
     <PackageReference Include="Swashbuckle.SwaggerUi" Version="6.0.0-beta902" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.0" />
-    <PackageReference Include="OpenIddict" Version="1.0.0-beta2-0605" />
-    <PackageReference Include="OpenIddict.Mvc" Version="1.0.0-beta2-0605" />
-    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="1.0.0-beta2-0605" />
+    <PackageReference Include="OpenIddict" Version="1.0.0-beta2-0615" />
+    <PackageReference Include="OpenIddict.Mvc" Version="1.0.0-beta2-0615" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="1.0.0-beta2-0615" />
     <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-beta5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="1.1.2" />
@@ -51,10 +53,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <!-- Files not to show in IDE -->
-    <None Remove="yarn.lock" />
-
-    <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet">
@@ -64,19 +62,4 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
   </PropertyGroup>
-  <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
-    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec Command="npm install" />
-    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod" />
-    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
-
-    <!-- Include the newly-built files in the publish output -->
-    <ItemGroup>
-      <DistFiles Include="wwwroot\dist\**; ClientApp\dist\**" />
-      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
-        <RelativePath>%(DistFiles.Identity)</RelativePath>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </ResolvedFileToPublish>
-    </ItemGroup>
-  </Target>
 </Project>
