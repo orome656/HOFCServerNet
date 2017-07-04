@@ -18,6 +18,7 @@ namespace HOFCServerNet.API
             _matchService = matchService;
         }
 
+        [HttpGet]
         public List<Tactique> Get()
         {
             return _matchService.GetTactiques();

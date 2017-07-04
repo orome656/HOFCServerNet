@@ -23,6 +23,7 @@ using HOFCServerNet.ViewModels.Shared;
 
 namespace HOFCServerNet.API
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class AuthorizationController: Controller
     {
         private readonly OpenIddictApplicationManager<OpenIddictApplication> _applicationManager;
