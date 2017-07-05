@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,7 +23,11 @@ namespace HOFCServerNet.Data.Models
         public string ImageURL { get; set; }
         [JsonProperty(PropertyName = "date")]
         public DateTime Date { get; set; }
-        
+        [NotMapped]
+        public string Contenu { get; set; }
+        [NotMapped]
+        public List<string> Photos { get; set; }
+
         public override string ToString()
         {
             return "|" + PostId + "|" + Titre + "|" + Texte + "|" + URL + "|" + ImageURL + "|" + Date + "|";

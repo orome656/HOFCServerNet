@@ -12,7 +12,7 @@ using NLog;
 namespace HOFCServerNet.API
 {
     /// <summary>
-    /// Permet de gérer les actualités
+    /// Gére les actualités
     /// </summary>
     [Route("api/actus")]
     public class ActuController : Controller
@@ -37,6 +37,16 @@ namespace HOFCServerNet.API
         public IEnumerable<Actu> Get()
         {
             return _service.GetAll();
+        }
+
+        /// <summary>
+        /// Retourne les détails sur une actu
+        /// </summary>
+        /// <param name="id">Identifiant de l'actualité</param>
+        /// <returns>Détails d'une actu</returns>
+        [HttpGet("{id}")]
+        public Actu Get(int id) {
+            return _service.Get(id);
         }
     }
 }
