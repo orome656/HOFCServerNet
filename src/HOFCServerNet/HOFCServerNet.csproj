@@ -22,7 +22,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileProviderExtensions" Version="1.0.0-rc1-final" />
     <PackageReference Include="Swashbuckle.SwaggerGen" Version="6.0.0-beta902" />
     <PackageReference Include="Swashbuckle.SwaggerUi" Version="6.0.0-beta902" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.1" />
     <PackageReference Include="OpenIddict" Version="1.0.0-beta2-0615" />
     <PackageReference Include="OpenIddict.Mvc" Version="1.0.0-beta2-0615" />
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="1.0.0-beta2-0615" />
