@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace HOFCServerParser.Net
+namespace HOFCServerNet.Utils.Net
 {
     public class WebProxy : IWebProxy
     {

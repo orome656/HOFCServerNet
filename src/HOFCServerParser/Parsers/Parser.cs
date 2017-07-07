@@ -4,7 +4,7 @@ using System.Linq;
 using HtmlAgilityPack;
 using NLog;
 using System.Net.Http;
-using HOFCServerParser.Net;
+using HOFCServerNet.Utils.Net;
 
 namespace HOFCServerParser.Parsers
 {
@@ -68,21 +68,7 @@ namespace HOFCServerParser.Parsers
 
         public HttpClient GetHttpClient()
         {
-            var proxy = Program.Configuration["HTTP_PROXY"];
-            if (proxy != null)
-            {
-                Logger.Info($"Utilisation du proxy {proxy}");
-                HttpClientHandler clientHandler = new HttpClientHandler()
-                {
-                    Proxy = new WebProxy()
-                };
-
-                return new HttpClient(clientHandler);
-            }
-            else
-            {
-                return new HttpClient();
-            }
+            return new HttpClientProxy();
 
         }
 

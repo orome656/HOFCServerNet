@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using HOFCServerNet.Utils.Net;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace HOFCServerNet.Parsers
 
         private static IEnumerable<HtmlNode> GetLines(string url)
         {
-            var httpClient = new HttpClient();
+            HttpClient httpClient = new HttpClientProxy();
             string html = httpClient.GetStringAsync(url).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
