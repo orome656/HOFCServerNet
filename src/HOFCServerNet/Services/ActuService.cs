@@ -26,7 +26,7 @@ namespace HOFCServerNet.Services
             if(actu != null) {
                 var url = actu.URL;
                 
-                if(!string.IsNullOrWhiteSpace(url) && url.Contains("en-image"))
+                if(!string.IsNullOrWhiteSpace(url) && (url.Contains("en-image") || actu.Titre.Contains("en images")))
                 {
                     var diaporama = DiaporamaParser.Parse(url);
                     actu.Photos = diaporama;
