@@ -31,7 +31,6 @@ namespace HOFCServerNet.Services
                     var diaporama = DiaporamaParser.Parse(url);
                     actu.Photos = diaporama;
                     BddContext.SaveChanges();
-                    // Add Modified
                 }
                 else if(!string.IsNullOrWhiteSpace(url))
                 {
