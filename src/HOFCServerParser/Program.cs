@@ -37,18 +37,21 @@ namespace HOFCServerParser
             Options = options.Options;
 
             string[] equipe = new string[] { "equipe1", "equipe2", "equipe3"};
-
-            // Parsing classement
-            ParseClassement(equipe);
-
+            
             // Parsing des actualités
             ParseActus();
 
-            // Parsing des pages Agendas
-            ParseAgendas();
+            if(DateTime.Now.Month != 7)
+            {
+                // Parsing classement
+                ParseClassement(equipe);
 
-            // Parsing des pages par journées
-            ParseJournees();
+                // Parsing des pages Agendas
+                ParseAgendas();
+
+                // Parsing des pages par journées
+                ParseJournees();
+            }
 
             Logger.Info("Update Batch End");
         }
