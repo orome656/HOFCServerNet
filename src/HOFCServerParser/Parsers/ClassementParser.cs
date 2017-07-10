@@ -6,7 +6,6 @@ using HtmlAgilityPack;
 using HOFCServerNet.Data.Models;
 using HOFCServerNet.Utils.Common;
 using Microsoft.EntityFrameworkCore;
-using HOFCServerParser.Net;
 
 namespace HOFCServerParser.Parsers
 {
