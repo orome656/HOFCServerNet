@@ -27,7 +27,7 @@ namespace HOFCServerNet.Utils.Net
             }
             else
             {
-                return null;
+                return new HttpClientHandler();
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using HOFCServerNet.Data.Models;
+using HOFCServerNet.Utils.Net;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace HOFCServerNet.Parsers
 
         protected static HtmlNode GetLine()
         {
-            var httpClient = new HttpClient();
+            var httpClient = new HttpClientProxy();
             string html = httpClient.GetStringAsync(URL + MatchId).Result;
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
