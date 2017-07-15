@@ -13,7 +13,7 @@ namespace HOFCServerNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     Date = table.Column<DateTime>(nullable: false),
                     ImageURL = table.Column<string>(nullable: true),
                     PostId = table.Column<int>(nullable: false),
@@ -31,7 +31,7 @@ namespace HOFCServerNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     Categorie = table.Column<string>(nullable: true),
                     Nom = table.Column<string>(nullable: true),
                     Saison = table.Column<string>(nullable: true)
@@ -46,7 +46,7 @@ namespace HOFCServerNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     Categorie = table.Column<string>(nullable: true),
                     Nom = table.Column<string>(nullable: true),
                     Prenom = table.Column<string>(nullable: true)
@@ -61,7 +61,7 @@ namespace HOFCServerNet.Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     NotificationID = table.Column<string>(nullable: true),
                     Platform = table.Column<int>(nullable: false)
                 },
@@ -75,7 +75,7 @@ namespace HOFCServerNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     Nom = table.Column<string>(maxLength: 10, nullable: true)
                 },
                 constraints: table =>
@@ -88,7 +88,7 @@ namespace HOFCServerNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     Bc = table.Column<int>(nullable: false),
                     Bp = table.Column<int>(nullable: false),
                     Categorie = table.Column<string>(nullable: true),
@@ -117,7 +117,7 @@ namespace HOFCServerNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     CompetitionId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Equipe1 = table.Column<string>(nullable: true),
@@ -168,7 +168,7 @@ namespace HOFCServerNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     JoueurId = table.Column<int>(nullable: true),
                     MatchId = table.Column<int>(nullable: true),
                     PosteId = table.Column<int>(nullable: true)
@@ -201,7 +201,7 @@ namespace HOFCServerNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     JoueurId = table.Column<int>(nullable: false),
                     MatchId = table.Column<int>(nullable: false),
                     Nombre = table.Column<int>(nullable: false),
@@ -229,7 +229,7 @@ namespace HOFCServerNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     JoueurId = table.Column<int>(nullable: false),
                     MatchId = table.Column<int>(nullable: false),
                     TypeVote = table.Column<string>(nullable: true),
