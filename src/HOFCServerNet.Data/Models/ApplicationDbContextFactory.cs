@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace HOFCServerNet.Data.Models
 {
-    public class ApplicationDbContextFactory : IDbContextFactory<ApplicationDbContext>
+    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
     {
-        public ApplicationDbContext Create(DbContextFactoryOptions options)
+        public ApplicationDbContext CreateDbContext(string[] args)
         {
             var builder = new ConfigurationBuilder()
-                   .SetBasePath(Directory.GetCurrentDirectory())
-                   .AddJsonFile("appsettings.json");
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json");
             var Configuration = builder.Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();

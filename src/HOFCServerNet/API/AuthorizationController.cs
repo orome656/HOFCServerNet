@@ -247,7 +247,7 @@ namespace HOFCServerNet.API
 
                 // Create a new authentication ticket, but reuse the properties stored in the
                 // authorization code/refresh token, including the scopes originally granted.
-                var ticket = await CreateTicketAsync(request, user, info.Properties);
+                var ticket = await CreateTicketAsync(request, user);
 
                 return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
             }
@@ -262,7 +262,7 @@ namespace HOFCServerNet.API
 
         private async Task<AuthenticationTicket> CreateTicketAsync(
             OpenIdConnectRequest request, ApplicationUser user,
-            AuthenticationProperties properties = null)
+            Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = null)
         {
             // Create a new ClaimsPrincipal containing the claims that
             // will be used to create an id_token, a token or a code.

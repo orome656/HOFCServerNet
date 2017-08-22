@@ -24,7 +24,7 @@ namespace HOFCServerNet.API
 
         //
         // GET: /api/userinfo
-        [Authorize(ActiveAuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
         [HttpGet("~/connect/userinfo"), Produces("application/json")]
         public async Task<IActionResult> Userinfo()
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace HOFCServerNet.Data.Models
 {
-    public class BddContextFactory : IDbContextFactory<BddContext>
+    public class BddContextFactory : IDesignTimeDbContextFactory<BddContext>
     {
-        public BddContext Create(DbContextFactoryOptions options)
+        public BddContext CreateDbContext(string[] args)
         {
             var builder = new ConfigurationBuilder()
                       .SetBasePath(Directory.GetCurrentDirectory())

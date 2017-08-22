@@ -27,6 +27,9 @@ using System.Threading;
 using NLog;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using AspNet.Security.OpenIdConnect.Primitives;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace HOFCServerNet
 {
@@ -51,8 +54,7 @@ namespace HOFCServerNet
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFramework()
-                    .AddEntityFrameworkMySql()
+            services.AddEntityFrameworkMySql()
                     .AddDbContext<BddContext>(options => options.UseMySql(Configuration["Data:DefaultConnection:ConnectionString"]))
                     .AddDbContext<ApplicationDbContext>(options => {
                         options.UseMySql(Configuration["Data:DefaultConnection:ConnectionString"]);
@@ -102,6 +104,22 @@ namespace HOFCServerNet
 
             services.AddCors();
 
+            if (Configuration["GOOGLE_CLIENT_ID"] != null)
+            {
+                services.AddAuthentication()
+                        .AddGoogle(options =>
+                        {
+                            options.ClientId = Configuration["GOOGLE_CLIENT_ID"];
+                            options.ClientSecret = Configuration["GOOGLE_CLIENT_SECRET"];
+                        })
+                        .AddOAuthValidation()
+                        .AddFacebook(options =>
+                        {
+                            options.AppId = Configuration["FACEBOOK_APP_ID"];
+                            options.AppSecret = Configuration["FACEBOOK_APP_SECRET"];
+                        });
+            }
+
             // Add framework services.
             services.AddMvc();
 
@@ -146,29 +164,8 @@ namespace HOFCServerNet
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseIdentity();
-
-            app.UseOAuthValidation();
-
-            app.UseOpenIddict();
-            if(!env.IsDevelopment() || Configuration["GOOGLE_CLIENT_ID"] != null)
-            {
-                app.UseGoogleAuthentication(new GoogleOptions()
-                {
-                    ClientId = Configuration["GOOGLE_CLIENT_ID"],
-                    ClientSecret = Configuration["GOOGLE_CLIENT_SECRET"]
-                });
-            }
-
-            if (!env.IsDevelopment() || Configuration["FACEBOOK_APP_ID"] != null)
-            {
-                app.UseFacebookAuthentication(new FacebookOptions()
-                {
-                    AppId = Configuration["FACEBOOK_APP_ID"],
-                    AppSecret = Configuration["FACEBOOK_SECRET_ID"]
-                }); 
-            }
-
+            app.UseAuthentication();
+            
             app.UseCors(builder => builder.AllowAnyOrigin());
 
 

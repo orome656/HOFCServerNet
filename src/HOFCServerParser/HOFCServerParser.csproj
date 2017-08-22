@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Description>HOFCServerParser Console Application</Description>
     <Authors>Anthony</Authors>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>HOFCServerParser</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
@@ -34,7 +34,7 @@
       <Version>4.1.0-rc2-24027</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp">
-      <Version>4.3.0</Version>
+      <Version>4.4.0</Version>
     </PackageReference>
     <PackageReference Include="System.Collections">
       <Version>4.3.0</Version>
