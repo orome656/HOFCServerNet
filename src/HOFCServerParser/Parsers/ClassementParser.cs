@@ -23,11 +23,12 @@ namespace HOFCServerParser.Parsers
         }
         protected override IEnumerable<HtmlNode> FilterLines(HtmlNode root)
         {
-            var rootNode = root.SelectSingleNode("//table[@class='tablo bordure ac']");
+            var rootNode = root.SelectSingleNode("//table[@class='ranking-tab']");
             IEnumerable<HtmlNode> lines = null;
             if (rootNode != null) {
                 lines = rootNode.Descendants()
-                                .Where(n => n.Name == "tr" && n.ParentNode.Name == "table");
+                                .Where(n => n.Name == "tr" && n.ParentNode.Name == "table")
+                                .Skip(1);
             }
             return lines;
         }
